@@ -1,0 +1,9 @@
+#!/bin/sh
+# vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+
+# Used when displaying information
+LIVE_NAME="Salix Live"
+# File search at the root of CD/USB disk/partition
+IDENT_FILE=salix.live
+# Content to valid the disk/partition.
+IDENT_CONTENT=salixlive

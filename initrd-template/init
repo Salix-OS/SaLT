@@ -1,0 +1,49 @@
+#!/bin/sh
+# vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+# Initial script launched in the initrd of SaLT
+
+[ "$$" -ne 1 ] && exit 1;
+
+echo -e "\n\e[1;32m*** Live system initialization ***\e[0m\n"
+
+export PATH=:/usr/sbin:/usr/bin:/sbin:/bin
+
+# mount -n : /etc/mtab is not writable yet
+mount -n -t proc none /proc
+mount -n -t sysfs none /sys
+# ensure / is writable.
+mount -o remount,rw /
+# update /etc/mtab regarding /proc and /sys mount points
+echo 'none /proc proc rw 0 0' >> /etc/mtab
+echo 'none /sys sysfs rw 0 0' >> /etc/mtab
+
+# load the SaLT library
+echo 1 >/SALT_DEBUG
+. /lib/libSaLT
+debuglog "*** Starting live initialization ***"
+
+cd /
+infolog 'Loading essential modules...'
+load_modules
+infolog 'Initialize /dev'
+init_dev
+infolog 'Starting USB support'
+load_usb_modules
+infolog 'Starting PCMCIA CardBus support'
+load_pcmcia_modules
+
+infolog "Finding $LIVE_NAME device..."
+DISTRO_INFO=$(find_distro_device)
+if [ -z "$DISTRO_INFO" ]; then
+  fumble "Could not find the distro to boot\nFile searched: $IDENT_FILE\nContent searched: $IDENT_CONTENT"
+fi
+DISTRO_DEV=$(echo $DISTRO_INFO|cut -d: -f1)
+DISTRO_MP=$(echo $DISTRO_INFO|cut -d: -f2)
+infolog "$LIVE_NAME found in $DISTRO_DEV"
+debugshell
+debuglog "Installing hookers in $DISTRO_MP"
+install_hookers $DISTRO_MP
+debugshell
+infolog "*** Passing execution process to $LIVE_NAME ***"
+change_root_to_distro /sbin/init $runlevel
+fumble "End of init: this line must never be executed!"

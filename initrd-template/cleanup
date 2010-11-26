@@ -1,0 +1,47 @@
+#!/bin/sh
+# vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+# Clean up script launched when coming back to the initrd of SaLT before halting or rebooting.
+
+export PATH=:/usr/sbin:/usr/bin:/sbin:/bin
+if [ -f /lib/libSaLT ]; then
+  . /lib/libSaLT
+elif [ -f /mnt/salt/lib/libSaLT ]; then
+  . /mnt/salt/lib/libSaLT
+else
+  echo "libSaLT not found, cannot proceed further" >&2
+  exit 1
+fi
+cd /
+
+if [ -z "$SALT_CLEANUP_IS_RUNNING" ]; then
+  export SALT_CLEANUP_IS_RUNNING=1
+  echoinfo "*** Live system cleanup ***"
+  change_root_to_initrd /cleanup "$0" "$@"
+  fumble "Rexecuting cleanup: this line must never be executed!"
+fi
+
+debugshell
+if [ ! -e /distro_infos ]; then
+  fumble "/distro_infos not found. This is really weird.\nAre you running from a Live environment?"
+fi
+# ensure / is writable.
+mount -o remount,rw /
+debugshell
+DISTRO_INFO=$(cat /distro_infos)
+DISTRO_DEV=$(echo $DISTRO_INFO|cut -d: -f1)
+DISTRO_MP=$(echo $DISTRO_INFO|cut -d: -f2)
+debuglog "Remounting $DISTRO_MP read/write"
+mount -o remount,rw $DISTRO_MP
+uninstall_hookers $DISTRO_MP
+debugshell
+debuglog "Umount sub-mounts in $DISTRO_DEV"
+for d in $(mount|grep $DISTRO_DEV/|sed "s:.* \($DISTRO_DEV/[^ ]\+\) .*:\1:"); do
+  debuglog "* Umount $d"
+  umount $d || (mount -o remout,ro $d 2>/dev/null; umount -l $d 2>/dev/null)
+done
+umount_device $DISTRO_DEV
+debugshell
+echoinfo "Stopping/Rebooting: $1"
+debugshell
+exec $1 -f
+fumble "End of cleanup: this line must never be executed!"

@@ -1,0 +1,34 @@
+SaLT: Salix Live Template
+
+Set of tools to create a full live environnement for Slackware/Salix using:
+  - a custom live kernel using Aufs2 and Squashfs+lzma (patches for multiple kernel version until availabile in mainline);
+  - a special initrd template;
+  - some tools to exploit live environnement.
+
+These scripts is a base to help you built a slackware live.
+It will not build the modules for you or organize the final architecture: it focuses on the initrd.
+It could possibly be modified to run other distro than Slackware.
+
+Based on ideas from LLS (ftp://ftp.slax.org/Linux-Live/) and SLS (https://github.com/godane/slackware-live/).
+Why a new project? Because LLS is not compatible with 64 bits and not maintained and SaLT has not the same purpose as SLS.
+
+These scripts could be used for Salix or any other Slackware-compatible distribution, in 32 or 64 bits.
+These scripts will not handle all possibilities of LLS or SLS at first. Things will be added further, in a proper way.
+
+Features:
+- boot from initrd
+- detect partition filesystems
+  * ext4
+  * ext3
+  * ext2
+  * ntfs
+- mount filesystems
+- can halt the system
+
+Known bugs:
+- not all filesystems detected
+- chroot do not check if it is possible
+- hooks not installed yet
+
+Authors:
+  - Cyrille Pontvieux <jrd@enialis.net>
