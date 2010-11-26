@@ -2,7 +2,7 @@
 # vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
 cd $(dirname "$0")
 if [ $UID -ne 0 ]; then
-  echo 'Need to be root (or fakeroot) to run.' >&2
+  echo 'Need to be root to run.' >&2
   exit 1
 fi
 

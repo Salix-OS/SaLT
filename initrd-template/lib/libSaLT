@@ -221,7 +221,9 @@ find_mountable_devices() {
 find_fs_type() {
   [ ! -e /devices ] && find_mountable_devices >/dev/null
   LINE=$(grep "^$1:" /devices|cut -d: -f2-)
-  if echo "$LINE"|grep -i 'ext4 filesystem data'>/dev/null; then
+  if echo "$LINE"|grep -i 'ISO 9660 CD-ROM'>/dev/null; then
+    echo 'iso9660'
+  elif echo "$LINE"|grep -i 'ext4 filesystem data'>/dev/null; then
     echo 'ext4'
   elif echo "$LINE"|grep -i 'ext3 filesystem data'>/dev/null; then
     echo 'ext3'
@@ -244,7 +246,9 @@ find_fs_type() {
 # Find the options of the specified filesystem type.
 # $1 = filesystem type
 find_fs_options() {
-  if [ "$1" = "ext4" -o "$1" = "ext3" -o "$1" = "ext2" ]; then
+  if [ "$1" = "iso9660" ]; then
+    echo 'ro,relatime'
+  elif [ "$1" = "ext4" -o "$1" = "ext3" -o "$1" = "ext2" ]; then
     echo 'noatime,defaults'
   elif [ "$1" = "xfs" ]; then
     echo 'noatime,defaults'
