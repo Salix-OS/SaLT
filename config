@@ -7,3 +7,5 @@ LIVE_NAME="Salix Live"
 IDENT_FILE=salix.live
 # Content to valid the disk/partition.
 IDENT_CONTENT=salixlive
+# Directory that contains all data
+ROOT_DIR=salixlive

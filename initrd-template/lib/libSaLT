@@ -7,7 +7,7 @@ elif [ -f /mnt/salt/etc/salt.cfg ]; then
   . /mnt/salt/etc/salt.cfg
 else
   echo "salt.cfg not found, cannot proceed further" >&2
-  exit 1
+  return 1
 fi
 
 # debug mode is done using kernel command line or by putting something in the file /SALT_DEBUG
@@ -86,12 +86,20 @@ echodebug() {
 log() {
    echo "$@" 2>/dev/null >> /var/log/livedbg
 }
+# Same as doing echodebug + log
+# $@ = message
+debuglog() {
+  if [ -n "$SALT_DEBUG" -a -n "$1" ]; then
+    echodebug "$@" >&2
+    log "DEBUG: $@"
+  fi
+}
 # Same as doing echoinfo + log
 # $@ = message
 infolog() {
   if [ -n "$1" ]; then
     echoinfo "* $@"
-    log "LIVE: $@"
+    log "INFO: $@"
   fi
 }
 # Same as doing echowarn + log
@@ -99,15 +107,15 @@ infolog() {
 warnlog() {
   if [ -n "$1" ]; then
     echowarn "* $@" >&2
-    log "LIVE: $@"
+    log "WARN: $@"
   fi
 }
-# Same as doing echodebug + log
+# Same as doing echowarn + log
 # $@ = message
-debuglog() {
-  if [ -n "$SALT_DEBUG" -a -n "$1" ]; then
-    echodebug "$@" >&2
-    log "DEBUG: $@"
+errorlog() {
+  if [ -n "$1" ]; then
+    echoerror "* $@" >&2
+    log "ERROR: $@"
   fi
 }
 # Run an interactive shell if in debug, else do nothing
@@ -157,8 +165,8 @@ modprobe_check() {
   fi
 }
 
-# Load essential modules, mainly filesystem modules.
-load_modules() {
+# Load essential kernel modules, mainly filesystem modules.
+load_core_modules() {
   modprobe_check loop
   modprobe_check isofs # for CD-ROM
   modprobe_check squashfs # for compressed readonly modules
@@ -269,11 +277,15 @@ mount_device() {
   echo "$1"|grep '^/dev/' >/dev/null
   if [ $? -eq 0 ]; then
     DEV=$(echo "$1"|sed 's:/dev/::')
-    TYPE=$(find_fs_type /dev/$DEV)
-    OPTIONS=$(find_fs_options $TYPE)
-    mkdir -p /mnt/$DEV
-    debuglog "Mounting /dev/$DEV on /mnt/$DEV with type $TYPE and options: $OPTIONS"
-    mount /dev/$DEV -t "$TYPE" -o "$OPTIONS" /mnt/$DEV >/dev/null 2>&1 && echo "/mnt/$DEV" || rmdir /mnt/$DEV
+    if mountpoint -q /mnt/$DEV; then
+      debuglog "/dev/$DEV already mounted on /mnt/$DEV"
+    else
+      TYPE=$(find_fs_type /dev/$DEV)
+      OPTIONS=$(find_fs_options $TYPE)
+      mkdir -p /mnt/$DEV
+      debuglog "Mounting /dev/$DEV on /mnt/$DEV with type $TYPE and options: $OPTIONS"
+      mount /dev/$DEV -t "$TYPE" -o "$OPTIONS" /mnt/$DEV >/dev/null 2>&1 && echo "/mnt/$DEV" || rmdir /mnt/$DEV
+    fi
   fi
 }
 
@@ -296,33 +308,127 @@ umount_device() {
 # Will output in the format '/dev/xxx:/mnt/xxx' if found.
 find_distro_device() {
   for d in $(find_mountable_devices); do
-    M=$(mount_device $d)
-    if [ -n "$M" ]; then
-      if [ -e $M/$IDENT_FILE ]; then
-        C="$(cat $M/$IDENT_FILE)"
+    MP=$(mount_device "$d")
+    if [ -n "$MP" ]; then
+      if [ -e "$MP/$IDENT_FILE" ]; then
+        C="$(cat "$MP/$IDENT_FILE")"
         if [ "$C" = "$IDENT_CONTENT" ]; then
-          echo "$d:$M"|tee /distro_infos
+          echo "$d:$MP"|tee /distro_infos
           break
         fi
       fi
       debuglog "'/$IDENT_FILE:$IDENT_CONTENT' not found in $d"
-      umount_device $d
+      umount_device "$d" >/dev/null 2>&1
     fi
   done
 }
 
-# Install hookers for cleanup.
+# Find the save file if it exists.
+# First search on the distro device then on others partitions.
 # $1 = mount point of the distro
+find_save_file() {
+  for d in "$1" $(find_mountable_devices); do
+    if [ -d "$d" ]; then
+      MP="$d"
+    else
+      MP=$(mount_device "$d")
+      if [ "$MP" = "$d" ]; then
+        continue
+      fi
+    fi
+    if [ -n "$MP" ]; then
+      if [ -f "$MP/$ROOT_DIR/$ROOT_DIR.save" ]; then
+        file "$MP/$ROOT_DIR/$ROOT_DIR.save"|grep -i 'SGI XFS filesystem data' >/dev/null
+        if [ $? -eq 0 ]; then
+          echo "$MP/$ROOT_DIR/$ROOT_DIR.save"
+          break
+        fi
+      fi
+      debuglog "'/$ROOT_DIR/$ROOT_DIR.save' not found in $d"
+      if [ ! -d "$d" ]; then
+        umount_device "$d" >/dev/null 2>&1
+      fi
+    fi
+  done
+}
+
+# Create a union filesystem.
+# The current implementation use aufs2.
+# The union is done in /mnt/union which is created if it not exists.
+# $1 = writable mount point branch
+create_union() {
+  RW="$1"
+  if [ -d "$RW" ]; then
+    touch "$RW/testrw" 2> /dev/null
+    if [ -e "$RW/testrw" ]; then
+      rm "$RW/testrw"
+      [ ! -e /mnt/union ] && mkdir -p /mnt/union
+      mount -t aufs -o br="$RW" none /mnt/union
+    else
+      errorlog "create_union: $RW is not writable"
+      return 1
+    fi
+  else
+    errorlog "create_union: $RW is not a directory"
+    return 1
+  fi
+}
+
+# Find modules to load in the union filesystem.
+# The modules must be in $ROOT_DIR/modules/ and must have .salt extension
+# $1 = mount point of the distro
+find_modules() {
+  MP="$1"
+  if [ -n "$MP" ]; then
+    if [ -d "$MP/$ROOT_DIR/modules" ]; then
+      for m in "$MP/$ROOT_DIR"/modules/*.salt; do
+        file "$m"|grep -i 'Squashfs filesystem' >/dev/null && echo "$m"
+      done
+    else
+      errorlog "'$MP/$ROOT_DIR/modules' not found"
+      return 1
+    fi
+  fi
+}
+
+# Add a module to the union filesystem.
+# The current implementation use aufs2.
+# $1 = module file to load
+load_module() {
+  m="$1"
+  if [ -e "$m" ]; then
+    if mountpoint -q /mnt/union; then
+      file "$m"|grep -i 'Squashfs filesystem' >/dev/null
+      if [ $? -eq 0 ]; then
+        n=$(basename "$m" .salt)
+        mp="/mnt/modules/$n"
+        mkdir -p "$mp"
+        mount -t squashfs -o loop "$m" "$mp" && mount -o remount,append:"$mp"=ro /mnt/union || return 1
+      else
+        return 1
+      fi
+    else
+      errorlog "load_module: /mnt/union is not mounted, please call create_union first."
+      return 1
+    fi
+  else
+    errorlog "load_module: '$m' not found"
+    return 1
+  fi
+}
+
+# Install hookers for cleanup.
+# $1 = mount point
 install_hookers() {
-  M="$1"
+  MP="$1"
   for b in halt poweroff reboot; do
     for d in sbin usr/sbin; do
-      if [ -x $M/$d/$b ]; then
-        file $M/$d/$b|grep executable >/dev/null
+      if [ -x "$MP/$d/$b" ]; then
+        file "$MP/$d/$b"|grep -i 'executable' >/dev/null
         if [ $? -eq 0 ]; then
           debuglog "Installing hook for $b in /$d"
-          mv $M/$d/$b $M/$d/$b.orig
-          (cd $M/$d; ln -s /mnt/salt/cleanup $b)
+          mv "$MP/$d/$b" "$MP/$d/$b.orig"
+          (cd "$MP/$d"; ln -s /mnt/salt/cleanup "$b")
         fi
       fi
     done
@@ -330,14 +436,14 @@ install_hookers() {
 }
 
 # Uninstall hookers for cleanup.
-# $1 = mount point of the distro
+# $1 = mount point
 uninstall_hookers() {
-  M="$1"
+  MP="$1"
   for b in halt poweroff reboot; do
     for d in sbin usr/sbin; do
-      if [ -x $M/$d/$b.orig ]; then
+      if [ -x "$MP/$d/$b.orig" ]; then
         debuglog "Uninstalling hook for $b in /$d"
-        mv $M/$d/$b.orig $M/$d/$b
+        mv "$MP/$d/$b.orig" "$MP/$d/$b"
       fi
     done
   done
@@ -365,20 +471,18 @@ change_root_to() {
 # chroot in the distro
 # $@ = command line to run. $1 must be a valid executable in the new root.
 change_root_to_distro() {
-  if [ -f /distro_infos ]; then
-    NEW_ROOT=$(cut -d: -f2 /distro_infos)
-    change_root_to "$NEW_ROOT" mnt/salt "$@"
+  if mountpoint -q /mnt/union; then
+    change_root_to /mnt/union mnt/salt "$@"
   else
-    echoerror '/distro_infos file cannot be found'
+    echoerror '/mnt/union not mounted'
   fi
 }
 # chroot back in the initrd
 # $@ = command line to run. $1 must be a valid executable in the new root.
 change_root_to_initrd() {
-  if [ -f /mnt/salt/distro_infos ]; then
-    OLD_ROOT=$(cut -d: -f2 /mnt/salt/distro_infos|sed 's:^/::')
-    change_root_to /mnt/salt $OLD_ROOT "$@"
+  if [ -e /mnt/salt/distro_infos ]; then
+    change_root_to /mnt/salt mnt/union "$@"
   else
-    echoerror '/mnt/salt directory cannot be found'
+    echoerror '/mnt/salt/distro_infos file cannot be found'
   fi
 }

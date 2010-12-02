@@ -23,8 +23,8 @@ echo 1 >/SALT_DEBUG
 debuglog "*** Starting live initialization ***"
 
 cd /
-infolog 'Loading essential modules...'
-load_modules
+infolog 'Loading essential kernel modules...'
+load_core_modules
 infolog 'Initialize /dev'
 init_dev
 infolog 'Starting USB support'
@@ -41,8 +41,38 @@ DISTRO_DEV=$(echo $DISTRO_INFO|cut -d: -f1)
 DISTRO_MP=$(echo $DISTRO_INFO|cut -d: -f2)
 infolog "$LIVE_NAME found in $DISTRO_DEV"
 debugshell
-debuglog "Installing hookers in $DISTRO_MP"
-install_hookers $DISTRO_MP
+infolog 'Finding save file...'
+SAVE_FILE=$(find_save_file)
+if [ -z "$SAVE_FILE" ]; then
+  warnlog 'Save file not found, using memory only'
+  mkdir -p /mnt/ram
+  mount -t tmpfs none /mnt/ram
+  (cd /mnt && ln -sf ram rw)
+else
+  infolog "Save file found: $SAVE_FILE"
+  mkdir -p /mnt/save
+  mount -o loop $SAVE_FILE /mnt/save
+  if [ $? -ne 0 ]; then
+    errorlog "Cannot mount $SAVE_FILE, using memory instead"
+    rmdir /mnt/save
+    mkdir -p /mnt/ram
+    mount -t tmpfs none /mnt/ram
+    (cd /mnt && ln -sf ram rw)
+  else
+    (cd /mnt && ln -sf save rw)
+  fi
+fi
+debuglog 'Creating union filesystem...'
+create_union /mnt/rw || fumble "Cannot create union filesystem"
+debugshell
+infolog 'Finding SaLT modules...'
+for m in $(find_modules $DISTRO_MP); do
+  infolog "  - loading $m"
+  load_module "$m" || errorlog "$m cannot be loaded"
+  debugshell
+done
+debuglog "Installing hookers in /mnt/union"
+install_hookers /mnt/union
 debugshell
 infolog "*** Passing execution process to $LIVE_NAME ***"
 change_root_to_distro /sbin/init $runlevel
