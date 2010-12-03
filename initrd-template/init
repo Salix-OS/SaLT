@@ -17,8 +17,9 @@ mount -o remount,rw /
 echo 'none /proc proc rw 0 0' >> /etc/mtab
 echo 'none /sys sysfs rw 0 0' >> /etc/mtab
 
+mount -t tmpfs none /tmp
+
 # load the SaLT library
-echo 1 >/SALT_DEBUG
 . /lib/libSaLT
 debuglog "*** Starting live initialization ***"
 
@@ -63,17 +64,37 @@ else
   fi
 fi
 debuglog 'Creating union filesystem...'
-create_union /mnt/rw || fumble "Cannot create union filesystem"
+create_union /mnt/rw || fumble 'Cannot create union filesystem'
 debugshell
 infolog 'Finding SaLT modules...'
 for m in $(find_modules $DISTRO_MP); do
-  infolog "  - loading $m"
+  infolog "  - Loading $m"
   load_module "$m" || errorlog "$m cannot be loaded"
   debugshell
 done
-debuglog "Installing hookers in /mnt/union"
+debuglog 'Installing hookers in /mnt/union'
 install_hookers /mnt/union
 debugshell
+debuglog 'Disabling root filesystem check'
+touch /mnt/union/etc/fastboot
+rm -f /mnt/union/etc/forcefsck
+debuglog 'Fixing a bug in Slackware /etc/rc.d/rc.S for hardware clock'
+touch /mnt/union/etc/hardwareclock
+debuglog 'Informing that / and /mnt/salt is already mounted in the /mnt/union'
+echo 'salt / aufs ro 0 0' > /mnt/union/etc/mtab
 infolog "*** Passing execution process to $LIVE_NAME ***"
-change_root_to_distro /sbin/init $runlevel
-fumble "End of init: this line must never be executed!"
+INIT=
+for d in sbin bin usr/sbin usr/bin; do
+  if [ -x /mnt/union/$d/init ]; then
+    INIT=$d/init
+    break
+  fi
+done
+if [ -z "$INIT" ]; then
+  fumble 'Could not find "init" in the union filesystem: could not chroot'
+else
+  cp /mnt/union/$INIT /tmp/init
+  ln -s tmp/init init.distro
+  change_root_to_distro /mnt/salt/init.distro $runlevel
+fi
+fumble 'End of init: this line must never be executed!'

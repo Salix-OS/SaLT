@@ -11,7 +11,7 @@ else
 fi
 
 # debug mode is done using kernel command line or by putting something in the file /SALT_DEBUG
-SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep debug >/dev/null && echo 1 || cat /SALT_DEBUG 2>/dev/null)
+SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -w -i debug && echo 1 || cat /SALT_DEBUG 2>/dev/null)
 
 COLOR_BLACK=30
 COLOR_RED=31
@@ -139,7 +139,7 @@ fumble() {
   echoerror '  |         Fatal Error         |'
   echoerror '  +-----------------------------+'
   echo
-  [ -n "$1" ] && echoerror "$@"
+  [ -n "$1" ] && echocolor $COLOR_BOLD $COLOR_WHITE "$@"
   echoerror "Something went wrong and we can't continue. This should never happen."
   echoerror 'Please reboot your computer with Ctrl+Alt+Delete'
   echo
@@ -215,20 +215,20 @@ load_pcmcia_modules() {
 }
 
 # Show /dev/xxx devices, with optical devices first, and last USB connected devices first too.
-# use a cache file (/devices) to improve performance.
+# use a cache file (/tmp/devices) to improve performance.
 find_mountable_devices() {
-  if [ -e /devices ]; then
-    cut -d: -f1 /devices
+  if [ -e /tmp/devices ]; then
+    cut -d: -f1 /tmp/devices
   else
-    blkid|grep -v '^/dev/ram'|cut -d: -f1|sort -r|file -s -f -|tee /devices|cut -d: -f1
+    blkid|grep -v '^/dev/ram'|cut -d: -f1|sort -r|file -s -f -|tee /tmp/devices|cut -d: -f1
   fi
 }
 
 # Find the filesystem type as expected by "mount -t" of the specified device.
 # $1 = device in the form /dev/xxx
 find_fs_type() {
-  [ ! -e /devices ] && find_mountable_devices >/dev/null
-  LINE=$(grep "^$1:" /devices|cut -d: -f2-)
+  [ ! -e /tmp/devices ] && find_mountable_devices >/dev/null
+  LINE=$(grep "^$1:" /tmp/devices|cut -d: -f2-)
   if echo "$LINE"|grep -i 'ISO 9660 CD-ROM'>/dev/null; then
     echo 'iso9660'
   elif echo "$LINE"|grep -i 'ext4 filesystem data'>/dev/null; then
@@ -297,7 +297,7 @@ umount_device() {
     DEV=$(echo "$1"|sed 's:/dev/::')
     if mountpoint -q /mnt/$DEV; then
       debuglog "Umounting /mnt/$DEV"
-      umount /mnt/$DEV && rmdir /mnt/$DEV
+      (umount -r -d /mnt/$DEV || umount -l /mnt/$DEV) && rmdir /mnt/$DEV
     else
       debuglog "/mnt/$DEV is already umounted"
     fi
@@ -313,7 +313,7 @@ find_distro_device() {
       if [ -e "$MP/$IDENT_FILE" ]; then
         C="$(cat "$MP/$IDENT_FILE")"
         if [ "$C" = "$IDENT_CONTENT" ]; then
-          echo "$d:$MP"|tee /distro_infos
+          echo "$d:$MP"|tee /tmp/distro_infos
           break
         fi
       fi
@@ -363,7 +363,7 @@ create_union() {
     if [ -e "$RW/testrw" ]; then
       rm "$RW/testrw"
       [ ! -e /mnt/union ] && mkdir -p /mnt/union
-      mount -t aufs -o br="$RW" none /mnt/union
+      mount -t aufs -o nowarn_perm,br="$RW" none /mnt/union
     else
       errorlog "create_union: $RW is not writable"
       return 1
@@ -371,6 +371,18 @@ create_union() {
   else
     errorlog "create_union: $RW is not a directory"
     return 1
+  fi
+}
+
+# Destroy the union filesystem.
+# The current implementation use aufs2.
+# The union is destroy from /mnt/union.
+destroy_union() {
+  if [ -e /mnt/union ]; then
+    if mountpoint -q /mnt/union; then
+      umount -r -d /mnt/union || umount -l /mnt/union 2>/dev/null
+    fi
+    rmdir /mnt/union
   fi
 }
 
@@ -403,7 +415,7 @@ load_module() {
         n=$(basename "$m" .salt)
         mp="/mnt/modules/$n"
         mkdir -p "$mp"
-        mount -t squashfs -o loop "$m" "$mp" && mount -o remount,append:"$mp"=ro /mnt/union || return 1
+        mount -t squashfs -o loop "$m" "$mp" && mount -o remount,nowarn_perm,append:"$mp"=ro /mnt/union >/dev/null || return 1
       else
         return 1
       fi
@@ -417,19 +429,35 @@ load_module() {
   fi
 }
 
+# Remove a module from the union filesystem.
+# The current implementation use aufs2.
+# $1 = mount point used in the union
+unload_module() {
+  mp="$1"
+  if [ -d "$mp" ]; then
+    if mountpoint -q /mnt/union; then
+      mount -o remount,del:"$mp" /mnt/union >/dev/null && umount -r -d "$mp"
+      rmdir "$mp" || return 1
+    else
+      errorlog "unload_module: /mnt/union is not mounted."
+      return 1
+    fi
+  else
+    errorlog "unload_module: '$m' not found"
+    return 1
+  fi
+}
+
 # Install hookers for cleanup.
 # $1 = mount point
 install_hookers() {
   MP="$1"
   for b in halt poweroff reboot; do
     for d in sbin usr/sbin; do
-      if [ -x "$MP/$d/$b" ]; then
-        file "$MP/$d/$b"|grep -i 'executable' >/dev/null
-        if [ $? -eq 0 ]; then
-          debuglog "Installing hook for $b in /$d"
-          mv "$MP/$d/$b" "$MP/$d/$b.orig"
-          (cd "$MP/$d"; ln -s /mnt/salt/cleanup "$b")
-        fi
+      if [ -x "$MP/$d/$b" -o -L "$MP/$d/$b" ]; then
+        debuglog "  - Hook for $b in /$d installed"
+        mv "$MP/$d/$b" "$MP/$d/$b.orig"
+        (cd "$MP/$d"; ln -s /mnt/salt/cleanup "$b")
       fi
     done
   done
@@ -441,8 +469,8 @@ uninstall_hookers() {
   MP="$1"
   for b in halt poweroff reboot; do
     for d in sbin usr/sbin; do
-      if [ -x "$MP/$d/$b.orig" ]; then
-        debuglog "Uninstalling hook for $b in /$d"
+      if [ -x "$MP/$d/$b.orig" -o -L "$MP/$d/$b.orig" ]; then
+        debuglog "  - Hook for $b in /$d uninstalled"
         mv "$MP/$d/$b.orig" "$MP/$d/$b"
       fi
     done
@@ -465,7 +493,7 @@ change_root_to() {
   debuglog "remounting $NEW_ROOT readonly"
   mount -o remount,ro .
   pivot_root . "$OLD_ROOT"
-  exec chroot . "$@" </dev/console >/dev/console 2>&1
+  exec chroot . "$@" <./dev/console >./dev/console 2>&1
   echoerror "Chroot to $PWD failed"
 }
 # chroot in the distro
@@ -480,9 +508,50 @@ change_root_to_distro() {
 # chroot back in the initrd
 # $@ = command line to run. $1 must be a valid executable in the new root.
 change_root_to_initrd() {
-  if [ -e /mnt/salt/distro_infos ]; then
+  if [ -e /mnt/salt/tmp/distro_infos ]; then
     change_root_to /mnt/salt mnt/union "$@"
   else
-    echoerror '/mnt/salt/distro_infos file cannot be found'
+    echoerror '/mnt/salt/tmp/distro_infos file cannot be found'
+  fi
+}
+
+# Kill all process where the PID is before the specified PID.
+# Process with PID 1 is ignore.
+# Kernel thread process are ignored too.
+# Some process are ignored: mount, ntfs
+# $1 = maximum pid
+kill_all_before() {
+  PID=$1
+  lst=
+  for pid in $(ps|grep -v 'PID USER'|grep -v ' \[[^ ]*\]$'|grep -v mount|grep -v ntfs|cut -d' ' -f2|sort -r); do
+    if [ $pid -lt $PID -a $pid -ne 1 ]; then
+      lst="$lst $pid"
+    fi
+  done
+  kill -SIGTERM $lst 2>/dev/null
+  sleep 1
+  kill -SIGKILL $lst 2>/dev/null
+}
+
+# Umount all sub-mounts that appear inside the specified mountpoint.
+# $1 = mount point
+umount_submounts_in() {
+  MP="$1"
+  for d in $(mount|grep " $MP/"|sed "s:.* \($MP/[^ ]\+\) .*:\1:"|sort -r); do
+    debuglog "  - Umount $d"
+    umount -r -d $d || umount -l $d 2>/dev/null
+  done
+}
+
+# Eject the CD if the source is a CD
+eject_cd() {
+  DEV=$(cut -d: -f1 /tmp/distro_infos)
+  TYPE=$(find_fs_type $DEV)
+  if [ "$TYPE" = "iso9660" ]; then
+    echoinfo "Ejecting $DEV..."
+    eject $DEV 2>/dev/null
+    echoinfo "CD tray will be closed in 10 seconds or hit enter..."
+    read -t 10
+    eject -t $DEV 2>/dev/null
   fi
 }
