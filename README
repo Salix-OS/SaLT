@@ -1,13 +1,13 @@
 SaLT: Salix Live Template
 
 Set of tools to create a full live environnement for Slackware/Salix using:
-  - a custom live kernel using Aufs2 and Squashfs+lzma (patches for multiple kernel version until availabile in mainline);
+  - a custom live kernel using Aufs2 and Squashfs+lzma (patches for multiple kernel version until available in mainline);
   - a special initrd template;
   - some tools to exploit live environnement.
 
-These scripts is a base to help you built a slackware live.
+These scripts is a base to help you built a Slackware Live.
 It will not build the modules for you or organize the final architecture: it focuses on the initrd.
-It could possibly be modified to run other distro than Slackware.
+It could possibly be modified to run other distro than Slackware based.
 
 Based on ideas from LLS (ftp://ftp.slax.org/Linux-Live/) and SLS (https://github.com/godane/slackware-live/).
 Why a new project? Because LLS is not compatible with 64 bits and not maintained and SaLT has not the same purpose as SLS.
@@ -16,19 +16,35 @@ These scripts could be used for Salix or any other Slackware-compatible distribu
 These scripts will not handle all possibilities of LLS or SLS at first. Things will be added further, in a proper way.
 
 Features:
-- boot from initrd
-- detect partition filesystems
+- boot from initrd.
+- detect partition filesystems:
   * ext4
   * ext3
   * ext2
+  * reiserfs
+  * xfs
+  * fat(16,32)
   * ntfs
-- mount filesystems
-- can halt the system
+  * squashfs
+- mount filesystems.
+- detect the distro partition.
+- detect the save file.
+- create union and add branches.
+- xino (for aufs2) files in tmpfs.
+- hooks installed in writable branch of union, thus no modification of the targetting distro is required.
+- initrd accessible in /mnt/salt
+- can halt/reboot/powerdown the system.
+- eject CD if needed.
 
-Known bugs:
-- not all filesystems detected
-- chroot do not check if it is possible
-- hooks not installed yet
+Known bugs/limitations:
+- kernel must support aufs2 and squashfs.
+- plinks are not supported over aufs2. So hardlink between branches do not work, i.e. files are copied.
+- module must be a squashfs filesystem.
+- save file must be an XFS filesystem.
+- init is the only first process supported and is lookuped in / /sbin /bin /usr/sbin /usr/bin directories.
+- cannot boot only in memory
+- the save file name is determined at compile-time and cannot be changed at run-time
+- no kernel cmdline parameters
 
 Authors:
   - Cyrille Pontvieux <jrd@enialis.net>

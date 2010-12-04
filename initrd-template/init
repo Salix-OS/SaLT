@@ -4,8 +4,7 @@
 
 [ "$$" -ne 1 ] && exit 1;
 
-echo -e "\n\e[1;32m*** Live system initialization ***\e[0m\n"
-
+echo -e -n '\n\e[1;36mSaLT initializing... '
 export PATH=:/usr/sbin:/usr/bin:/sbin:/bin
 
 # mount -n : /etc/mtab is not writable yet
@@ -21,7 +20,9 @@ mount -t tmpfs none /tmp
 
 # load the SaLT library
 . /lib/libSaLT
-debuglog "*** Starting live initialization ***"
+echo -e "\e[1;32mDone\e[0m"
+[ -z "$SALT_DEBUG" ] && clear
+echoinfo "*** Starting live initialization ***"
 
 cd /
 infolog 'Loading essential kernel modules...'
@@ -40,21 +41,22 @@ if [ -z "$DISTRO_INFO" ]; then
 fi
 DISTRO_DEV=$(echo $DISTRO_INFO|cut -d: -f1)
 DISTRO_MP=$(echo $DISTRO_INFO|cut -d: -f2)
-infolog "$LIVE_NAME found in $DISTRO_DEV"
+infolog "  $LIVE_NAME found in $DISTRO_DEV"
 debugshell
+
 infolog 'Finding save file...'
-SAVE_FILE=$(find_save_file)
+SAVE_FILE=$(find_save_file "$DISTRO_MP")
 if [ -z "$SAVE_FILE" ]; then
-  warnlog 'Save file not found, using memory only'
+  warnlog '  Save file not found, using memory only'
   mkdir -p /mnt/ram
   mount -t tmpfs none /mnt/ram
   (cd /mnt && ln -sf ram rw)
 else
-  infolog "Save file found: $SAVE_FILE"
+  infolog "  Save file found: $SAVE_FILE"
   mkdir -p /mnt/save
   mount -o loop $SAVE_FILE /mnt/save
   if [ $? -ne 0 ]; then
-    errorlog "Cannot mount $SAVE_FILE, using memory instead"
+    errorlog "  Cannot mount $SAVE_FILE, using memory instead"
     rmdir /mnt/save
     mkdir -p /mnt/ram
     mount -t tmpfs none /mnt/ram
@@ -63,7 +65,8 @@ else
     (cd /mnt && ln -sf save rw)
   fi
 fi
-debuglog 'Creating union filesystem...'
+
+debuglog 'Creating union filesystem'
 create_union /mnt/rw || fumble 'Cannot create union filesystem'
 debugshell
 infolog 'Finding SaLT modules...'
@@ -72,26 +75,30 @@ for m in $(find_modules $DISTRO_MP); do
   load_module "$m" || errorlog "$m cannot be loaded"
   debugshell
 done
-debuglog 'Installing hookers in /mnt/union'
+
+infolog 'Tweaking the target distro'
+debuglog 'Installing hookers in /mnt/union...'
 install_hookers /mnt/union
 debugshell
+[ -e /mnt/union/etc ] || mkdir -p /mnt/union/etc
 debuglog 'Disabling root filesystem check'
 touch /mnt/union/etc/fastboot
 rm -f /mnt/union/etc/forcefsck
 debuglog 'Fixing a bug in Slackware /etc/rc.d/rc.S for hardware clock'
 touch /mnt/union/etc/hardwareclock
-debuglog 'Informing that / and /mnt/salt is already mounted in the /mnt/union'
+debuglog 'Informing that / is already mounted in the /mnt/union'
 echo 'salt / aufs ro 0 0' > /mnt/union/etc/mtab
-infolog "*** Passing execution process to $LIVE_NAME ***"
+
+echoinfo "\n*** Passing execution process to $LIVE_NAME ***\n"
 INIT=
-for d in sbin bin usr/sbin usr/bin; do
+for d in . sbin bin usr/sbin usr/bin; do
   if [ -x /mnt/union/$d/init ]; then
     INIT=$d/init
     break
   fi
 done
 if [ -z "$INIT" ]; then
-  fumble 'Could not find "init" in the union filesystem: could not chroot'
+  fumble "Could not find 'init' in the union filesystem: could not chroot"
 else
   cp /mnt/union/$INIT /tmp/init
   ln -s tmp/init init.distro

@@ -11,7 +11,7 @@ else
 fi
 
 # debug mode is done using kernel command line or by putting something in the file /SALT_DEBUG
-SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -w -i debug && echo 1 || cat /SALT_DEBUG 2>/dev/null)
+export SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -w -i debug && echo 1 || cat /SALT_DEBUG /mnt/salt/SALT_DEBUG 2>/dev/null)
 
 COLOR_BLACK=30
 COLOR_RED=31
@@ -159,7 +159,7 @@ modprobe_check() {
   MODULE2=$(echo $MODULE | tr '-' '_')
   grep "/$MODULE.ko\$" /lib/modules/$(uname -r)/modules.builtin >/dev/null 2>&1 || grep "/$MODULE2.ko\$" /lib/modules/$(uname -r)/modules.builtin >/dev/null 2>&1
   if [ $? -eq 0 ]; then
-    debuglog "Module $MODULE is builtin"
+    debuglog "  $MODULE is builtin"
   else
     modprobe $MODULE $OPTIONS
   fi
@@ -359,11 +359,13 @@ find_save_file() {
 create_union() {
   RW="$1"
   if [ -d "$RW" ]; then
-    touch "$RW/testrw" 2> /dev/null
+    touch "$RW/testrw" 2>/dev/null
     if [ -e "$RW/testrw" ]; then
       rm "$RW/testrw"
       [ ! -e /mnt/union ] && mkdir -p /mnt/union
-      mount -t aufs -o nowarn_perm,br="$RW" none /mnt/union
+      [ ! -e /mnt/xino ] && mkdir -p /mnt/xino
+      mount -t tmpfs none /mnt/xino
+      mount -t aufs -o nowarn_perm,noplink,xino=/mnt/xino/.aufs.xino,br="$RW" none /mnt/union
     else
       errorlog "create_union: $RW is not writable"
       return 1
@@ -382,7 +384,8 @@ destroy_union() {
     if mountpoint -q /mnt/union; then
       umount -r -d /mnt/union || umount -l /mnt/union 2>/dev/null
     fi
-    rmdir /mnt/union
+    umount /mnt/xino
+    rmdir /mnt/union /mnt/xino
   fi
 }
 
@@ -403,7 +406,7 @@ find_modules() {
   fi
 }
 
-# Add a module to the union filesystem.
+# Add a module (squashfs filesystem) to the union filesystem.
 # The current implementation use aufs2.
 # $1 = module file to load
 load_module() {
@@ -415,7 +418,12 @@ load_module() {
         n=$(basename "$m" .salt)
         mp="/mnt/modules/$n"
         mkdir -p "$mp"
-        mount -t squashfs -o loop "$m" "$mp" && mount -o remount,nowarn_perm,append:"$mp"=ro /mnt/union >/dev/null || return 1
+        mount -t squashfs -o loop "$m" "$mp"
+        if [ $? -eq 0 ]; then
+          mount -o remount,nowarn_perm,append:"$mp"=ro /mnt/union >/dev/null || return 1
+        else
+          return 1
+        fi
       else
         return 1
       fi
@@ -435,15 +443,20 @@ load_module() {
 unload_module() {
   mp="$1"
   if [ -d "$mp" ]; then
-    if mountpoint -q /mnt/union; then
-      mount -o remount,del:"$mp" /mnt/union >/dev/null && umount -r -d "$mp"
+    if mountpoint -q /mnt/union && mountpoint -q "$mp"; then
+      mount -o remount,del:"$mp" /mnt/union >/dev/null
+      if [ $? -eq 0 ]; then
+        umount -r -d "$mp"
+      else
+        return 1
+      fi
       rmdir "$mp" || return 1
     else
-      errorlog "unload_module: /mnt/union is not mounted."
+      errorlog "unload_module: /mnt/union or $mp is not mounted."
       return 1
     fi
   else
-    errorlog "unload_module: '$m' not found"
+    errorlog "unload_module: '$mp' not found"
     return 1
   fi
 }
@@ -487,6 +500,7 @@ change_root_to() {
   OLD_ROOT="$2"
   shift
   shift
+  [ -z "$SALT_DEBUG" ] && clear
   debuglog "change_root_to: newroot=$NEW_ROOT oldroot=$OLD_ROOT args=$@"
   cd "$NEW_ROOT"
   mkdir -p "$OLD_ROOT"

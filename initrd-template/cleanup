@@ -41,42 +41,48 @@ fi
 cd /
 
 if [ -z "$SALT_CLEANUP_IS_RUNNING" ]; then
-  export SALT_CLEANUP_IS_RUNNING=1
-  echoinfo "*** Live system cleanup ***"
-  mount -o remount,rw /
-  echo 'rootfs /mnt/salt rootfs ro 0 0' >> /etc/mtab
-  mount -o remount,ro /
-  echodebug "Rexecuting in chroot: $0 $@"
-  change_root_to_initrd /cleanup "$0" "$@"
-  fumble "Rexecuting cleanup: this line must never be executed!"
+  if [ ! -e /mnt/salt ]; then
+    fumble "/mnt/salt not found. This is really weird.\nAre you running from a Live environment?"
+  else
+    export SALT_CLEANUP_IS_RUNNING=1
+    echoinfo "\n*** Live system cleanup ***\n"
+    grep -q -w '/mnt/salt' /etc/mtab || (mount -o remount,rw / && echo 'rootfs /mnt/salt rootfs ro 0 0' >> /etc/mtab && mount -o remount,ro /)
+    echodebug "Rexecuting in chroot: $0 $@"
+    change_root_to_initrd /cleanup "$0" "$@"
+    fumble 'Rexecuting cleanup: this line must never be executed!'
+  fi
 fi
 
 export CMD="$@"
 if [ ! -e /tmp/distro_infos ]; then
   fumble "/tmp/distro_infos not found. This is really weird.\nAre you running from a Live environment?"
-else
-  DISTRO_DEV=$(cut -d: -f1 /tmp/distro_infos)
-  DISTRO_MP=$(cut -d: -f2 /tmp/distro_infos)
 fi
-# ensure / is writable.
-mount -o remount,rw /
-sync
+
+# ensure / and /mnt/union are writable.
+touch /testrw 2>/dev/null
+[ -e /testrw ] && rm /testrw || mount -o remount,rw /
 debugshell
 debuglog 'Remounting /mnt/union read/write'
 mount -o remount,rw /mnt/union
-debuglog 'Uninstalling hookers in /mnt/union'
+
+infolog 'Untweaking target distro'
+debuglog 'Uninstalling hookers in /mnt/union...'
 uninstall_hookers /mnt/union
 debugshell
 # remove any /mnt/union/dev/initctl file
 rm -f /mnt/union/dev/initctl
 debugshell
+
+infolog 'Synchronizing memory data on disk'
+sync
 infolog 'Killing remaining process'
 kill_all_before $$
 debugshell
 debuglog 'Umount sub-mounts in /mnt/union'
 umount_submounts_in /mnt/union
 debugshell
-debuglog 'Unloading modules...'
+
+infolog 'Unloading modules...'
 for m in /mnt/modules/*; do
   infolog "  - Unloading $m"
   unload_module "$m"
@@ -94,15 +100,19 @@ elif [ -e /mnt/save ]; then
   rmdir /mnt/save
 fi
 debugshell
-umount_device "$DISTRO_DEV" >/dev/null
+
+umount_device $(cut -d: -f1 /tmp/distro_infos) >/dev/null
 debugshell
 eject_cd
 debugshell
+
 debuglog 'Umount what remains'
 umount -a -r -d 2>/dev/null
 debugshell
+
 echoinfo "Stopping/Rebooting: $CMD"
 debugshell
 sync
+sleep 1
 exec "$CMD" -f
 fumble 'End of cleanup: this line must never be executed!'
