@@ -126,12 +126,13 @@ if [ $? -eq 0 ]; then
       cp -ar "$grubdir"/build/* .
       cat "$grubdir"/grub.cfg >> boot/grub/grub.cfg
       sed -i "s:\(set debug=\).*:\1$DEBUG:" boot/grub/grub.cfg
-      # remove uneeded files
-      rm -r "$grubdir"
       # copy the mod files and lst files to the grub directory too for USB support.
-      find boot/grub -name '*.mod' -exec cp -v '{}' boot/grub/ \;
-      find boot/grub -name '*.lst' -exec cp -v '{}' boot/grub/ \;
+      find boot/grub -name '*.mod' -exec cp '{}' boot/grub/ \;
+      find boot/grub -name '*.lst' -exec cp '{}' boot/grub/ \;
     )
+    # add script files and boot loader install for USB
+    cp -v "$grubdir"/grub_* "$grubdir"/install-on-USB* "$grubdir"/4windows/* .iso/boot/
+    rm -r "$grubdir"
     BOOTFILE=boot/grub/i386-pc/eltorito.img
     CATALOGFILE=boot/grub.cat
   fi

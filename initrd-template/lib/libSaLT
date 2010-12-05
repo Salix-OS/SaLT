@@ -1,5 +1,9 @@
 #!/bin/sh
 # vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+# Copyright: Cyrille Pontvieux <jrd@salixos.org>
+# Licence: GPLv3+
+# Version: 0.1
+# Library for use by init and cleanup
 
 if [ -f /etc/salt.cfg ]; then
   . /etc/salt.cfg
@@ -263,9 +267,9 @@ find_fs_options() {
   elif [ "$1" = "reiserfs" ]; then
     echo 'noatime,defaults'
   elif [ "$1" = "vfat" ]; then
-    echo 'noatime,defaults'
+    echo 'noatime,defaults,quiet,umask=0,check=s,shortname=winnt,utf8,iocharset=utf8'
   elif [ "$1" = "ntfs-3g" ]; then
-    echo 'umask=0000'
+    echo 'umask=0'
   else
     echo ''
   fi
@@ -528,6 +532,17 @@ change_root_to_initrd() {
   fi
 }
 
+# return succes (0) if the specified cheatcode is present on the Linux kernel command line
+# $1 = cheatcode
+is_on_cmdline() {
+  grep -w -i -q "$1" /proc/cmdline
+}
+# return the value of the cheatcode on the Linux kernel commande line
+# $1 = cheatcode
+get_value_cmdline() {
+  grep -i -q " $1=" /proc/cmdline && sed "s/.* $1=\([^ ]*\).*/\1/i" /proc/cmdline
+}
+
 # Kill all process where the PID is before the specified PID.
 # Process with PID 1 is ignore.
 # Kernel thread process are ignored too.
@@ -564,7 +579,7 @@ eject_cd() {
     echoinfo "Ejecting $DEV..."
     eject $DEV 2>/dev/null
     echoinfo "CD tray will be closed in 10 seconds or hit enter..."
-    for i in $(seq 1 10); do echo -n ⋅; read -t 1 && break; done
+    for i in $(seq 1 10); do echo -n .; read -t 1 && break; done
     eject -t $DEV 2>/dev/null
   fi
 }

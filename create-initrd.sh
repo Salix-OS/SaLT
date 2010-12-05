@@ -10,6 +10,8 @@ BBVER=1.17.3
 BBURL=http://busybox.net/downloads/busybox-$BBVER.tar.bz2
 FILEVER=5.04
 FILEURL=ftp://ftp.astron.com/pub/file/file-$FILEVER.tar.gz
+NTFS3GVER=2010.10.2
+NTFS3GURL=http://tuxera.com/opensource/ntfs-3g-$NTFS3GVER.tgz
 KERNELDIR=$PWD/kernel
 
 KVER=$KERNELDIR/lib/modules/*
@@ -68,6 +70,27 @@ fi
 cp -av file-$FILEVER/src/file $TREE/bin/
 mkdir -pv $TREE/etc/misc/magic
 cp -rv file-$FILEVER/magic/Magdir/* $TREE/etc/misc/magic/
+# download, compile and install ntfs-3g (only needed binaries)
+if [ ! -e ntfs-3g-$NTFS3GVER.tgz ]; then
+  wget $NTFS3GURL
+fi
+if [ ! -e ntfs-3g-$NTFS3GVER/pkg/bin/ntfs-3g ]; then
+  rm -rf ntfs-3g-$NTFS3GVER
+  tar -xf ntfs-3g-$NTFS3GVER.tgz
+  (
+    cd ntfs-3g-$NTFS3GVER
+    ./configure \
+      --prefix=/usr \
+      --enable-really-static \
+      --disable-library \
+      --disable-dependency-tracking
+    make
+    mkdir -p pkg
+    make install DISTDIR=$PWD/pkg
+  )
+fi
+cp -av ntfs-3g-$NTFS3GVER/pkg/bin/ntfs-3g $TREE/bin/
+cp -av ntfs-3g-$NTFS3GVER/pkg/sbin/mount.ntfs-3g $TREE/sbin/
 # copy needed modules
 while read M; do
   if [ -e $KERNELDIR/lib/modules/$KVER/kernel/$M ]; then

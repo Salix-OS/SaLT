@@ -1,5 +1,8 @@
 #!/bin/sh
 # vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+# Copyright: Cyrille Pontvieux <jrd@salixos.org>
+# Licence: GPLv3+
+# Version: 0.1
 # Clean up script launched when coming back to the initrd of SaLT before halting or rebooting.
 
 export PATH=:/usr/sbin:/usr/bin:/sbin:/bin

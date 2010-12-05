@@ -5,7 +5,8 @@
 [X] chrooting
 [_] boot into memory only
 [_] change save file name at run-time
-[_] customizing with kernel parameters
+[X] customizing with kernel parameters
+[X] tweaking target distro to set: password, locale, keyboard, numlock, scim, synaptics, sound, autologin
 [_] tool to create an initrd based on current host system
 [_] tool to create module as separately as possible
-[_] options to the scripts to bypass interractive mode
+[X] options to the scripts to bypass interractive mode

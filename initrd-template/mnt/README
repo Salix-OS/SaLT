@@ -1,0 +1,13 @@
+Don't touch the mount points here if you're in chroot.
+This could be modified only in initrd mode.
+
+Information:
+
+/mnt/rw: link to either /mnt/ram or /mnt/save, used for writable branch for the union
+/mnt/ram: tmpfs for saving changes
+/mnt/save: xfs mount point for saving changes
+/mnt/xino: tmpfs for keeping xino files (used for aufs2)
+/mnt/modules/*: readonly branches loaded in the union
+/mnt/union: the actual union filesystem
+
+Other moinpoints are for mounting the CD/DVD or the USB key and other partitions found on the computer which are needed to, i.e., load a persistent file.

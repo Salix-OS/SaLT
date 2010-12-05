@@ -2,6 +2,11 @@
 | SaLT: Salix Live Template |
 \---------------------------/
 
+Authors:
+  - Cyrille Pontvieux <jrd@salixos.org>
+Licence: GPLv3+
+Version: 0.1
+
 INFORMATION:
 ------------
 Set of tools to create a full live environnement for Slackware/Salix using:
@@ -39,21 +44,29 @@ Features:
   - initrd accessible in /mnt/salt
   - can halt/reboot/powerdown the system.
   - eject CD if needed.
-  - can use Isolinux or grub2 bootloader.
+  - can use Isolinux or Grub2 bootloader.
+  - kernel cmdline parameters to tweak the boot/distro:
+    * debug
+    * 1-5: runlevel
+    * lang: language to use as locale, like fr-FR.utf8 (default: en_US)
+    * keyb: keyboard to use, like fr-latin9 (default: us)
+    * numlock: could be 'on' or 'off' (default: off)
+    * scim: could be 'on' or 'off' (default: off)
+    * synaptics: could be 'on' or 'off' (default: off)
+    * passwd: could be 'ask' (will ask the password) or directly the new password (default: no change)
+    * nosound: will mute the sound if present
+    * autologin: will autologin if present and if gdm is used and configured for it
 
 Known bugs/limitations:
   - kernel must support aufs2 and squashfs.
   - plinks are not supported over aufs2. So hardlink between branches do not work, i.e. files are copied.
   - module must be a squashfs filesystem.
   - save file must be an XFS filesystem.
-  - init is the only first process supported and is lookuped in / /sbin /bin /usr/sbin /usr/bin directories.
-  - cannot boot only in memory.
+  - init is the only first process supported and is lookuped in /, /sbin, /bin, /usr/sbin, /usr/bin directories.
+  - cannot boot only into memory (in order to release the CD for example)
   - the save file name is determined at compile-time and cannot be changed at runtime.
-  - no kernel cmdline parameters.
 
-Authors:
-  - Cyrille Pontvieux <jrd@salixos.org>
-
+initrd-template/lib/keymaps is a file taken from the salixtools package. This file will be kept up to date.
 
 CONFIGURATION:
 --------------
