@@ -1,0 +1,3 @@
+Cheatcodes (kernel parameters):
+ - debug: allow debugging of SaLT
+ - 1 to 5: runlevel to use
