@@ -3,7 +3,9 @@
 [X] init and cleanup scripts
 [X] busybox
 [X] chrooting
-[_] customizing
+[_] boot into memory only
+[_] change save file name at run-time
+[_] customizing with kernel parameters
 [_] tool to create an initrd based on current host system
 [_] tool to create module as separately as possible
 [_] options to the scripts to bypass interractive mode

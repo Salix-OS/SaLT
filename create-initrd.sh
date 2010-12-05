@@ -18,6 +18,7 @@ KVER=$(echo $KVER | sed 's:.*/\([^/]\+\)$:\1:')
 TREE=.initrd-tree
 rm -rf $TREE
 cp -a initrd-template $TREE
+find $TREE -name '.svn' -type d -exec -prune rm -rf '{}' +
 # adjust some rights
 chown root:root $TREE
 mknod -m 0600 $TREE/dev/console c 5 1
