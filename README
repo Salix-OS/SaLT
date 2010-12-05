@@ -39,6 +39,7 @@ Features:
   - initrd accessible in /mnt/salt
   - can halt/reboot/powerdown the system.
   - eject CD if needed.
+  - can use Isolinux or grub2 bootloader.
 
 Known bugs/limitations:
   - kernel must support aufs2 and squashfs.
@@ -46,12 +47,12 @@ Known bugs/limitations:
   - module must be a squashfs filesystem.
   - save file must be an XFS filesystem.
   - init is the only first process supported and is lookuped in / /sbin /bin /usr/sbin /usr/bin directories.
-  - cannot boot only in memory
-  - the save file name is determined at compile-time and cannot be changed at run-time
-  - no kernel cmdline parameters
+  - cannot boot only in memory.
+  - the save file name is determined at compile-time and cannot be changed at runtime.
+  - no kernel cmdline parameters.
 
 Authors:
-  - Cyrille Pontvieux <jrd@enialis.net>
+  - Cyrille Pontvieux <jrd@salixos.org>
 
 
 CONFIGURATION:
@@ -100,4 +101,13 @@ For exemple, I have this structure in 'kernel' directory:
   doc
   src
 The script 'create-initrd.sh' will inject the kernel modules listed in 'modules' file from kernel/lib/modules inside the initrd.
-The initrd.gz is then created in the current folder.
+The initrd.gz is then created in the current folder
+
+
+MAKING AN ISO:
+--------------
+If you want to create an ISO, then:
+  - creates your squashfs modules and put them in overlay/$ROOTDIR/modules/. Hint: use a prefix number to order them.
+  - create any file or directory you want in your ISO in the overlay directory.
+  - create a background image. The result image will be 640x480 in 8bits.
+  - invoke the 'create-iso.sh' script with the correct parameters for your ISO. You have the choice of making an ISO with either Isolinux or with Grub2. Grub2 has a nicer menu, which is internationnalized.

@@ -77,7 +77,7 @@ echon() {
 # Echo (with newline) a debug message using color
 # $@ = message
 echodebug() {
-  if [ -n "$1" ]; then
+  if [ -n "$SALT_DEBUG" -a -n "$1" ]; then
     echocolornl $COLOR_NORMAL $COLOR_YELLOW "$@"
   fi
 }
@@ -500,7 +500,6 @@ change_root_to() {
   OLD_ROOT="$2"
   shift
   shift
-  [ -z "$SALT_DEBUG" ] && clear
   debuglog "change_root_to: newroot=$NEW_ROOT oldroot=$OLD_ROOT args=$@"
   cd "$NEW_ROOT"
   mkdir -p "$OLD_ROOT"
@@ -565,7 +564,7 @@ eject_cd() {
     echoinfo "Ejecting $DEV..."
     eject $DEV 2>/dev/null
     echoinfo "CD tray will be closed in 10 seconds or hit enter..."
-    read -t 10
+    for i in $(seq 1 10); do echo -n ⋅; read -t 1 && break; done
     eject -t $DEV 2>/dev/null
   fi
 }

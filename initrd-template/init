@@ -89,7 +89,8 @@ touch /mnt/union/etc/hardwareclock
 debuglog 'Informing that / is already mounted in the /mnt/union'
 echo 'salt / aufs ro 0 0' > /mnt/union/etc/mtab
 
-echoinfo "\n*** Passing execution process to $LIVE_NAME ***\n"
+[ -z "$SALT_DEBUG" ] && clear
+echoinfo "*** Passing execution process to $LIVE_NAME ***\n"
 INIT=
 for d in . sbin bin usr/sbin usr/bin; do
   if [ -x /mnt/union/$d/init ]; then

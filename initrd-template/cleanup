@@ -45,7 +45,8 @@ if [ -z "$SALT_CLEANUP_IS_RUNNING" ]; then
     fumble "/mnt/salt not found. This is really weird.\nAre you running from a Live environment?"
   else
     export SALT_CLEANUP_IS_RUNNING=1
-    echoinfo "\n*** Live system cleanup ***\n"
+    [ -z "$SALT_DEBUG" ] && clear
+    echoinfo "*** Live system cleanup ***\n"
     grep -q -w '/mnt/salt' /etc/mtab || (mount -o remount,rw / && echo 'rootfs /mnt/salt rootfs ro 0 0' >> /etc/mtab && mount -o remount,ro /)
     echodebug "Rexecuting in chroot: $0 $@"
     change_root_to_initrd /cleanup "$0" "$@"
