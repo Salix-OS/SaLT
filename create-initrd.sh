@@ -86,7 +86,7 @@ if [ ! -e ntfs-3g-$NTFS3GVER/pkg/bin/ntfs-3g ]; then
       --disable-dependency-tracking
     make
     mkdir -p pkg
-    make install DISTDIR=$PWD/pkg
+    make install DESTDIR=$PWD/pkg
   )
 fi
 cp -av ntfs-3g-$NTFS3GVER/pkg/bin/ntfs-3g $TREE/bin/
