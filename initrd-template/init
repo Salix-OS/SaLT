@@ -1,5 +1,5 @@
 #!/bin/sh
-# vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+# vim: set syn=sh ai si et sw=2 st=2 ts=2 tw=0:
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
 # Licence: GPLv3+
 # Version: 0.1
@@ -88,7 +88,9 @@ debuglog 'Disabling root filesystem check'
 touch /mnt/union/etc/fastboot
 rm -f /mnt/union/etc/forcefsck
 debuglog 'Fixing a bug in Slackware /etc/rc.d/rc.S for hardware clock'
-touch /mnt/union/etc/hardwareclock
+[ -e /mnt/union/etc/hardwareclock ] || touch /mnt/union/etc/hardwareclock
+debuglog 'Fixing a bug in Slackware when /etc/fstab is missing sometimes'
+[ -e /mnt/union/etc/fstab ] || touch /mnt/union/etc/fstab
 debuglog 'Installing rc.salt service'
 cp lib/rc.salt /mnt/union/etc/rc.d/ && chmod +x /mnt/union/etc/rc.d/rc.salt
 debuglog 'Informing that / is already mounted in the /mnt/union'
@@ -108,6 +110,44 @@ if [ -z "$INIT" ]; then
 else
   cp /mnt/union/$INIT /tmp/init
   ln -s tmp/init init.distro
+  file tmp/init | grep -q 'dynamically linked'
+  if [ $? -eq 0 ]; then
+    debuglog '"init" is dynamically linked, "ld" and "libc" must be moved to /tmp'
+    LIBDIR=/mnt/union/lib
+    [ -d /mnt/union/lib64 ] && LIBDIR=/mnt/union/lib64
+    LD=$(ls -1 $LIBDIR/ld-[0-9]*)
+    if [ -f "$LD" ]; then
+      cp $LD $LD.saltbak
+      mv $LD /tmp/
+      ( cd $LIBDIR; ln -s /mnt/salt/tmp/$(basename $LD) . )
+      LD=$(echo "$LD"|sed 's:/mnt/union/::')
+      cat <<EOF >> /mnt/union/hooks.salt
+if [ -e "$LD.saltbak" ]; then
+  rm -f "$LD"
+  mv "$LD.saltbak" "$LD"
+fi
+
+EOF
+    fi
+    unset LD
+    LIBC=$(ls -1 $LIBDIR/libc-[0-9]*)
+    if [ -f "$LIBC" ]; then
+      cp $LIBC $LIBC.saltbak
+      mv $LIBC /tmp/
+      ( cd $LIBDIR; ln -s /mnt/salt/tmp/$(basename $LIBC) . )
+      LIBC=$(echo "$LIBC"|sed 's:/mnt/union/::')
+      cat <<EOF >> /mnt/union/hooks.salt
+if [ -e "$LIBC.saltbak" ]; then
+  rm -f "$LIBC"
+  mv "$LIBC.saltbak" "$LIBC"
+fi
+
+EOF
+    fi
+    unset LIBC
+    unset LIBDIR
+  fi
+  debugshell
   change_root_to_distro /mnt/salt/init.distro $runlevel
 fi
 fumble 'End of init: this line must never be executed!'

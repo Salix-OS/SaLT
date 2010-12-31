@@ -56,7 +56,7 @@ while [ -n "$1" ]; do
       ;;
   esac
 done
-./create-initrd.sh
+./create-initrd.sh $DEBUG
 if [ $? -eq 0 ]; then
   BOOTFILE=
   CATALOGFILE=

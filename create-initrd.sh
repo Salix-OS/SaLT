@@ -5,6 +5,7 @@ if [ $UID -ne 0 ]; then
   echo 'Need to be root to run.' >&2
   exit 1
 fi
+DEBUG=$1
 
 BBVER=1.17.3
 BBURL=http://busybox.net/downloads/busybox-$BBVER.tar.bz2
@@ -12,6 +13,8 @@ FILEVER=5.04
 FILEURL=ftp://ftp.astron.com/pub/file/file-$FILEVER.tar.gz
 NTFS3GVER=2010.10.2
 NTFS3GURL=http://tuxera.com/opensource/ntfs-3g-$NTFS3GVER.tgz
+LSOFVER=4.84
+LSOFURL=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/lsof_$LSOFVER.tar.bz2
 KERNELDIR=$PWD/kernel
 
 KVER=$KERNELDIR/lib/modules/*
@@ -91,6 +94,25 @@ if [ ! -e ntfs-3g-$NTFS3GVER/pkg/bin/ntfs-3g ]; then
 fi
 cp -av ntfs-3g-$NTFS3GVER/pkg/bin/ntfs-3g $TREE/bin/
 cp -av ntfs-3g-$NTFS3GVER/pkg/sbin/mount.ntfs-3g $TREE/sbin/
+# download, compile and install lsof (only if debug)
+if [ -n "$DEBUG" ]; then
+  if [ ! -e lsof_$LSOFVER.tar.bz2 ]; then
+    wget $LSOFURL
+  fi
+  if [ ! -e lsof_$LSOFVER/lsof_${LSOFVER}_src/lsof ]; then
+    rm -rf lsof_$LSOFVER
+    tar -xf lsof_$LSOFVER.tar.bz2
+    (
+      cd lsof_$LSOFVER
+      tar -xf lsof_${LSOFVER}_src.tar
+      cd lsof_${LSOFVER}_src
+      ./Configure -n linux
+      sed -i 's/^CFGL=.*/\0 --static/' Makefile
+      make all
+    )
+  fi
+  cp -av lsof_$LSOFVER/lsof_${LSOFVER}_src/lsof $TREE/bin/
+fi
 # copy needed modules
 while read M; do
   if [ -e $KERNELDIR/lib/modules/$KVER/kernel/$M ]; then

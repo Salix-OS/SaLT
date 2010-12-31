@@ -80,7 +80,7 @@ Two files are used for configuration:
   - LIVE_NAME: only used when displaying some information on boot, enter what your want.
   - IDENT_FILE: default file name to look for to identify the target distro to boot. This file must be in the root directory of the ISO.
   - IDENT_CONTENT: string contains in IDENT_FILE for double-checking.
-  - ROOT_DIR: directory that contains dsitro data like modules.
+  - ROOT_DIR: directory that contains distro data like modules.
 
 'modules' file is a kernel module file list where each module is on one line. The path starts from /lib/modules/kver/kernel/ where '/' is not mentionned.
 Exemple:
