@@ -56,15 +56,18 @@ Features:
     * passwd: could be 'ask' (will ask the password) or directly the new password (default: no change)
     * nosound: will mute the sound if present
     * autologin: will autologin if present and if gdm is used and configured for it
+    * identfile: name of the file to find the distro. Overrides the name in the config file
+    * savefile: name of the save file. Overrides the name in the config file
+    * memonly: will boot using memory only. The CD/DVD/USB will not be read/used after booting (or just the savefile if it's on the USB key)
 
 Known bugs/limitations:
   - kernel must support aufs2 and squashfs.
+  - kernel live version must match the kernel modules version used by the target distro or the kernel modules will probably not be loadable.
   - plinks are not supported over aufs2. So hardlink between branches do not work, i.e. files are copied.
-  - module must be a squashfs filesystem.
+  - live module must be a squashfs filesystem.
   - save file must be an XFS filesystem.
   - init is the only first process supported and is lookuped in /, /sbin, /bin, /usr/sbin, /usr/bin directories.
-  - cannot boot only into memory (in order to release the CD for example)
-  - the save file name is determined at compile-time and cannot be changed at runtime.
+  - if init is dynamically linked (bad idea), only ld and libc is supported.
 
 initrd-template/lib/keymaps is a file taken from the salixtools package. This file will be kept up to date.
 
@@ -115,6 +118,7 @@ For exemple, I have this structure in 'kernel' directory:
   src
 The script 'create-initrd.sh' will inject the kernel modules listed in 'modules' file from kernel/lib/modules inside the initrd.
 The initrd.gz is then created in the current folder
+If you use 'create-iso.sh' you won't need to call directly 'create-initrd.sh'
 
 
 MAKING AN ISO:
@@ -124,3 +128,8 @@ If you want to create an ISO, then:
   - create any file or directory you want in your ISO in the overlay directory.
   - create a background image. The result image will be 640x480 in 8bits.
   - invoke the 'create-iso.sh' script with the correct parameters for your ISO. You have the choice of making an ISO with either Isolinux or with Grub2. Grub2 has a nicer menu, which is internationnalized.
+
+
+DEBUGGING:
+----------
+If you want to debug, use the '-d 1' flag with 'create-iso.sh'. It will automatically pass the 'debug' parameter to the kernel and thus will give you some debug shells while booting and shuting down. It will also compile and make available the 'lsof' binary in the initrd.

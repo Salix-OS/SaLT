@@ -38,6 +38,9 @@ infolog 'Starting PCMCIA CardBus support'
 load_pcmcia_modules
 
 infolog "Finding $LIVE_NAME device..."
+identfile=$(get_value_cmdline identfile)
+[ -n "$identfile" ] && export IDENT_FILE=$identfile
+unset identfile
 DISTRO_INFO=$(find_distro_device)
 if [ -z "$DISTRO_INFO" ]; then
   fumble "Could not find the distro to boot\nFile searched: $IDENT_FILE\nContent searched: $IDENT_CONTENT"
@@ -47,7 +50,10 @@ DISTRO_MP=$(echo $DISTRO_INFO|cut -d: -f2)
 infolog "  $LIVE_NAME found in $DISTRO_DEV"
 debugshell
 
-infolog 'Finding save file...'
+savefilename=$(get_value_cmdline savefile)
+[ -n "$savefilename" ] && export SAVE_FILE_NAME=$savefilename
+unset savefilename
+infolog "Finding save file $SAVE_FILE_NAME..."
 SAVE_FILE=$(find_save_file "$DISTRO_MP")
 if [ -z "$SAVE_FILE" ]; then
   warnlog '  Save file not found, using memory only'
@@ -78,6 +84,12 @@ for m in $(find_modules $DISTRO_MP); do
   load_module "$m" || errorlog "$m cannot be loaded"
   debugshell
 done
+
+if is_on_cmdline 'memonly'; then
+  debuglog "Umounting $DISTRO_DEV for using memory only"
+  # This could not work if, for example, the save file is on $DISTRO_MP
+  umount $DISTRO_DEV 2>/dev/null && rmdir $DISTRO_MP 2>/dev/null
+fi
 
 infolog 'Tweaking the target distro'
 debuglog 'Installing hookers in /mnt/union...'

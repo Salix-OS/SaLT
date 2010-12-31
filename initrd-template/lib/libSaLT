@@ -16,6 +16,7 @@ fi
 
 # debug mode is done using kernel command line or by putting something in the file /SALT_DEBUG
 export SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -w -i debug && echo 1 || cat /SALT_DEBUG /mnt/salt/SALT_DEBUG 2>/dev/null)
+export SAVE_FILE_NAME=${ROOT_DIR}.save
 
 COLOR_BLACK=30
 COLOR_RED=31
@@ -144,6 +145,7 @@ fumble() {
   echoerror '  +-----------------------------+'
   echo
   [ -n "$1" ] && echocolor $COLOR_BOLD $COLOR_WHITE "$@"
+  echo
   echoerror "Something went wrong and we can't continue. This should never happen."
   echoerror 'Please reboot your computer with Ctrl+Alt+Delete'
   echo
@@ -151,14 +153,36 @@ fumble() {
   exec reboot -f
 }
 
-# Try to load a module. Check if the module is builtin or not.
+# return succes (0) if the specified cheatcode is present on the Linux kernel command line
+# $1 = cheatcode
+is_on_cmdline() {
+  grep -w -i -q "$1" /proc/cmdline
+}
+# return the value of the cheatcode on the Linux kernel commande line
+# $1 = cheatcode
+get_value_cmdline() {
+  if grep -i -q " $1=" /proc/cmdline; then
+    param=''
+    lower=$(echo "$1"|tr A-Z a-z)
+    upper=$(echo "$1"|tr a-z A-Z)
+    i=1;
+    n=$(expr length "$1")
+    while [ $i -le $n ]; do
+      param="$param["$(expr substr "$lower" $i 1)$(expr substr "$upper" $i 1)"]"
+      i=$(($i + 1))
+    done
+    sed "s/.* $param=\([^ ]*\).*/\1/" /proc/cmdline
+  fi
+}
+
+# Try to load a kernel module. Check if the module is builtin or not.
 # If it's builtin do nothing, else modprobe it.
 # $1 = module name
 # $2+ = optional options to pass to the module
 modprobe_check() {
   MODULE=$1
   shift
-  debuglog "Loading $MODULE module"
+  debuglog "Loading $MODULE kernel module"
   OPTIONS="$*"
   MODULE2=$(echo $MODULE | tr '-' '_')
   grep "/$MODULE.ko\$" /lib/modules/$(uname -r)/modules.builtin >/dev/null 2>&1 || grep "/$MODULE2.ko\$" /lib/modules/$(uname -r)/modules.builtin >/dev/null 2>&1
@@ -341,14 +365,14 @@ find_save_file() {
       fi
     fi
     if [ -n "$MP" ]; then
-      if [ -f "$MP/$ROOT_DIR/$ROOT_DIR.save" ]; then
-        file "$MP/$ROOT_DIR/$ROOT_DIR.save"|grep -i 'SGI XFS filesystem data' >/dev/null
+      if [ -f "$MP/$ROOT_DIR/$SAVE_FILE_NAME" ]; then
+        file "$MP/$ROOT_DIR/$SAVE_FILE_NAME"|grep -i 'SGI XFS filesystem data' >/dev/null
         if [ $? -eq 0 ]; then
-          echo "$MP/$ROOT_DIR/$ROOT_DIR.save"
+          echo "$MP/$ROOT_DIR/$SAVE_FILE_NAME"
           break
         fi
       fi
-      debuglog "'/$ROOT_DIR/$ROOT_DIR.save' not found in $d"
+      debuglog "'/$ROOT_DIR/$SAVE_FILE_NAME' not found in $d"
       if [ ! -d "$d" ]; then
         umount_device "$d" >/dev/null 2>&1
       fi
@@ -422,6 +446,12 @@ load_module() {
         n=$(basename "$m" .salt)
         mp="/mnt/modules/$n"
         mkdir -p "$mp"
+        if is_on_cmdline 'memonly'; then
+          mkdir -p /tmp/modules
+          debuglog "copying $m to /tmp/modules/..."
+          cp "$m" /tmp/modules/
+          m="/tmp/modules/$(basename "$m")"
+        fi
         mount -t squashfs -o loop "$m" "$mp"
         if [ $? -eq 0 ]; then
           mount -o remount,nowarn_perm,append:"$mp"=ro /mnt/union >/dev/null || return 1
@@ -469,20 +499,22 @@ unload_module() {
 # $1 = mount point
 install_hookers() {
   MP="$1"
+  mkdir -p "$MP/hooks"
   echo "#DO NOT REMOVE THIS FILE" > "$MP/hooks.salt"
   for b in halt poweroff reboot; do
     for d in sbin usr/sbin; do
       if [ -x "$MP/$d/$b" -o -L "$MP/$d/$b" ]; then
         debuglog "  - Hook for $b in /$d installed"
-        mv "$MP/$d/$b" "$MP/$d/$b.orig"
+        mv "$MP/$d/$b" "$MP/hooks/"
         (cd "$MP/$d"; ln -s /mnt/salt/cleanup "$b")
         cat <<EOF >> "$MP/hooks.salt"
-[ -e "$d/$b.orig" ] && mv "$d/$b.orig" "$d/$b"
+[ -e "hooks/$b" ] && mv "hooks/$b" "$d/"
 
 EOF
       fi
     done
   done
+  echo '[ -d hooks ] && rm -rf hooks' >> "$MP/hooks.salt"
 }
 
 # Uninstall hookers for cleanup.
@@ -533,17 +565,6 @@ change_root_to_initrd() {
   fi
 }
 
-# return succes (0) if the specified cheatcode is present on the Linux kernel command line
-# $1 = cheatcode
-is_on_cmdline() {
-  grep -w -i -q "$1" /proc/cmdline
-}
-# return the value of the cheatcode on the Linux kernel commande line
-# $1 = cheatcode
-get_value_cmdline() {
-  grep -i -q " $1=" /proc/cmdline && sed "s/.* $1=\([^ ]*\).*/\1/i" /proc/cmdline
-}
-
 # Kill all process where the PID is before the specified PID.
 # Process with PID 1 is ignore.
 # Kernel thread process are ignored too.
@@ -581,6 +602,7 @@ eject_cd() {
     eject $DEV 2>/dev/null
     echoinfo "CD tray will be closed in 10 seconds or hit enter..."
     for i in $(seq 1 10); do echo -n .; read -t 1 && break; done
+    echo
     eject -t $DEV 2>/dev/null
   fi
 }

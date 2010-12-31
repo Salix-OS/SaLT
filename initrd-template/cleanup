@@ -17,13 +17,7 @@ fi
 
 echodebug "cleanup: called with: $0 $@"
 d=$(dirname $0)
-orig=$0.orig
-for f in halt reboot poweroff; do
-  if [ -e $d/$f.orig -a ! -L $d/$f.orig ]; then
-    orig=$d/$f.orig
-    break
-  fi
-done
+orig=/hooks/$(basename $0)
 echo "$@"|grep -q -- -w
 if [ $? -eq 0 ]; then
   echodebug "cleanup: '-w' detected, will run: $orig $@"
@@ -103,6 +97,7 @@ elif [ -e /mnt/save ]; then
   umount /mnt/save || umount -l /mnt/save
   rmdir /mnt/save
 fi
+[ -e /tmp/modules ] && rm -rf /tmp/modules 2>/dev/null
 debugshell
 
 umount_device $(cut -d: -f1 /tmp/distro_infos) >/dev/null
