@@ -55,6 +55,7 @@ langavailable = [
     ['es_AR.utf8', 'Spanish (Argentinian)', 'Español (Argentina)', ['es']],
     ['fr_FR.utf8', 'French', 'Français', ['fr-latin9']],
     ['el_GR.utf8', 'Greek', 'Ελληνικά', ['gr']],
+    ['he.utf8',    'Hebrew', 'עִבְרִית', ['il']],
     ['it_IT.utf8', 'Italian', 'Italiano', ['it']],
     ['ja_JP.utf8', 'Japanese', '日本語', ['jp106']],
     ['lt_LT.utf8', 'Lithuanian', 'Lietuviy', ['lt']],
