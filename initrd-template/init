@@ -8,7 +8,8 @@
 [ "$$" -ne 1 ] && exit 1;
 
 echo -e -n '\n\e[1;36mSaLT initializing... '
-export PATH=:/usr/sbin:/usr/bin:/sbin:/bin
+PATH=:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH
 
 # mount -n : /etc/mtab is not writable yet
 mount -n -t proc none /proc
@@ -39,7 +40,7 @@ load_pcmcia_modules
 
 infolog "Finding $LIVE_NAME device..."
 identfile=$(get_value_cmdline identfile)
-[ -n "$identfile" ] && export IDENT_FILE=$identfile
+[ -n "$identfile" ] && IDENT_FILE=$identfile
 unset identfile
 DISTRO_INFO=$(find_distro_device)
 if [ -z "$DISTRO_INFO" ]; then
@@ -51,7 +52,7 @@ infolog "  $LIVE_NAME found in $DISTRO_DEV"
 debugshell
 
 savefilename=$(get_value_cmdline savefile)
-[ -n "$savefilename" ] && export SAVE_FILE_NAME=$savefilename
+[ -n "$savefilename" ] && SAVE_FILE_NAME=$savefilename
 unset savefilename
 infolog "Finding save file $SAVE_FILE_NAME..."
 SAVE_FILE=$(find_save_file "$DISTRO_MP")

@@ -72,12 +72,12 @@ case "$1" in
         if [ -e /etc/rc.d/rc.keymap ]; then
           sed -i "s/\(^[ \t]*\/usr\/bin\/loadkeys -u\).*$/\1 $keyb.map/" /etc/rc.d/rc.keymap
         fi
-        if [ ! -a /etc/hal/fdi/policy/10-keymap.fdi ]; then
-          if [ -a /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi ]; then
+        if [ ! -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
+          if [ -e /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi ]; then
             cp -f /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi /etc/hal/fdi/policy/10-keymap.fdi
           fi
         fi
-        if [ -a /etc/hal/fdi/policy/10-keymap.fdi ]; then
+        if [ -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
           sed -i "s/\"input.xkb.layout\" type=\"string\">.*</\"input.xkb.layout\" type=\"string\">"$xkblayout"</;
             s|\(<merge key=\"input.xkb.variant\" type=\"string\"\).*|\1>"$xkbvariant"</merge>|;
             s/\"input.xkb.options\" type=\"string\">.*</\"input.xkb.options\" type=\"string\">"$xkboptions"</" /etc/hal/fdi/policy/10-keymap.fdi
@@ -133,7 +133,7 @@ case "$1" in
     fi
     if is_on_cmdline nosound; then
       echoinfo 'Muting sound volume'
-      for SCONTROL in {"Master","PCM","Front","Surround","Center","CD","Video","Wave","Music","AC97","Headphone"}; do
+      for SCONTROL in Master PCM Front Surround Center CD Video Wave Music AC97 Headphone; do
         /usr/bin/amixer -q sset $SCONTROL 0 mute 2>/dev/null
       done
     else
@@ -141,7 +141,7 @@ case "$1" in
         /usr/sbin/alsactl restore
       else
         echoinfo 'Setting sound volume to 71%'
-        for SCONTROL in {"Master","PCM","Front","Surround","Center","CD","Video","Wave","Music","AC97","Headphone"}; do
+        for SCONTROL in Master PCM Front Surround Center CD Video Wave Music AC97 Headphone; do
           /usr/bin/amixer -q sset $SCONTROL 71% unmute 2>/dev/null
         done
       fi

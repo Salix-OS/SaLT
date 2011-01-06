@@ -5,7 +5,8 @@
 # Version: 0.1
 # Clean up script launched when coming back to the initrd of SaLT before halting or rebooting.
 
-export PATH=:/usr/sbin:/usr/bin:/sbin:/bin
+PATH=:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH
 if [ -f /lib/libSaLT ]; then
   . /lib/libSaLT
 elif [ -f /mnt/salt/lib/libSaLT ]; then
@@ -41,7 +42,8 @@ if [ -z "$SALT_CLEANUP_IS_RUNNING" ]; then
   if [ ! -e /mnt/salt ]; then
     fumble "/mnt/salt not found. This is really weird.\nAre you running from a Live environment?"
   else
-    export SALT_CLEANUP_IS_RUNNING=1
+    SALT_CLEANUP_IS_RUNNING=1
+    export SALT_CLEANUP_IS_RUNNING
     [ -z "$SALT_DEBUG" ] && clear
     echoinfo "*** Live system cleanup ***\n"
     grep -q -w '/mnt/salt' /etc/mtab || (mount -o remount,rw / && echo 'rootfs /mnt/salt rootfs ro 0 0' >> /etc/mtab && mount -o remount,ro /)
@@ -51,7 +53,8 @@ if [ -z "$SALT_CLEANUP_IS_RUNNING" ]; then
   fi
 fi
 
-export CMD="$@"
+CMD="$@"
+export CMD
 if [ ! -e /tmp/distro_infos ]; then
   fumble "/tmp/distro_infos not found. This is really weird.\nAre you running from a Live environment?"
 fi

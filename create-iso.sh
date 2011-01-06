@@ -3,6 +3,7 @@ cd $(dirname $0)
 . ./config
 BL=isolinux
 IMAGE=bg.png
+KERNEL=
 DEBUG=
 VOLNAME='SaLT'
 ISONAME='salt.iso'
@@ -11,11 +12,13 @@ MEMTEST_VER=4.10
 while [ -n "$1" ]; do
   case "$1" in
     '-h'|'--help')
-      echo 'create-iso.sh -l|-g [-i image] [-d 0|1] [-v volume_name] [-o iso_name]'
+      echo 'create-iso.sh -l|-g [-i image] [-k kernelpackage] [-d 0|1] [-v volume_name] [-o iso_name]'
       echo '  -l: specify to use isolinux (default)'
       echo '  -g: specify to use grub2'
       echo '  -i image: specify an image to use as background. The image will be converted to PNG 8bit 640x480.'
       echo '    The conversion is done through Image Magic and xcftools if needed. Default: bg.png'
+      echo '  -k kernelpackage: specify a kernel package to use for kernel modules and vmlinuz.'
+      echo '    If not specified, the data will be get from the "kernel" directory'
       echo '  -d 0: non debug (default), 1: debug. If debug is specified, it is injected as a default kernel parameter'
       echo '  -v volume_name: name of the CD, 32 chars maximum (default SaLT).'
       echo '  -o iso_name: name of the ISO file (default salt.iso).'
@@ -32,6 +35,11 @@ while [ -n "$1" ]; do
     '-i')
       shift
       IMAGE=$1
+      shift
+      ;;
+    '-k')
+      shift
+      KERNEL=$1
       shift
       ;;
     '-d')
@@ -56,14 +64,18 @@ while [ -n "$1" ]; do
       ;;
   esac
 done
+if [ -n "$KERNEL" ]; then
+  mkdir -p kernel
+  ( cd kernel; tar xf "$KERNEL" )
+fi
 ./create-initrd.sh $DEBUG
 if [ $? -eq 0 ]; then
   BOOTFILE=
   CATALOGFILE=
   [ ! -e mt86p ] && wget "http://www.memtest.org/download/$MEMTEST_VER/memtest86+-$MEMTEST_VER.bin.gz" -O - | zcat > mt86p
-  [ -e .iso ] && rm -rf .iso
-  mkdir -p .iso/$ROOT_DIR
-  echo "$IDENT_CONTENT" > .iso/$IDENT_FILE
+  ISODIR=$(mktemp -d)
+  mkdir -p $ISODIR/$ROOT_DIR
+  echo "$IDENT_CONTENT" > $ISODIR/$IDENT_FILE
   # generate background image
   if [ ! -e $IMAGE ]; then
     echo "$IMAGE not found" >&2
@@ -85,19 +97,19 @@ if [ $? -eq 0 ]; then
     exit 1
   fi
   if [ "$BL" = "isolinux" ]; then
-    cp -r isolinux .iso/
-    cp kernel/boot/vmlinuz-* .iso/isolinux/vmlinuz
-    cp initrd.gz .iso/isolinux/initrd.gz
-    cp mt86p .iso/isolinux/mt86p
-    mv .bg.png .iso/isolinux/bg.png
-    sed -i "s:\(.*/dev/ram0\).*:\1 $DEBUG:; s/_DISTRONAME_/$VOLNAME/g" .iso/isolinux/isolinux.cfg
+    cp -r isolinux $ISODIR/
+    cp kernel/boot/vmlinuz-* $ISODIR/isolinux/vmlinuz
+    cp initrd.gz $ISODIR/isolinux/initrd.gz
+    cp mt86p $ISODIR/isolinux/mt86p
+    mv .bg.png $ISODIR/isolinux/bg.png
+    sed -i "s:\(.*/dev/ram0\).*:\1 $DEBUG:; s/_DISTRONAME_/$VOLNAME/g" $ISODIR/isolinux/isolinux.cfg
     BOOTFILE=isolinux/isolinux.bin
     CATALOGFILE=isolinux/isolinux.cat
   else
-    mkdir -p .iso/boot
-    cp kernel/boot/vmlinuz-* .iso/boot/vmlinuz
-    cp initrd.gz .iso/boot/initrd.gz
-    cp mt86p .iso/boot/mt86p
+    mkdir -p $ISODIR/boot
+    cp kernel/boot/vmlinuz-* $ISODIR/boot/vmlinuz
+    cp initrd.gz $ISODIR/boot/initrd.gz
+    cp mt86p $ISODIR/boot/mt86p
     grubdir="$PWD/.grub2"
     [ -e $grubdir ] && rm -rf $grubdir
     cp -r grub2 $grubdir
@@ -114,7 +126,7 @@ if [ $? -eq 0 ]; then
     )
     # add grub2 menu
     (
-      cd .iso
+      cd $ISODIR
       # prepare the grub2 initial tree
       mkdir -p boot
       # ask grub2 to build the rescue ISO to get the initial tree
@@ -131,12 +143,13 @@ if [ $? -eq 0 ]; then
       find boot/grub -name '*.lst' -exec cp '{}' boot/grub/ \;
     )
     # add script files and boot loader install for USB
-    cp -v "$grubdir"/grub_* "$grubdir"/install-on-USB* "$grubdir"/4windows/* .iso/boot/
+    cp -v "$grubdir"/grub_* "$grubdir"/install-on-USB* "$grubdir"/4windows/* $ISODIR/boot/
     rm -r "$grubdir"
     BOOTFILE=boot/grub/i386-pc/eltorito.img
     CATALOGFILE=boot/grub.cat
   fi
-  cp -rv overlay/* .iso/
-  find .iso -name '.svn' -type d -prune -exec rm -rf '{}' +
-  mkisofs -r -J -V "$VOLNAME" -b $BOOTFILE -c $CATALOGFILE -no-emul-boot -boot-load-size 4 -boot-info-table -o "$ISONAME" .iso
+  cp -rv overlay/* $ISODIR/
+  find $ISODIR -name '.svn' -type d -prune -exec rm -rf '{}' +
+  mkisofs -r -J -V "$VOLNAME" -b $BOOTFILE -c $CATALOGFILE -no-emul-boot -boot-load-size 4 -boot-info-table -o "$ISONAME" $ISODIR
+  rm -rf $ISODIR
 fi

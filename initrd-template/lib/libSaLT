@@ -15,8 +15,10 @@ else
 fi
 
 # debug mode is done using kernel command line or by putting something in the file /SALT_DEBUG
-export SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -w -i debug && echo 1 || cat /SALT_DEBUG /mnt/salt/SALT_DEBUG 2>/dev/null)
-export SAVE_FILE_NAME=${ROOT_DIR}.save
+SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -w -i debug && echo 1 || cat /SALT_DEBUG /mnt/salt/SALT_DEBUG 2>/dev/null)
+export SALT_DEBUG
+SAVE_FILE_NAME=${ROOT_DIR}.save
+export SAVE_FILE_NAME
 
 COLOR_BLACK=30
 COLOR_RED=31
@@ -578,9 +580,9 @@ kill_all_before() {
       lst="$lst $pid"
     fi
   done
-  kill -SIGTERM $lst 2>/dev/null
+  kill -15 $lst 2>/dev/null
   sleep 1
-  kill -SIGKILL $lst 2>/dev/null
+  kill -9  $lst 2>/dev/null
 }
 
 # Umount all sub-mounts that appear inside the specified mountpoint.
