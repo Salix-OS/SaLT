@@ -1,8 +1,9 @@
 #!/bin/sh
 # vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+#
+# This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
 # Licence: GPLv3+
-# Version: 0.1
 # Script to tweak the target Slackware distro
 
 [ -e /mnt/salt/lib/libSaLT ] || exit 1
@@ -16,8 +17,28 @@ case "$1" in
       if [ -x /usr/sbin/localesetup ]; then
         /usr/sbin/localesetup $lang # Salix
       elif [ -e /etc/profile.d ]; then
-        echo "export LANG=$lang" >> /etc/profile.d/lang.sh
-        echo "setenv LANG $lang" >> /etc/profile.d/lang.csh
+        if [ -f /etc/profile.d/lang.sh ]; then
+  	      grep -q -i '^ *export LANG=' /etc/profile.d/lang.sh
+          if [ $? -eq 0 ]; then
+          	sed -i "s/^ *\(export LANG=\).*$/\1$lang/" /etc/profile.d/lang.sh
+          else
+            echo "export LANG=$lang" >> /etc/profile.d/lang.sh
+          fi
+        fi
+        if [ -f /etc/profile.d/lang.csh ]; then
+  	      grep -q -i '^ *setenv LANG ' /etc/profile.d/lang.csh
+          if [ $? -eq 0 ]; then
+          	sed -i "s/^ *\(setenv LANG \).*$/\1$lang/" /etc/profile.d/lang.csh
+          else
+            echo "setenv LANG $lang" >> /etc/profile.d/lang.csh
+          fi
+        fi
+        if [ -f /etc/kde/kdm/kdmrc ]; then
+          locale_noutf8=$(echo $lang | sed 's/\.utf8//')
+          sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" /etc/kde/kdm/kdmrc
+        fi
+      fi
+      if [ -e /etc/profile.d/lang.sh ]; then
         . /etc/profile.d/lang.sh
       fi
       # Make firefox match OS locale

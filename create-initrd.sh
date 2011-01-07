@@ -1,5 +1,8 @@
 #!/bin/sh
 # vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+#
+# This file is part of SaLT.
+
 cd $(dirname "$0")
 if [ $UID -ne 0 ]; then
   echo 'Need to be root to run.' >&2

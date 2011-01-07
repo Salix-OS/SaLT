@@ -1,8 +1,9 @@
 #!/bin/sh
 # vim: set syn=sh ai si et sw=2 st=2 ts=2 tw=0:
+#
+# This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
 # Licence: GPLv3+
-# Version: 0.1
 # Initial script launched in the initrd of SaLT
 
 [ "$$" -ne 1 ] && exit 1;
@@ -100,12 +101,48 @@ debugshell
 debuglog 'Disabling root filesystem check'
 touch /mnt/union/etc/fastboot
 rm -f /mnt/union/etc/forcefsck
-debuglog 'Fixing a bug in Slackware /etc/rc.d/rc.S for hardware clock'
+debuglog 'Fixing a bug in /etc/rc.d/rc.S Slackware for hardware clock'
 [ -e /mnt/union/etc/hardwareclock ] || touch /mnt/union/etc/hardwareclock
-debuglog 'Fixing a bug in Slackware when /etc/fstab is missing sometimes'
+debuglog 'Fixing a bug when /etc/fstab is missing sometimes'
 [ -e /mnt/union/etc/fstab ] || touch /mnt/union/etc/fstab
+debuglog 'Fixing a bug when /proc and /sys will sometimes not be mounted in chroot'
+[ -d /mnt/union/proc ] || mkdir -p /mnt/union/proc
+mount -n -t proc none /mnt/union/proc
+[ -d /mnt/union/sys ] || mkdir -p /mnt/union/sys
+mount -n -t sysfs none /mnt/union/sys
+debuglog 'Fixing a bug when / is trying to be fsck'
+[ -d /mnt/union/sbin ] || mkdir -p /mnt/union/sbin
+cat <<EOF > /mnt/union/sbin/fsck.aufs
+#!/bin/sh
+# This is for having no error at boot when using fsck -C -a / on a aufs root mount point.
+EOF
+chmod +x /mnt/union/sbin/fsck.aufs
 debuglog 'Installing rc.salt service'
 cp lib/rc.salt /mnt/union/etc/rc.d/ && chmod +x /mnt/union/etc/rc.d/rc.salt
+debuglog 'Early configure locale'
+lang=$(get_value_cmdline lang)
+if [ -n "$lang" -a -e /mnt/union/etc/profile.d ]; then
+  if [ -f /mnt/union/etc/profile.d/lang.sh ]; then
+    grep -q -i '^ *export LANG=' /mnt/union/etc/profile.d/lang.sh
+    if [ $? -eq 0 ]; then
+      sed -i "s/^ *\(export LANG=\).*$/\1$lang/" /mnt/union/etc/profile.d/lang.sh
+    else
+      echo "export LANG=$lang" >> /mnt/union/etc/profile.d/lang.sh
+    fi
+  fi
+  if [ -f /mnt/union/etc/profile.d/lang.csh ]; then
+    grep -q -i '^ *setenv LANG ' /mnt/union/etc/profile.d/lang.csh
+    if [ $? -eq 0 ]; then
+      sed -i "s/^ *\(setenv LANG \).*$/\1$lang/" /mnt/union/etc/profile.d/lang.csh
+    else
+      echo "setenv LANG $lang" >> /mnt/union/etc/profile.d/lang.csh
+    fi
+  fi
+  if [ -f /mnt/union/etc/kde/kdm/kdmrc ]; then
+    locale_noutf8=$(echo $lang | sed 's/\.utf8//')
+    sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" /mnt/union/etc/kde/kdm/kdmrc
+  fi
+fi
 debuglog 'Informing that / is already mounted in the /mnt/union'
 echo 'salt / aufs ro 0 0' > /mnt/union/etc/mtab
 
