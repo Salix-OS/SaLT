@@ -198,6 +198,7 @@ EOF
     unset LIBDIR
   fi
   debugshell
+  runlevel=$(get_runlevel_cmdline)
   change_root_to_distro /mnt/salt/init.distro $runlevel
 fi
 fumble 'End of init: this line must never be executed!'

@@ -178,6 +178,13 @@ get_value_cmdline() {
     sed "s/.* $param=\([^ ]*\).*/\1/" /proc/cmdline
   fi
 }
+# return the value of the runlevel on the Linux kernel commande line
+# Could be from 1 to 9. Return an empty string if not found
+get_runlevel_cmdline() {
+  if grep -w -q '[1-9]' /proc/cmdline; then
+    sed 's/.* \([1-9]\)\( .*\)/\1/' /proc/cmdline
+  fi
+}
 
 # Try to load a kernel module. Check if the module is builtin or not.
 # If it's builtin do nothing, else modprobe it.
