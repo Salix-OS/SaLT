@@ -377,7 +377,7 @@ find_save_file() {
     fi
     if [ -n "$MP" ]; then
       if [ -f "$MP/$ROOT_DIR/$SAVE_FILE_NAME" ]; then
-        file "$MP/$ROOT_DIR/$SAVE_FILE_NAME"|grep -i 'SGI XFS filesystem data' >/dev/null
+        file "$MP/$ROOT_DIR/$SAVE_FILE_NAME"|grep -q -i 'SGI XFS filesystem data\|Linux rev 1\.0 ext. filesystem\|ReiserFS\|, FAT \|, OEM-ID "NTFS'
         if [ $? -eq 0 ]; then
           echo "$MP/$ROOT_DIR/$SAVE_FILE_NAME"
           break

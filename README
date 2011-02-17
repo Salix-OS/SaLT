@@ -20,6 +20,9 @@ Authors:
 Licence: GPLv3+
 Version: 0.1
 
+Logo: http://www.openclipart.org/detail/58609
+This one could be ok too: http://www.tutsking.com/vectors/kitchen-appliances-silhouettes
+
 INFORMATION:
 ------------
 Set of tools to create a full live environnement for Slackware/Salix using:
@@ -50,7 +53,7 @@ Features:
     * squashfs
   - mount filesystems.
   - detect the distro partition.
-  - detect the save file.
+  - detect the save file (ext?, xfs, reiserfs, fat or ntfs)
   - create union and add branches.
   - xino (for aufs2) files in tmpfs.
   - hooks installed in writable branch of union, thus no modification of the targetting distro is required.
@@ -65,6 +68,7 @@ Features:
     * keyb: keyboard to use, like fr-latin9 (default: us)
     * numlock: could be 'on' or 'off' (default: off)
     * scim: could be 'on' or 'off' (default: off)
+    * ibus: could be 'on' or 'off' (default: off)
     * synaptics: could be 'on' or 'off' (default: off)
     * passwd: could be 'ask' (will ask the password) or directly the new password (default: no change)
     * nosound: will mute the sound if present
@@ -72,13 +76,14 @@ Features:
     * identfile: name of the file to find the distro. Overrides the name in the config file
     * savefile: name of the save file. Overrides the name in the config file
     * memonly: will boot using memory only. The CD/DVD/USB will not be read/used after booting (or just the savefile if it's on the USB key)
+    * proxy: url of the http and ftp proxy. Could include the 'http://' protocol or not.
 
 Known bugs/limitations:
   - kernel must support aufs2 and squashfs.
   - kernel live version must match the kernel modules version used by the target distro or the kernel modules will probably not be loadable.
   - plinks are not supported over aufs2. So hardlink between branches do not work, i.e. files are copied.
   - live module must be a squashfs filesystem.
-  - save file must be an XFS filesystem.
+  - save file must be an XFS, EXT?, Reiserfs, FAT or NTFS filesystem.
   - init is the only first process supported and is lookuped in /, /sbin, /bin, /usr/sbin, /usr/bin directories.
   - if init is dynamically linked (bad idea), only ld and libc is supported.
 

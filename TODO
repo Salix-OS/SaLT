@@ -7,6 +7,6 @@
 [X] change save file name at run-time
 [X] customizing with kernel parameters
 [X] tweaking target distro to set: password, locale, keyboard, numlock, scim, synaptics, sound, autologin
+[X] options to the scripts to bypass interractive mode
 [_] tool to create an initrd based on current host system
 [_] tool to create module as separately as possible
-[X] options to the scripts to bypass interractive mode

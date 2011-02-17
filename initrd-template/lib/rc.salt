@@ -53,29 +53,31 @@ case "$1" in
     restart_hal=no
     synaptics=$(get_value_cmdline synaptics)
     if [ "$synaptics" = "on" ]; then
-      mkdir -p /etc/hal/fdi/policy
       if [ ! -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
         if [ -e /usr/share/hal/fdi/policy/10osvendor/11-x11-synaptics.fdi ]; then
+          mkdir -p /etc/hal/fdi/policy
           cp /usr/share/hal/fdi/policy/10osvendor/11-x11-synaptics.fdi /etc/hal/fdi/policy/
+          restart_hal=yes
         fi
       fi
-      restart_hal=yes
     elif [ "$synaptics" = "off" ]; then
       if [ -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
         rm -f /etc/hal/fdi/policy/11-x11-synaptics.fdi
+        restart_hal=yes
       fi
-      restart_hal=yes
     fi
     keyb=$(get_value_cmdline keyb)
     numlock=$(get_value_cmdline numlock)
     scim=$(get_value_cmdline scim)
-    if [ -n "$keyb" -o -n "$numlock" -o -n "$scim" ]; then
+    ibus=$(get_value_cmdline ibus)
+    if [ -n "$keyb" -o -n "$numlock" -o -n "$scim" -o -n "$ibus" ]; then
       # keyboard settting
       [ -n "$keyb" ] || keyb=us
       [ -n "$numlock" ] || numlock=off
       [ -n "$scim" ] || scim=off
-      if [ -x /usr/sbin/keyboardsetup ]; then
-        /usr/sbin/keyboardsetup -k $keyb -n $numlock -s $scim # Salix
+      [ -n "$ibus" ] || ibus=off
+      if [ -x /usr/sbin/keyboardsetup ]; then # Salix
+        /usr/sbin/keyboardsetup -k $keyb -n $numlock -s $scim -i $ibus
         restart_hal=no
       else
         grep "^$keyb|.*|.*|.*" /mnt/salt/lib/keymaps | sed -e "s/^.*|\(.*\)|\(.*\)|\(.*\)/\1|\2|\3/" > /tmp/xkb
@@ -93,15 +95,27 @@ case "$1" in
         if [ -e /etc/rc.d/rc.keymap ]; then
           sed -i "s/\(^[ \t]*\/usr\/bin\/loadkeys -u\).*$/\1 $keyb.map/" /etc/rc.d/rc.keymap
         fi
-        if [ ! -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
-          if [ -e /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi ]; then
+        if [ -e /etc/X11/xorg.conf.d ]; then
+          cat <<EOF > /etc/X11/xorg.conf.d/10-keymap.conf
+Section "InputClass"
+	Identifier	"Keyboard settings"
+	MatchIsKeyboard	"yes"
+	Driver		"evdev"
+	Option		"XkbLayout" "$xkblayout"
+	Option		"XkbVariant" $xkbvariant"
+	Option		"XkbOptions" "$xkboptions"
+EndSection
+EOF
+        elif [ -e /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi ]; then
+          if [ ! -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
+            mkdir -p /etc/hal/fdi/policy
             cp -f /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi /etc/hal/fdi/policy/10-keymap.fdi
           fi
-        fi
-        if [ -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
-          sed -i "s/\"input.xkb.layout\" type=\"string\">.*</\"input.xkb.layout\" type=\"string\">"$xkblayout"</;
-            s|\(<merge key=\"input.xkb.variant\" type=\"string\"\).*|\1>"$xkbvariant"</merge>|;
-            s/\"input.xkb.options\" type=\"string\">.*</\"input.xkb.options\" type=\"string\">"$xkboptions"</" /etc/hal/fdi/policy/10-keymap.fdi
+          if [ -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
+            sed -i "s/\"input.xkb.layout\" type=\"string\">.*</\"input.xkb.layout\" type=\"string\">"$xkblayout"</;
+              s|\(<merge key=\"input.xkb.variant\" type=\"string\"\).*|\1>"$xkbvariant"</merge>|;
+              s/\"input.xkb.options\" type=\"string\">.*</\"input.xkb.options\" type=\"string\">"$xkboptions"</" /etc/hal/fdi/policy/10-keymap.fdi
+          fi
         fi
         if [ "$numlock" = "on" ]; then
           [ -e /etc/rc.d/rc.numlock ] && chmod 755 /etc/rc.d/rc.numlock
@@ -137,6 +151,13 @@ case "$1" in
           [ -f /etc/profile.d/scim.sh ] && chmod -x /etc/profile.d/scim.sh
           [ -f /etc/profile.d/scim.csh ] && chmod -x /etc/profile.d/scim.csh
         fi
+        if [ "$ibus" = "on" ]; then
+          [ -f /etc/profile.d/ibus.sh ] && chmod +x /etc/profile.d/ibus.sh
+          [ -f /etc/profile.d/ibus.csh ] && chmod +x /etc/profile.d/ibus.csh
+        else
+          [ -f /etc/profile.d/ibus.sh ] && chmod -x /etc/profile.d/ibus.sh
+          [ -f /etc/profile.d/ibus.csh ] && chmod -x /etc/profile.d/ibus.csh
+        fi
         restart_hal=yes
       fi
     fi
@@ -171,6 +192,17 @@ case "$1" in
       [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=true/' /etc/gdm/custom.conf
     else
       [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=false/' /etc/gdm/custom.conf
+    fi
+    proxy=$(get_value_cmdline proxy)
+    if [ -n "$proxy" ]; then
+      # set http and ftp proxy (often the same for both)
+      cat <<EOF > /etc/profile.d/proxy.sh
+#!/bin/sh
+export http_proxy=$proxy
+export ftp_proxy=$http_proxy
+EOF
+      chmod +x /etc/profile.d/proxy.sh
+      /etc/profile.d/proxy.sh
     fi
     ;;
   *)
