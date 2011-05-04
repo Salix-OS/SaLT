@@ -12,6 +12,8 @@ VOLNAME='SaLT'
 ISONAME='salt.iso'
 # MemTest86+ version
 MEMTEST_VER=4.10
+# Compression used for the initrd, default to gz
+[ -z "$COMP" ] && COMP=gz
 while [ -n "$1" ]; do
   case "$1" in
     '-h'|'--help')
@@ -71,7 +73,7 @@ if [ -n "$KERNEL" ]; then
   mkdir -p kernel
   ( cd kernel; tar xf "$KERNEL" )
 fi
-./create-initrd.sh $DEBUG
+./create-initrd.sh $COMP $DEBUG
 if [ $? -eq 0 ]; then
   BOOTFILE=
   CATALOGFILE=
@@ -102,16 +104,17 @@ if [ $? -eq 0 ]; then
   if [ "$BL" = "isolinux" ]; then
     cp -r isolinux $ISODIR/
     cp kernel/boot/vmlinuz-* $ISODIR/isolinux/vmlinuz
-    cp initrd.gz $ISODIR/isolinux/initrd.gz
+    cp initrd.$COMP $ISODIR/isolinux/initrd.$COMP
     cp mt86p $ISODIR/isolinux/mt86p
     mv .bg.png $ISODIR/isolinux/bg.png
     sed -i "s:\(.*/dev/ram0\).*:\1 $DEBUG:; s/_DISTRONAME_/$VOLNAME/g" $ISODIR/isolinux/isolinux.cfg
+    sed -i "s:initrd\.gz:initrd.$COMP:" $ISODIR/isolinux/isolinux.cfg
     BOOTFILE=isolinux/isolinux.bin
     CATALOGFILE=isolinux/isolinux.cat
   else
     mkdir -p $ISODIR/boot
     cp kernel/boot/vmlinuz-* $ISODIR/boot/vmlinuz
-    cp initrd.gz $ISODIR/boot/initrd.gz
+    cp initrd.$COMP $ISODIR/boot/initrd.$COMP
     cp mt86p $ISODIR/boot/mt86p
     grubdir="$PWD/.grub2"
     [ -e $grubdir ] && rm -rf $grubdir
@@ -141,6 +144,7 @@ if [ $? -eq 0 ]; then
       cp -ar "$grubdir"/build/* .
       cat "$grubdir"/grub.cfg >> boot/grub/grub.cfg
       sed -i "s:\(set debug=\).*:\1$DEBUG:" boot/grub/grub.cfg
+      sed -i "s:initrd\.gz:initrd.$COMP:" boot/grub/boot.cfg
       # copy the mod files and lst files to the grub directory too for USB support.
       find boot/grub -name '*.mod' -exec cp '{}' boot/grub/ \;
       find boot/grub -name '*.lst' -exec cp '{}' boot/grub/ \;

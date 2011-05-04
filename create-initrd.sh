@@ -8,7 +8,9 @@ if [ $UID -ne 0 ]; then
   echo 'Need to be root to run.' >&2
   exit 1
 fi
-DEBUG=$1
+COMP=$1
+[ -z "$COMP" ] && COMP=gz
+DEBUG=$2
 
 BBVER=1.17.3
 BBURL=http://busybox.net/downloads/busybox-$BBVER.tar.bz2
@@ -130,13 +132,20 @@ while read M; do
   fi
 done < modules
 cp -a $KERNELDIR/lib/modules/$KVER/modules.{alias,builtin,dep,symbols} $TREE/lib/modules/$KVER/
-# create initrd.gz
+# create initrd.$COMP
 INITRD_SIZE_M=$('du' -sm $TREE|awk '{print $1}')
 INITRD_SIZE_M=$(($INITRD_SIZE_M + 1))
-rm -rf initrd initrd.gz initrd-ext2
+rm -rf initrd initrd.$COMP initrd-ext2
 dd if=/dev/zero of=initrd bs=1M count=$INITRD_SIZE_M
 mkfs.ext2 -m 0 -F -q initrd
 mkdir initrd-ext2 && mount -o loop initrd initrd-ext2
 cp -a $TREE/* initrd-ext2/
 umount initrd-ext2 && rm -rf initrd-ext2
-gzip initrd
+case $COMP in
+  "gz")
+    gzip initrd
+    ;;
+  "xz")
+    xz --check=crc32 initrd
+    ;;
+esac
