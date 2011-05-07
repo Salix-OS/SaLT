@@ -12,11 +12,11 @@ COMP=$1
 [ -z "$COMP" ] && COMP=gz
 DEBUG=$2
 
-BBVER=1.17.3
+BBVER=1.18.4
 BBURL=http://busybox.net/downloads/busybox-$BBVER.tar.bz2
-FILEVER=5.04
+FILEVER=5.06
 FILEURL=ftp://ftp.astron.com/pub/file/file-$FILEVER.tar.gz
-NTFS3GVER=2010.10.2
+NTFS3GVER=2011.4.2
 NTFS3GURL=http://tuxera.com/opensource/ntfs-3g-$NTFS3GVER.tgz
 LSOFVER=4.84
 LSOFURL=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/lsof_$LSOFVER.tar.bz2
