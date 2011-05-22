@@ -92,9 +92,9 @@ if [ $? -eq 0 ]; then
     cp "$IMAGE" .bg.png
   else
     if file "$IMAGE"|grep -q 'GIMP XCF image data'; then
-      xcf2png "$IMAGE" | convert -depth 8 -alpha deactivate -type truecolor -resize 640x480 - .bg.png
+      xcf2png "$IMAGE" | convert -depth 8 -alpha deactivate -type truecolor -define png:color-type=2 -resize 640x480 - .bg.png
     else
-      convert -flatten -depth 8 -alpha deactivate -type truecolor -resize 640x480 "$IMAGE" .bg.png
+      convert -flatten -depth 8 -alpha deactivate -type truecolor -define png:color-type=2 -resize 640x480 "$IMAGE" .bg.png
     fi
   fi
   if [ $? -ne 0 ]; then
