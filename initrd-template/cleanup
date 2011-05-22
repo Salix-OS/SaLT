@@ -46,7 +46,7 @@ if [ -z "$SALT_CLEANUP_IS_RUNNING" ]; then
   else
     SALT_CLEANUP_IS_RUNNING=1
     export SALT_CLEANUP_IS_RUNNING
-    [ -z "$SALT_DEBUG" ] && clear
+    [ -z "$SALT_DEBUG" ] && echo -en '\e[H\e[2J'
     echoinfo "*** Live system cleanup ***\n"
     grep -q -w '/mnt/salt' /etc/mtab || (mount -o remount,rw / && echo 'rootfs /mnt/salt rootfs ro 0 0' >> /etc/mtab && mount -o remount,ro /)
     echodebug "Rexecuting in chroot: $0 $@"
@@ -105,13 +105,14 @@ fi
 [ -e /tmp/modules ] && rm -rf /tmp/modules 2>/dev/null
 debugshell
 
-umount_device $(cut -d: -f1 /tmp/distro_infos) >/dev/null
+umount_device $(cut -d: -f2- /tmp/distro_infos) >/dev/null
 debugshell
 eject_cd
 debugshell
 
 debuglog 'Umount what remains'
-umount -a -r -d 2>/dev/null
+sync
+umount -a -r -d -l 2>/dev/null
 debugshell
 
 echoinfo "Stopping/Rebooting: $CMD"

@@ -16,8 +16,8 @@ BBVER=1.18.4
 BBURL=http://busybox.net/downloads/busybox-$BBVER.tar.bz2
 FILEVER=5.06
 FILEURL=ftp://ftp.astron.com/pub/file/file-$FILEVER.tar.gz
-NTFS3GVER=2011.4.2
-NTFS3GURL=http://tuxera.com/opensource/ntfs-3g-$NTFS3GVER.tgz
+NTFS3GVER=2011.4.12
+NTFS3GURL=http://tuxera.com/opensource/ntfs-3g_ntfsprogs-$NTFS3GVER.tgz
 LSOFVER=4.84
 LSOFURL=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/lsof_$LSOFVER.tar.bz2
 KERNELDIR=$PWD/kernel
@@ -79,26 +79,27 @@ cp -av file-$FILEVER/src/file $TREE/bin/
 mkdir -pv $TREE/etc/misc/magic
 cp -rv file-$FILEVER/magic/Magdir/* $TREE/etc/misc/magic/
 # download, compile and install ntfs-3g (only needed binaries)
-if [ ! -e ntfs-3g-$NTFS3GVER.tgz ]; then
+if [ ! -e ntfs-3g_ntfsprogs-$NTFS3GVER.tgz ]; then
   wget $NTFS3GURL
 fi
-if [ ! -e ntfs-3g-$NTFS3GVER/pkg/bin/ntfs-3g ]; then
-  rm -rf ntfs-3g-$NTFS3GVER
-  tar -xf ntfs-3g-$NTFS3GVER.tgz
+if [ ! -e ntfs-3g_ntfsprogs-$NTFS3GVER/pkg/bin/ntfs-3g ]; then
+  rm -rf ntfs-3g_ntfsprogs-$NTFS3GVER
+  tar -xf ntfs-3g_ntfsprogs-$NTFS3GVER.tgz
   (
-    cd ntfs-3g-$NTFS3GVER
+    cd ntfs-3g_ntfsprogs-$NTFS3GVER
     ./configure \
       --prefix=/usr \
       --enable-really-static \
       --disable-library \
-      --disable-dependency-tracking
+      --disable-dependency-tracking \
+      --disable-ntfsprogs
     make
     mkdir -p pkg
     make install DESTDIR=$PWD/pkg
   )
 fi
-cp -av ntfs-3g-$NTFS3GVER/pkg/bin/ntfs-3g $TREE/bin/
-cp -av ntfs-3g-$NTFS3GVER/pkg/sbin/mount.ntfs-3g $TREE/sbin/
+cp -av ntfs-3g_ntfsprogs-$NTFS3GVER/pkg/bin/ntfs-3g $TREE/bin/
+cp -av ntfs-3g_ntfsprogs-$NTFS3GVER/pkg/sbin/mount.ntfs-3g $TREE/sbin/
 # download, compile and install lsof (only if debug)
 if [ -n "$DEBUG" ]; then
   if [ ! -e lsof_$LSOFVER.tar.bz2 ]; then

@@ -136,7 +136,7 @@ debugshell() {
     echoinfo '  |   Hit Ctrl+D to continue    |'
     echoinfo '  +-----------------------------+'
     echo
-    hush
+    setsid sh -c 'exec hush </dev/tty1 >/dev/tty1 2>&1'
     echo
   fi
 }
@@ -153,7 +153,7 @@ fumble() {
   echoerror "Something went wrong and we can't continue. This should never happen."
   echoerror 'Please reboot your computer with Ctrl+Alt+Delete'
   echo
-  hush || sh
+  setsid sh -c 'exec hush </dev/tty1 >/dev/tty1 2>&1' || sh
   exec reboot -f
 }
 
@@ -178,13 +178,6 @@ get_value_cmdline() {
     sed "s/.* $param=\([^ ]*\).*/\1/" /proc/cmdline
   fi
 }
-# return the value of the runlevel on the Linux kernel commande line
-# Could be from 1 to 9. Return an empty string if not found
-get_runlevel_cmdline() {
-  if grep -w -q '[1-9]' /proc/cmdline; then
-    sed 's/.* \([1-9]\)\( .*\)/\1/' /proc/cmdline
-  fi
-}
 
 # Try to load a kernel module. Check if the module is builtin or not.
 # If it's builtin do nothing, else modprobe it.
@@ -196,11 +189,15 @@ modprobe_check() {
   debuglog "Loading $MODULE kernel module"
   OPTIONS="$*"
   MODULE2=$(echo $MODULE | tr '-' '_')
-  grep "/$MODULE.ko\$" /lib/modules/$(uname -r)/modules.builtin >/dev/null 2>&1 || grep "/$MODULE2.ko\$" /lib/modules/$(uname -r)/modules.builtin >/dev/null 2>&1
+  grep -q "/$MODULE.ko\$" /lib/modules/$(uname -r)/modules.builtin 2>/dev/null || grep -q "/$MODULE2.ko\$" /lib/modules/$(uname -r)/modules.builtin 2>/dev/null
   if [ $? -eq 0 ]; then
     debuglog "  $MODULE is builtin"
   else
-    modprobe $MODULE $OPTIONS
+    if [ -n "$SALT_DEBUG" ]; then
+      modprobe $MODULE $OPTIONS
+    else
+      modprobe $MODULE $OPTIONS >/dev/null 2>&1
+    fi
   fi
 }
 
@@ -266,26 +263,31 @@ find_mountable_devices() {
 # Find the filesystem type as expected by "mount -t" of the specified device.
 # $1 = device in the form /dev/xxx
 find_fs_type() {
-  [ ! -e /tmp/devices ] && find_mountable_devices >/dev/null
-  LINE=$(grep "^$1:" /tmp/devices|cut -d: -f2-)
-  if echo "$LINE"|grep -i 'ISO 9660 CD-ROM'>/dev/null; then
-    echo 'iso9660'
-  elif echo "$LINE"|grep -i 'ext4 filesystem data'>/dev/null; then
-    echo 'ext4'
-  elif echo "$LINE"|grep -i 'ext3 filesystem data'>/dev/null; then
-    echo 'ext3'
-  elif echo "$LINE"|grep -i 'ext2 filesystem data'>/dev/null; then
-    echo 'ext2'
-  elif echo "$LINE"|grep -i 'XFS filesystem data'>/dev/null; then
-    echo 'xfs'
-  elif echo "$LINE"|grep -i 'ReiserFS'>/dev/null; then
-    echo 'reiserfs'
-  elif echo "$LINE"|grep -i 'FAT'>/dev/null; then
-    echo 'vfat'
-  elif echo "$LINE"|grep -i 'NTFS'>/dev/null; then
-    echo 'ntfs-3g'
+  echo "$1" | grep -q '^/dev/'
+  if [ $? -eq 0 ]; then
+    [ ! -e /tmp/devices ] && find_mountable_devices >/dev/null
+    LINE=$(grep "^$1:" /tmp/devices|cut -d: -f2-)
+    if echo "$LINE"|grep -i -q 'ISO 9660 CD-ROM'; then
+      echo 'iso9660'
+    elif echo "$LINE"|grep -i -q 'ext4 filesystem data'; then
+      echo 'ext4'
+    elif echo "$LINE"|grep -i -q 'ext3 filesystem data'; then
+      echo 'ext3'
+    elif echo "$LINE"|grep -i -q 'ext2 filesystem data'; then
+      echo 'ext2'
+    elif echo "$LINE"|grep -i -q 'XFS filesystem data'; then
+      echo 'xfs'
+    elif echo "$LINE"|grep -i -q 'ReiserFS'; then
+      echo 'reiserfs'
+    elif echo "$LINE"|grep -i -q 'FAT'; then
+      echo 'vfat'
+    elif echo "$LINE"|grep -i -q 'NTFS'; then
+      echo 'ntfs-3g'
+    else
+      warnlog "$1:$LINE: not supported filesystem"
+      echo ''
+    fi
   else
-    warnlog "$1:$LINE: not supported filesystem"
     echo ''
   fi
 }
@@ -313,7 +315,7 @@ find_fs_options() {
 # Mount the specified device and output the mount point.
 # $1 = device in the form /dev/xxx
 mount_device() {
-  echo "$1"|grep '^/dev/' >/dev/null
+  echo "$1"|grep -q '^/dev/'
   if [ $? -eq 0 ]; then
     DEV=$(echo "$1"|sed 's:/dev/::')
     if mountpoint -q /mnt/$DEV; then
@@ -331,7 +333,7 @@ mount_device() {
 # Umount the specified device.
 # $1 = device in the form /dev/xxx
 umount_device() {
-  echo "$1"|grep '^/dev/' >/dev/null
+  echo "$1"|grep -q '^/dev/'
   if [ $? -eq 0 ]; then
     DEV=$(echo "$1"|sed 's:/dev/::')
     if mountpoint -q /mnt/$DEV; then
@@ -346,20 +348,40 @@ umount_device() {
 # Find the device and mount point where the distro resides.
 # Will output in the format '/dev/xxx:/mnt/xxx' if found.
 find_distro_device() {
-  for d in $(find_mountable_devices); do
-    MP=$(mount_device "$d")
-    if [ -n "$MP" ]; then
-      if [ -e "$MP/$IDENT_FILE" ]; then
-        C="$(cat "$MP/$IDENT_FILE")"
-        if [ "$C" = "$IDENT_CONTENT" ]; then
-          echo "$d:$MP"|tee /tmp/distro_infos
-          break
-        fi
+  if [ -r /tmp/distro_infos ]; then # distro already mounted
+    MP=$(cut -d: -f1 /tmp/distro_infos)
+    d=$(cut -d: -f2- /tmp/distro_infos)
+    ok=false
+    if [ -e "$MP/$IDENT_FILE" ]; then
+      C="$(cat "$MP/$IDENT_FILE")"
+      if [ "$C" = "$IDENT_CONTENT" ]; then
+        echo "$MP:$d"
+        ok=true
       fi
-      debuglog "'/$IDENT_FILE:$IDENT_CONTENT' not found in $d"
-      umount_device "$d" >/dev/null 2>&1
     fi
-  done
+    if [ "$ok" = "false" ]; then
+      debuglog "'/$IDENT_FILE:$IDENT_CONTENT' not found in $d"
+      debuglog "Umounting $MP"
+      ((umount -r -d $MP || umount -l $MP) && rmdir $MP) >/dev/null 2>&1
+    fi
+    unset ok
+  fi
+  if [ ! -r /tmp/distro_infos ]; then
+    for d in $(find_mountable_devices); do
+      MP=$(mount_device "$d")
+      if [ -n "$MP" ]; then
+        if [ -e "$MP/$IDENT_FILE" ]; then
+          C="$(cat "$MP/$IDENT_FILE")"
+          if [ "$C" = "$IDENT_CONTENT" ]; then
+            echo "$MP:$d"|tee /tmp/distro_infos
+            break
+          fi
+        fi
+        debuglog "'/$IDENT_FILE:$IDENT_CONTENT' not found in $d"
+        umount_device "$d" >/dev/null 2>&1
+      fi
+    done
+  fi
 }
 
 # Find the save file if it exists.
@@ -436,7 +458,7 @@ find_modules() {
   if [ -n "$MP" ]; then
     if [ -d "$MP/$ROOT_DIR/modules" ]; then
       for m in "$MP/$ROOT_DIR"/modules/*.salt; do
-        file "$m"|grep -i 'Squashfs filesystem' >/dev/null && echo "$m"
+        file "$m"|grep -i -q 'Squashfs filesystem' && echo "$m"
       done
     else
       errorlog "'$MP/$ROOT_DIR/modules' not found"
@@ -452,7 +474,7 @@ load_module() {
   m="$1"
   if [ -e "$m" ]; then
     if mountpoint -q /mnt/union; then
-      file "$m"|grep -i 'Squashfs filesystem' >/dev/null
+      file "$m"|grep -i -q 'Squashfs filesystem'
       if [ $? -eq 0 ]; then
         n=$(basename "$m" .salt)
         mp="/mnt/modules/$n"
@@ -606,7 +628,7 @@ umount_submounts_in() {
 
 # Eject the CD if the source is a CD
 eject_cd() {
-  DEV=$(cut -d: -f1 /tmp/distro_infos)
+  DEV=$(cut -d: -f2- /tmp/distro_infos)
   TYPE=$(find_fs_type $DEV)
   if [ "$TYPE" = "iso9660" ]; then
     echoinfo "Ejecting $DEV..."

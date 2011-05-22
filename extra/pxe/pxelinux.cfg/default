@@ -1,0 +1,8 @@
+DEFAULT menu.c32
+PROMPT 0
+
+LABEL salixlive
+MENU LABEL ^S) Net boot Salix Live
+LINUX /salixlive/vmlinuz
+APPEND root=/dev/ram0 remote=nfs,192.168.0.1,/tftpboot/salixlive/iso skipnetcheck
+INITRD /salixlive/initextra.xz

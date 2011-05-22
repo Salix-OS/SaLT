@@ -7,6 +7,7 @@
 # Initial script launched in the initrd of SaLT
 
 [ "$$" -ne 1 ] && exit 1;
+args="$@"
 
 echo -e -n '\n\e[1;36mSaLT initializing... '
 PATH=:/usr/sbin:/usr/bin:/sbin:/bin
@@ -30,6 +31,7 @@ echo -e "\e[1;32mDone\e[0m"
 echoinfo "*** Starting Live initialization ***"
 
 cd /
+klogd -c 3
 infolog 'Loading essential kernel modules...'
 load_core_modules
 infolog 'Initialize /dev'
@@ -39,6 +41,8 @@ load_usb_modules
 infolog 'Starting PCMCIA CardBus support'
 load_pcmcia_modules
 
+[ -e /init_extra ] && sh /init_extra
+
 infolog "Finding $LIVE_NAME device..."
 identfile=$(get_value_cmdline identfile)
 [ -n "$identfile" ] && IDENT_FILE=$identfile
@@ -47,8 +51,8 @@ DISTRO_INFO=$(find_distro_device)
 if [ -z "$DISTRO_INFO" ]; then
   fumble "Could not find the distro to boot\nFile searched: $IDENT_FILE\nContent searched: $IDENT_CONTENT"
 fi
-DISTRO_DEV=$(echo $DISTRO_INFO|cut -d: -f1)
-DISTRO_MP=$(echo $DISTRO_INFO|cut -d: -f2)
+DISTRO_MP=$(echo $DISTRO_INFO|cut -d: -f1)
+DISTRO_DEV=$(echo $DISTRO_INFO|cut -d: -f2-)
 infolog "  $LIVE_NAME found in $DISTRO_DEV"
 debugshell
 
@@ -88,9 +92,9 @@ for m in $(find_modules $DISTRO_MP); do
 done
 
 if is_on_cmdline 'memonly'; then
-  debuglog "Umounting $DISTRO_DEV for using memory only"
+  debuglog "Umounting $DISTRO_MP for using memory only"
   # This could not work if, for example, the save file is on $DISTRO_MP
-  umount $DISTRO_DEV 2>/dev/null && rmdir $DISTRO_MP 2>/dev/null
+  umount $DISTRO_MP 2>/dev/null && rmdir $DISTRO_MP 2>/dev/null
 fi
 
 infolog 'Tweaking the target distro'
@@ -197,8 +201,8 @@ EOF
     unset LIBC
     unset LIBDIR
   fi
+  killall klogd
   debugshell
-  runlevel=$(get_runlevel_cmdline)
-  change_root_to_distro /mnt/salt/init.distro $runlevel
+  change_root_to_distro /mnt/salt/init.distro $args
 fi
 fumble 'End of init: this line must never be executed!'
