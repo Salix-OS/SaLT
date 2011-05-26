@@ -9,6 +9,26 @@
 # load the SaLT library
 . /lib/libSaLT
 
+# decompress binaries in /usr/bin
+(
+  cd /usr/bin
+  mkdir /tmp/bin
+  for f in *.xz; do
+    f2=$(basename $f .xz)
+    xzcat $f > /tmp/bin/$f2
+    rm $f
+    chmod +x /tmp/bin/$f2
+    ln -s /tmp/bin/$f2 $f2
+  done
+)
+# decompress /etc/misc
+(
+  cd /tmp
+  tar xf /etc/misc.tar.xz
+  cd /etc
+  ln -s /tmp/misc .
+)
+
 # dialog-like function
 dialog() {
   TITLE="$1"
@@ -166,7 +186,7 @@ case "$1" in
 esac
 EOF
     chmod +x /tmp/netscript
-    udhcpc -i $INTERFACE -t 3 -A 1 -n -q -s /tmp/netscript
+    udhcpc -i $INTERFACE -t 3 -A 1 -n -q -s /tmp/netscript | sed 's/^/  /'
     if [ -r /tmp/netinfos ]; then
       . /tmp/netinfos
       IPADDRESS=$ip; unset ip
@@ -238,12 +258,14 @@ mount_remote_endpoint() {
     echoerror "Could not find how to fetch the iso data."
     echoerror "Please configure the 'remote' kernel cheatcode with:"
     echoerror "  'remote=protocol,remoteserver,rootpath'"
-    echoerror "protocol could be nfs, ftp, ssh or samba"
+    echoerror "protocol could be nfs, ftp, http, ssh or smb"
     echoerror "remoteserver should be the address ip."
     echoerror "  It could also contains in addition:"
     echoerror "  - :portnumber (nfs, ftp, ssh)"
-    echoerror "  - :user:password (ftp, ssh*, samba)"
+    echoerror "  - :user:password (ftp, ssh*, smb)"
     echoerror "    * no password for ssh, it will be asked"
+    echoerror "rootpath should point the the ISO content or"
+    echoerror "  directly to the ISO file for HTTP."
   else
     case "$RPROTOCOL" in
       "nfs")
@@ -263,17 +285,25 @@ mount_remote_endpoint() {
         fi
         sh lib/libFTP.sh "$RSERVER" "$RPORT" "$RUSER" "$RPWD" "$RPATH"
         ;;
-      "ssh")
+      "http")
         RPORT='80'
+        echo $RSERVER | grep -q ':'
+        if [ $? -eq 0 ]; then
+          RPORT=$(echo $RSERVER|cut -d: -f2)
+        fi
+        sh lib/libHTTP.sh "$RSERVER" "$RPORT" "$RPATH"
+        ;;
+      "ssh")
+        RPORT='22'
         RUSER='root'
         echo $RSERVER | grep -q ':'
         if [ $? -eq 0 ]; then
           RPORT=$(echo $RSERVER|cut -d: -f2)
           RUSER=$(echo $RSERVER|cut -d: -f3)
         fi
-        sh lib/libHTTP.sh "$RSERVER" "$RPORT" "$RUSER" "$RPATH"
+        sh lib/libSSH.sh "$RSERVER" "$RPORT" "$RUSER" "$RPATH"
         ;;
-      "samba")
+      "smb")
         RUSER=''
         RPWD=''
         echo $RSERVER | grep -q ':'
@@ -281,7 +311,7 @@ mount_remote_endpoint() {
           RUSER=$(echo $RSERVER|cut -d: -f2)
           RPWD=$(echo $RSERVER|cut -d: -f3)
         fi
-        sh lib/libSamba.sh "$RSERVER" "$RUSER" "$RPWD" "$RPATH"
+        sh lib/libSmb.sh "$RSERVER" "$RUSER" "$RPWD" "$RPATH"
         ;;
       *)
         echoerror "Protocol '$RPROTOCOL' not recognized"

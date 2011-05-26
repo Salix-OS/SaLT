@@ -9,7 +9,7 @@
 # load the SaLT library
 . /lib/libSaLT
 
-infolog 'Loading data through HTTP...'
+infolog 'Loading data through SSH...'
 RSERVER="$1"
 RPORT="$2"
 RUSER="$3"
@@ -20,6 +20,7 @@ d=ssh://$RUSER@$RSERVER
 d=$d:$RPATH
 MNTCMD="sshfs $RUSER@$RSERVER:$RPATH"
 [ -n "$RPORT" ] && MNTCMD="$MNTCMD -p $RPORT"
+MNTCMD="$MNTCMD $MP"
 
 mkdir -p $MP
 $($MNTCMD)

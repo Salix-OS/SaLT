@@ -15,7 +15,7 @@ RUSER="$2"
 RPWD="$3"
 RPATH="$4"
 MP=/mnt/samba
-d=samba://
+d=smb://
 if [ -n "$RUSER" ]; then
   d="$d$RUSER"
   [ -n "$RPWD" ] && d="$d:$RPWD"

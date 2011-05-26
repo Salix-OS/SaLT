@@ -83,6 +83,7 @@ kill_all_before $$
 debugshell
 debuglog 'Umount sub-mounts in /mnt/union'
 umount_submounts_in /mnt/union
+sleep 3
 debugshell
 
 infolog 'Unloading modules...'

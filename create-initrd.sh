@@ -133,6 +133,13 @@ while read M; do
   fi
 done < modules
 cp -a $KERNELDIR/lib/modules/$KVER/modules.{alias,builtin,dep,symbols} $TREE/lib/modules/$KVER/
+# compress lib dir
+(
+  cd $TREE
+  tar caf lib.tar.$COMP lib
+  rm -rf lib
+  ln -s tmp/lib lib
+)
 # create initrd.$COMP
 INITRD_SIZE_M=$('du' -sm $TREE|awk '{print $1}')
 INITRD_SIZE_M=$(($INITRD_SIZE_M + 1))

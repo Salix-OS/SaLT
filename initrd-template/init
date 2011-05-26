@@ -23,10 +23,16 @@ echo 'none /proc proc rw 0 0' >> /etc/mtab
 echo 'none /sys sysfs rw 0 0' >> /etc/mtab
 
 mount -t tmpfs none /tmp
+( cd /tmp; tar xf /lib.tar.* )
 
 # load the SaLT library
 . /lib/libSaLT
-echo -e "\e[1;32mDone\e[0m"
+if [ $(mount | grep ' on / ' | wc -l) -eq 1 ]; then
+  echo -e "\e[1;31mError\e[0m"
+  fumble "You cannot use initramfs with SaLT, only initrd is supported."
+else
+  echo -e "\e[1;32mDone\e[0m"
+fi
 [ -z "$SALT_DEBUG" ] && clear
 echoinfo "*** Starting Live initialization ***"
 

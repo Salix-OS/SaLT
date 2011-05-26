@@ -13,7 +13,15 @@ COMP=$1
 DEBUG=$2
 
 BBVER=1.18.4
+HTTPFSVER=0.1.4
+
 BBURL=http://busybox.net/downloads/busybox-$BBVER.tar.bz2
+SSHFSBIN=/usr/bin/sshfs
+SSHBIN=/usr/bin/ssh
+CURLFTPFSBIN=/usr/bin/curlftpfs
+HTTPFSURL=http://sourceforge.net/projects/httpfs/files/httpfs2/httpfs2-$HTTPFSVER.tar.gz/download
+CIFSBINS=(/usr/sbin/mount.cifs /usr/sbin/umount.cifs)
+EXTRALIBS="/lib/libnss_*"
 KERNELDIR=$PWD/../kernel
 
 KVER=$KERNELDIR/lib/modules/*
@@ -49,6 +57,11 @@ cp -r .initrd-tree/* $TREE
 umount .initrd-tree
 rm initrd ../initrd.$COMP
 rmdir .initrd-tree
+(
+  cd $TREE
+  tar xf lib.tar.*
+  rm lib.tar.*
+)
 # download, compile and install busybox
 if [ ! -e busybox-$BBVER.tar.bz2 ]; then
   wget $BBURL
@@ -65,6 +78,46 @@ if [ ! -e busybox-$BBVER/_install/bin/busybox ]; then
 fi
 cp -av busybox-$BBVER/_install/bin/* $TREE/bin/
 cp -av busybox-$BBVER/_install/sbin/* $TREE/sbin/
+# copy curlftpfs on the initrd using the one installed in the distro.
+cp $CURLFTPFSBIN $TREE/bin/
+for l in $(ldd $CURLFTPFSBIN | cut -d'>' -f2 | cut -d'(' -f1); do
+  cp -Lv "$l" $TREE/lib/
+done
+# copy sshfs on the initrd using the one installed in the distro.
+cp $SSHFSBIN $TREE/bin/
+for l in $(ldd $SSHFSBIN | cut -d'>' -f2 | cut -d'(' -f1); do
+  cp -Lv "$l" $TREE/lib/
+done
+# copy ssh on the initrd using the one installed in the distro.
+cp $SSHBIN $TREE/bin/
+for l in $(ldd $SSHBIN | cut -d'>' -f2 | cut -d'(' -f1); do
+  cp -Lv "$l" $TREE/lib/
+done
+for l in ${CIFSBINS[*]}; do
+  cp -Lv "$l" $TREE/sbin/
+done
+for l in ${EXTRALIBS[*]}; do
+  cp -Lv "$l" $TREE/lib/
+done
+chmod +x $TREE/lib/*.so.*
+# download, compile and install httpfs
+if [ ! -e httpfs2-$HTTPFSVER.tar.gz ]; then
+  wget $HTTPFSURL
+fi
+if [ ! -e httpfs2-$HTTPFSVER/httpfs2 ]; then
+  rm -rf httpfs2-$HTTPFSVER
+  tar -xf httpfs2-$HTTPFSVER.tar.gz
+  (
+    cd httpfs2-$HTTPFSVER
+    make
+  )
+fi
+cp -av httpfs2-$HTTPFSVER/httpfs2 $TREE/bin/
+# /etc stuff
+mkdir -p $TREE/etc
+echo 'root:x:0:0:root:/:/bin/sh' > $TREE/etc/passwd
+echo 'root:x:0:root' > $TREE/etc/group
+echo 'root:!:9797:0:::::' > $TREE/etc/shadow
 # copy needed modules
 while read M; do
   if [ -e $KERNELDIR/lib/modules/$KVER/kernel/$M ]; then
@@ -78,20 +131,46 @@ while read M; do
     fi
   fi
 done < modules
-# create initextra.$COMP
+# compress lib dir
+(
+  cd $TREE
+  tar caf lib.tar.$COMP lib
+  rm -rf lib
+  ln -s tmp/lib lib
+)
+# compress non busybox binaries in usr/bin
+for f in $(find $TREE/usr/bin -type f | grep -v 'busybox'); do
+  xz < $f > $f.xz
+  rm $f
+done
+# compress etc/misc
+(
+  cd $TREE/etc
+  tar caf misc.tar.xz misc
+  rm -rf misc
+)
+
+# create initrd initextra.$COMP
 INITEXTRA_SIZE_M=$('du' -sm $TREE|awk '{print $1}')
 INITEXTRA_SIZE_M=$(($INITEXTRA_SIZE_M + 1))
-rm -rf initextra initextra.$COMP initrd-ext2
-dd if=/dev/zero of=initextra bs=1M count=$INITEXTRA_SIZE_M
-mkfs.ext2 -m 0 -F -q initextra
-mkdir initextra-ext2 && mount -o loop initextra initextra-ext2
-cp -a $TREE/* initextra-ext2/
-umount initextra-ext2 && rm -rf initextra-ext2
-case $COMP in
-  "gz")
-    gzip initextra
-    ;;
-  "xz")
-    xz --check=crc32 initextra
-    ;;
-esac
+SIZE_MAX=$(grep '^CONFIG_BLK_DEV_RAM_SIZE=' ../kernel/boot/config* | cut -d= -f2)
+SIZE_MAX=$(($SIZE_MAX / 1024))
+if [ $INITEXTRA_SIZE_M -gt $SIZE_MAX ]; then
+  echo "initrd size needs ${INITEXTRA_SIZE_M}MB, but the kernel only supports ${SIZE_MAX}MB."
+  exit 1
+else
+  rm -rf initextra initextra.$COMP initrd-ext2
+  dd if=/dev/zero of=initextra bs=1M count=$INITEXTRA_SIZE_M
+  mkfs.ext2 -m 0 -F -q initextra
+  mkdir initextra-ext2 && mount -o loop initextra initextra-ext2
+  cp -a $TREE/* initextra-ext2/
+  umount initextra-ext2 && rm -rf initextra-ext2
+  case $COMP in
+    "gz")
+      gzip initextra
+      ;;
+    "xz")
+      xz --check=crc32 initextra
+      ;;
+  esac
+fi

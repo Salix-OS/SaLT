@@ -111,6 +111,7 @@ while true; do
       done
     fi
     if [ ! -r /tmp/cardfound ]; then
+      echo
       echoerror "Sorry, but no network card was detected.  Some cards (like non-PCI"
       echoerror "NE2000s) must be supplied with the I/O address to use.  If you have"
       echoerror "an NE2000, you can switch to a shell and load it with a command like this:"
