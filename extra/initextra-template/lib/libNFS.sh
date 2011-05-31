@@ -10,7 +10,6 @@
 . /lib/libSaLT
 
 infolog 'Loading data through NFS...'
-
 RSERVER="$1"
 RPORT="$2"
 RPATH="$3"
@@ -24,10 +23,10 @@ MNTCMD="$MNTCMD $RSERVER:$RPATH $MP"
 
 modprobe_check nfs
 mkdir -p $MP
-echoinfo "Trying to mount $d"
+echoinfo " * Connecting to $d..."
 $($MNTCMD)
 if [ $? -eq 0 ]; then
-  echoinfo "NFS mounted in $MP"
+  echodebug "NFS mounted in $MP"
   echo "$MP:$d" > /tmp/distro_infos
 else
   echoerror "NFS mount failed"

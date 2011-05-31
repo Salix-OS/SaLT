@@ -138,7 +138,6 @@ cp -a $KERNELDIR/lib/modules/$KVER/modules.{alias,builtin,dep,symbols} $TREE/lib
   cd $TREE
   tar caf lib.tar.$COMP lib
   rm -rf lib
-  ln -s tmp/lib lib
 )
 # create initrd.$COMP
 INITRD_SIZE_M=$('du' -sm $TREE|awk '{print $1}')

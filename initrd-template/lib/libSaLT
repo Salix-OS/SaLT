@@ -140,6 +140,16 @@ debugshell() {
     echo
   fi
 }
+shell() {
+  echo
+  echoinfo '  +------------------------+'
+  echoinfo '  |         Shell          |'
+  echoinfo '  | Hit Ctrl+D to continue |'
+  echoinfo '  +------------------------+'
+  echo
+  setsid sh -c 'exec hush </dev/tty1 >/dev/tty1 2>&1'
+  echo
+}
 # Echo an error, try to run a shell, and the try to reboot
 # $@ = optional message
 fumble() {

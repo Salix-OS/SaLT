@@ -237,13 +237,14 @@ EOF
   fi
 }
 
+# $1 = remote protocol.
+# Format is 'remote=protocol,remoteserver[:portnumber],rootpath'
+# If empty, will use the protocol NFS, with the remoteserver=serverid and rootpath=/tftpboot/salixlive/iso
 mount_remote_endpoint() {
-  # commandline format is 'remote=protocol,remoteserver[:portnumber],rootpath'
-  # if remote is empty, will use the protocol NFS, with the remoteserver=serverid and rootpath=/tftpboot/salixlive/iso
   RPROTOCOL=''
   RSERVER=''
   RPATH=''
-  REMOTE=$(get_value_cmdline remote)
+  REMOTE="$1"
   if [ -n "$REMOTE" ]; then
     RPROTOCOL=$(echo "$REMOTE"|cut -d, -f1)
     RSERVER=$(echo "$REMOTE"|cut -d, -f2)
@@ -254,6 +255,7 @@ mount_remote_endpoint() {
     RPATH=/ftfpboot/salixlive/iso
   fi
   unset REMOTE
+  rm -f /tmp/distro_infos
   if [ -z "$RPROTOCOL" -o -z "$RSERVER" -o -z "$RPATH" ]; then
     echoerror "Could not find how to fetch the iso data."
     echoerror "Please configure the 'remote' kernel cheatcode with:"
@@ -268,13 +270,14 @@ mount_remote_endpoint() {
     echoerror "  directly to the ISO file for HTTP."
   else
     case "$RPROTOCOL" in
-      "nfs")
+      'nfs')
         RPORT=''
         echo $RSERVER | grep -q ':' && RPORT=$(echo $RSERVER|cut -d: -f2)
+        RSERVER=$(echo $RSERVER|cut -d: -f1)
         sh lib/libNFS.sh "$RSERVER" "$RPORT" "$RPATH"
         ;;
-      "ftp")
-        RPORT='21'
+      'ftp')
+        RPORT=''
         RUSER=''
         RPWD=''
         echo $RSERVER | grep -q ':'
@@ -283,27 +286,30 @@ mount_remote_endpoint() {
           RUSER=$(echo $RSERVER|cut -d: -f3)
           RPWD=$(echo $RSERVER|cut -d: -f4)
         fi
+        RSERVER=$(echo $RSERVER|cut -d: -f1)
         sh lib/libFTP.sh "$RSERVER" "$RPORT" "$RUSER" "$RPWD" "$RPATH"
         ;;
-      "http")
-        RPORT='80'
+      'http')
+        RPORT=''
         echo $RSERVER | grep -q ':'
         if [ $? -eq 0 ]; then
           RPORT=$(echo $RSERVER|cut -d: -f2)
         fi
+        RSERVER=$(echo $RSERVER|cut -d: -f1)
         sh lib/libHTTP.sh "$RSERVER" "$RPORT" "$RPATH"
         ;;
-      "ssh")
-        RPORT='22'
+      'ssh')
+        RPORT=''
         RUSER='root'
         echo $RSERVER | grep -q ':'
         if [ $? -eq 0 ]; then
           RPORT=$(echo $RSERVER|cut -d: -f2)
           RUSER=$(echo $RSERVER|cut -d: -f3)
         fi
+        RSERVER=$(echo $RSERVER|cut -d: -f1)
         sh lib/libSSH.sh "$RSERVER" "$RPORT" "$RUSER" "$RPATH"
         ;;
-      "smb")
+      'smb')
         RUSER=''
         RPWD=''
         echo $RSERVER | grep -q ':'
@@ -311,6 +317,7 @@ mount_remote_endpoint() {
           RUSER=$(echo $RSERVER|cut -d: -f2)
           RPWD=$(echo $RSERVER|cut -d: -f3)
         fi
+        RSERVER=$(echo $RSERVER|cut -d: -f1)
         sh lib/libSmb.sh "$RSERVER" "$RUSER" "$RPWD" "$RPATH"
         ;;
       *)
@@ -324,6 +331,16 @@ configure_loopback
 debugshell
 configure_ethernet
 debugshell
-mount_remote_endpoint
+remote=$(get_value_cmdline remote)
+while true; do
+  mount_remote_endpoint "$remote"
+  if [ -r /tmp/distro_infos ]; then
+    break
+  else
+    echocolor $COLOR_BOLD $COLOR_CYAN 'remote='
+    read remote;
+    echo
+  fi
+done
 debugshell
 infolog 'End extra initial script'

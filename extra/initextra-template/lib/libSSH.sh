@@ -23,10 +23,13 @@ MNTCMD="sshfs $RUSER@$RSERVER:$RPATH"
 MNTCMD="$MNTCMD $MP"
 
 mkdir -p $MP
+echoinfo " * Connecting to $d..."
 $($MNTCMD)
 if [ $? -eq 0 ]; then
+  echodebug "SSH mounted in $MP"
   echo "$MP:$d" > /tmp/distro_infos
 else
+  echoerror "SSH mount failed"
   rmdir $MP
 fi
 debugshell

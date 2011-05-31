@@ -23,7 +23,14 @@ echo 'none /proc proc rw 0 0' >> /etc/mtab
 echo 'none /sys sysfs rw 0 0' >> /etc/mtab
 
 mount -t tmpfs none /tmp
-( cd /tmp; tar xf /lib.tar.* )
+(
+  cd /tmp
+  tar xf /lib.tar.*
+  rm /lib.tar.*
+  [ ! -d /lib ] && mkdir /lib
+  cd /lib
+  ln -s /tmp/lib/* .
+)
 
 # load the SaLT library
 . /lib/libSaLT

@@ -24,13 +24,12 @@ fi
 d=$d$RSERVER/$RPATH
 MNTCMD="mount -t cifs"
 if [ -n "$RUSER" ]; then
-  mkdir -p /root
-  echo "username=$RUSER" > /root/.creds
-  chmod go-rw /root/.creds
+  echo "username=$RUSER" > /.creds
+  chmod go-rw /.creds
   if [ -n "$RPWD" ]; then
-    echo "password=$PWD" >> /root/.creds
+    echo "password=$PWD" >> /.creds
   fi
-  MNTCMD="$MNTCMD -o credentials=/root/.creds"
+  MNTCMD="$MNTCMD -o credentials=/.creds"
 else
   MNTCMD="$MNTCMD -o guest"
 fi
@@ -38,10 +37,13 @@ MNTCMD="$MNTCMD //$RSERVER/$RPATH $MP"
 
 modprobe_check cifs
 mkdir -p $MP
+echoinfo " * Connecting to $d..."
 $($MNTCMD)
 if [ $? -eq 0 ]; then
+  echodebug "Samba mounted in $MP"
   echo "$MP:$d" > /tmp/distro_infos
 else
+  echoerror "Samba mount failed"
   rmdir $MP
 fi
 debugshell

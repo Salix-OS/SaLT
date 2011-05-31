@@ -40,7 +40,7 @@ rm -rf $TREE
 cp -a initextra-template $TREE
 find $TREE -name '.svn' -type d -prune -exec rm -rf '{}' +
 # adjust some rights
-chown root:root $TREE
+chown -R root:root $TREE
 # get the previous initrd and copy the content to the template
 sh ../create-initrd.sh $COMP $DEBUG
 mkdir .initrd-tree
@@ -78,26 +78,60 @@ if [ ! -e busybox-$BBVER/_install/bin/busybox ]; then
 fi
 cp -av busybox-$BBVER/_install/bin/* $TREE/bin/
 cp -av busybox-$BBVER/_install/sbin/* $TREE/sbin/
+# busybox is dynamically linked agains glibc, so include it
+for l in $(ldd $TREE/bin/busybox | cut -d'>' -f2 | cut -d'(' -f1); do
+  l2="$l"
+  while [ -h "$l2" ]; do
+    cp -Pv "$l2" $TREE/lib/
+    l2=$(readlink -f "$l2")
+  done
+  cp -Pv "$l2" $TREE/lib/
+done
 # copy curlftpfs on the initrd using the one installed in the distro.
 cp $CURLFTPFSBIN $TREE/bin/
 for l in $(ldd $CURLFTPFSBIN | cut -d'>' -f2 | cut -d'(' -f1); do
-  cp -Lv "$l" $TREE/lib/
+  l2="$l"
+  while [ -h "$l2" ]; do
+    cp -Pv "$l2" $TREE/lib/
+    l2=$(readlink -f "$l2")
+  done
+  cp -Pv "$l2" $TREE/lib/
 done
 # copy sshfs on the initrd using the one installed in the distro.
 cp $SSHFSBIN $TREE/bin/
 for l in $(ldd $SSHFSBIN | cut -d'>' -f2 | cut -d'(' -f1); do
-  cp -Lv "$l" $TREE/lib/
+  l2="$l"
+  while [ -h "$l2" ]; do
+    cp -Pv "$l2" $TREE/lib/
+    l2=$(readlink -f "$l2")
+  done
+  cp -Pv "$l2" $TREE/lib/
 done
 # copy ssh on the initrd using the one installed in the distro.
 cp $SSHBIN $TREE/bin/
 for l in $(ldd $SSHBIN | cut -d'>' -f2 | cut -d'(' -f1); do
-  cp -Lv "$l" $TREE/lib/
+  l2="$l"
+  while [ -h "$l2" ]; do
+    cp -Pv "$l2" $TREE/lib/
+    l2=$(readlink -f "$l2")
+  done
+  cp -Pv "$l2" $TREE/lib/
 done
 for l in ${CIFSBINS[*]}; do
-  cp -Lv "$l" $TREE/sbin/
+  l2="$l"
+  while [ -h "$l2" ]; do
+    cp -Pv "$l2" $TREE/lib/
+    l2=$(readlink -f "$l2")
+  done
+  cp -Pv "$l2" $TREE/lib/
 done
 for l in ${EXTRALIBS[*]}; do
-  cp -Lv "$l" $TREE/lib/
+  l2="$l"
+  while [ -h "$l2" ]; do
+    cp -Pv "$l2" $TREE/lib/
+    l2=$(readlink -f "$l2")
+  done
+  cp -Pv "$l2" $TREE/lib/
 done
 chmod +x $TREE/lib/*.so.*
 # download, compile and install httpfs
@@ -119,6 +153,7 @@ echo 'root:x:0:0:root:/:/bin/sh' > $TREE/etc/passwd
 echo 'root:x:0:root' > $TREE/etc/group
 echo 'root:!:9797:0:::::' > $TREE/etc/shadow
 # copy needed modules
+echo "Finding modules..."
 while read M; do
   if [ -e $KERNELDIR/lib/modules/$KVER/kernel/$M ]; then
     mkdir -p $TREE/lib/modules/$KVER/kernel/$(dirname $M)
@@ -131,12 +166,20 @@ while read M; do
     fi
   fi
 done < modules
+# adjust some rights
+chown -R root:root $TREE
 # compress lib dir
 (
   cd $TREE
-  tar caf lib.tar.$COMP lib
-  rm -rf lib
-  ln -s tmp/lib lib
+  excludes=$(mktemp)
+  'ls' -1 lib/ld-* lib/libc.* lib/libc-* > $excludes
+  tar cavf lib.tar.$COMP -X $excludes lib
+  rm -f $excludes
+  unset excludes
+  mv lib lib2
+  mkdir lib
+  mv lib2/ld-* lib2/libc.* lib2/libc-* lib/
+  rm -rf lib2
 )
 # compress non busybox binaries in usr/bin
 for f in $(find $TREE/usr/bin -type f | grep -v 'busybox'); do
@@ -146,7 +189,7 @@ done
 # compress etc/misc
 (
   cd $TREE/etc
-  tar caf misc.tar.xz misc
+  tar cavf misc.tar.xz misc
   rm -rf misc
 )
 
