@@ -79,7 +79,7 @@ if [ $? -eq 0 ]; then
   CATALOGFILE=
   [ ! -e mt86p ] && wget "http://www.memtest.org/download/$MEMTEST_VER/memtest86+-$MEMTEST_VER.bin.gz" -O - | zcat > mt86p
   ISODIR=$(mktemp -d)
-  mkdir -p $ISODIR/$ROOT_DIR
+  mkdir -p $ISODIR/$ROOT_DIR/persistence
   echo "$IDENT_CONTENT" > $ISODIR/$IDENT_FILE
   # generate background image
   if [ ! -e $IMAGE ]; then

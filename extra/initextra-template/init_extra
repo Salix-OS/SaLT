@@ -252,7 +252,7 @@ mount_remote_endpoint() {
   else
     RPROTOCOL=nfs
     RSERVER=$(grep serverid /tmp/netinfos | sed "s/export serverid='\(.*\)'/\1/")
-    RPATH=/ftfpboot/salixlive/iso
+    RPATH=/tftpboot/salixlive/iso
   fi
   unset REMOTE
   rm -f /tmp/distro_infos
@@ -337,9 +337,10 @@ while true; do
   if [ -r /tmp/distro_infos ]; then
     break
   else
-    echocolor $COLOR_BOLD $COLOR_CYAN 'remote='
-    read remote;
-    echo
+    echo -e -n "\n\e[$COLOR_BOLD;$COLOR_CYAN"
+    read -p 'remote=' remote;
+    echo -e "\e[0m"
+    debugshell
   fi
 done
 debugshell

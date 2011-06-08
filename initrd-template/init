@@ -29,7 +29,8 @@ mount -t tmpfs none /tmp
   rm /lib.tar.*
   [ ! -d /lib ] && mkdir /lib
   cd /lib
-  ln -s /tmp/lib/* .
+  # relative path
+  ln -s ../tmp/lib/* .
 )
 
 # load the SaLT library

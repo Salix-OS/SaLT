@@ -34,8 +34,8 @@ These scripts is a base to help you built a Slackware Live.
 It will not build the modules for you or organize the final architecture: it focuses on the initrd.
 It could possibly be modified to run other distro than Slackware based.
 
-Based on ideas from LLS (ftp://ftp.slax.org/Linux-Live/) and SLS (https://github.com/godane/slackware-live/).
-Why a new project? Because LLS is not compatible with 64 bits and not maintained and SaLT has not the same purpose as SLS.
+Based on ideas from LLS (ftp://ftp.slax.org/Linux-Live/) and SLS (http://slackware-live.tuxfamily.org/-Home-).
+Why a new project? Because LLS is not compatible with 64 bits and not maintained and SaLT doesn't have the same purpose as SLS.
 
 These scripts could be used for Salix or any other Slackware-compatible distribution, in 32 or 64 bits.
 These scripts will not handle all possibilities of LLS or SLS at first. Things will be added further, in a proper way.
@@ -77,6 +77,12 @@ Features:
     * savefile: name of the save file. Overrides the name in the config file
     * memonly: will boot using memory only. The CD/DVD/USB will not be read/used after booting (or just the savefile if it's on the USB key)
     * proxy: url of the http and ftp proxy. Could include the 'http://' protocol or not.
+  - can netboot in PXE (using the extra initrd) using the following protocols:
+    * NFS
+    * SSH
+    * Samba (CIFS)
+    * HTTP
+    * FTP (with a limitation)
 
 Known bugs/limitations:
   - kernel must support aufs2 and squashfs.
@@ -84,8 +90,10 @@ Known bugs/limitations:
   - plinks are not supported over aufs2. So hardlink between branches do not work, i.e. files are copied.
   - live module must be a squashfs filesystem.
   - save file must be an XFS, EXT?, Reiserfs, FAT or NTFS filesystem.
-  - init is the only first process supported and is lookuped in /, /sbin, /bin, /usr/sbin, /usr/bin directories.
+  - init is the only first process supported and is looked up in /, /sbin, /bin, /usr/sbin, /usr/bin directories.
   - if init is dynamically linked (bad idea), only ld and libc is supported.
+  - Linux console not localized.
+  - PXE boot in FTP will freeze (kernel panic) while chrooting when using curlftpfs. Wget is used instead (needs more memory).
 
 initrd-template/lib/keymaps is a file taken from the salixtools package. This file will be kept up to date.
 
@@ -100,7 +108,7 @@ Two files are used for configuration:
 'config' file is expecting some variables:
   - LIVE_NAME: only used when displaying some information on boot, enter what your want.
   - IDENT_FILE: default file name to look for to identify the target distro to boot. This file must be in the root directory of the ISO.
-  - IDENT_CONTENT: string contains in IDENT_FILE for double-checking.
+  - IDENT_CONTENT: string contained in IDENT_FILE for double-checking.
   - ROOT_DIR: directory that contains distro data like modules.
 
 'modules' file is a kernel module file list where each module is on one line. The path starts from /lib/modules/kver/kernel/ where '/' is not mentionned.

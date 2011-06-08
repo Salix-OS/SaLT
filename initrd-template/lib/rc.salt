@@ -195,7 +195,7 @@ EOF
     fi
     proxy=$(get_value_cmdline proxy)
     if [ -n "$proxy" ]; then
-      # set http and ftp proxy (often the same for both)
+      # set http and ftp proxy (same for both)
       cat <<EOF > /etc/profile.d/proxy.sh
 #!/bin/sh
 export http_proxy=$proxy
@@ -203,6 +203,13 @@ export ftp_proxy=$http_proxy
 EOF
       chmod +x /etc/profile.d/proxy.sh
       /etc/profile.d/proxy.sh
+      which gconftool-2 >/dev/null 2>&1
+      if [ $? -eq 0 -a -d /etc/gconf ]; then
+        gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/host $(echo $proxy|cut -d: -f1)
+        gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/host $(echo $proxy|cut -d: -f1)
+        gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/port $(echo $proxy|grep -q ':' && echo $proxy|cut -d: -f2 || echo 3128)
+        gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/port $(echo $proxy|grep -q ':' && echo $proxy|cut -d: -f2 || echo 3128)
+      fi
     fi
     ;;
   *)

@@ -31,7 +31,7 @@ if [ -n "$RUSER" ]; then
   fi
   MNTCMD="$MNTCMD -o credentials=/.creds"
 else
-  MNTCMD="$MNTCMD -o guest"
+  MNTCMD="$MNTCMD -o guest,user="
 fi
 MNTCMD="$MNTCMD //$RSERVER/$RPATH $MP"
 

@@ -24,7 +24,8 @@ MNTCMD="$MNTCMD $MP"
 
 mkdir -p $MP
 echoinfo " * Connecting to $d..."
-$($MNTCMD)
+echoinfo $MNTCMD
+setsid hush -c "exec nohup hush -c \"$MNTCMD\" </dev/tty1 >/dev/tty1 2>&1"
 if [ $? -eq 0 ]; then
   echodebug "SSH mounted in $MP"
   echo "$MP:$d" > /tmp/distro_infos
@@ -32,4 +33,5 @@ else
   echoerror "SSH mount failed"
   rmdir $MP
 fi
+rm -f nohup.out
 debugshell

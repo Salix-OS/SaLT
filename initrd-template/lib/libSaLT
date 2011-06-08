@@ -136,7 +136,7 @@ debugshell() {
     echoinfo '  |   Hit Ctrl+D to continue    |'
     echoinfo '  +-----------------------------+'
     echo
-    setsid sh -c 'exec hush </dev/tty1 >/dev/tty1 2>&1'
+    setsid hush -c 'exec hush </dev/tty1 >/dev/tty1 2>&1'
     echo
   fi
 }
@@ -147,7 +147,7 @@ shell() {
   echoinfo '  | Hit Ctrl+D to continue |'
   echoinfo '  +------------------------+'
   echo
-  setsid sh -c 'exec hush </dev/tty1 >/dev/tty1 2>&1'
+  setsid hush -c 'exec hush </dev/tty1 >/dev/tty1 2>&1'
   echo
 }
 # Echo an error, try to run a shell, and the try to reboot
@@ -163,7 +163,7 @@ fumble() {
   echoerror "Something went wrong and we can't continue. This should never happen."
   echoerror 'Please reboot your computer with Ctrl+Alt+Delete'
   echo
-  setsid sh -c 'exec hush </dev/tty1 >/dev/tty1 2>&1' || sh
+  setsid hush -c 'exec hush </dev/tty1 >/dev/tty1 2>&1' || sh
   exec reboot -f
 }
 
@@ -408,14 +408,14 @@ find_save_file() {
       fi
     fi
     if [ -n "$MP" ]; then
-      if [ -f "$MP/$ROOT_DIR/$SAVE_FILE_NAME" ]; then
-        file "$MP/$ROOT_DIR/$SAVE_FILE_NAME"|grep -q -i 'SGI XFS filesystem data\|Linux rev 1\.0 ext. filesystem\|ReiserFS\|, FAT \|, OEM-ID "NTFS'
+      if [ -f "$MP/$ROOT_DIR/persistence/$SAVE_FILE_NAME" ]; then
+        file "$MP/$ROOT_DIR/persistence/$SAVE_FILE_NAME"|grep -q -i 'SGI XFS filesystem data\|Linux rev 1\.0 ext. filesystem\|ReiserFS\|, FAT \|, OEM-ID "NTFS'
         if [ $? -eq 0 ]; then
-          echo "$MP/$ROOT_DIR/$SAVE_FILE_NAME"
+          echo "$MP/$ROOT_DIR/persistence/$SAVE_FILE_NAME"
           break
         fi
       fi
-      debuglog "'/$ROOT_DIR/$SAVE_FILE_NAME' not found in $d"
+      debuglog "'/$ROOT_DIR/persistence/$SAVE_FILE_NAME' not found in $d"
       if [ ! -d "$d" ]; then
         umount_device "$d" >/dev/null 2>&1
       fi

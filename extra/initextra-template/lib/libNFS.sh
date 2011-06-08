@@ -18,14 +18,19 @@ d=nfs://$RSERVER
 [ -n "$RPORT" ] && d=$d:$RPORT
 d=$d:$RPATH
 MNTCMD="mount -t nfs -o nolock,ro,rsize=8192,wsize=8192,retry=0"
+MNTCMDtest="$MNTCMD,timeo=10"
 [ -n "$RPORT" ] && MNTCMD="$MNTCMD,port=$RPORT"
+[ -n "$RPORT" ] && MNTCMDtest="$MNTCMDtest,port=$RPORT"
 MNTCMD="$MNTCMD $RSERVER:$RPATH $MP"
+MNTCMDtest="$MNTCMDtest $RSERVER:$RPATH $MP"
 
 modprobe_check nfs
 mkdir -p $MP
 echoinfo " * Connecting to $d..."
-$($MNTCMD)
+$($MNTCMDtest)
 if [ $? -eq 0 ]; then
+  umount "$MP"
+  $($MNTCMD)
   echodebug "NFS mounted in $MP"
   echo "$MP:$d" > /tmp/distro_infos
 else
