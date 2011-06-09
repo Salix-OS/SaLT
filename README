@@ -76,7 +76,7 @@ Features:
     * identfile: name of the file to find the distro. Overrides the name in the config file
     * savefile: name of the save file. Overrides the name in the config file
     * memonly: will boot using memory only. The CD/DVD/USB will not be read/used after booting (or just the savefile if it's on the USB key)
-    * proxy: url of the http and ftp proxy. Could include the 'http://' protocol or not.
+    * proxy: url of the http and ftp proxy.
   - can netboot in PXE (using the extra initrd) using the following protocols:
     * NFS
     * SSH

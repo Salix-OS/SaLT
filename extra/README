@@ -1,0 +1,157 @@
+/---------------------\
+| SaLT - Extra Initrd |
+\---------------------/
+
+INFORMATION:
+------------
+This is a special initrd for use in a PXE boot environment.
+This should be servered in a TFTP download to boot with the live kernel instead of the regular initrd of the ISO.
+
+Netboot Features:
+  - NFS
+  - SSH using sshfs
+  - Samba (CIFS)
+  - HTTP using httpfs
+  - FTP using wget
+
+Known bugs/limitations:
+  - PXE boot in FTP will freeze (kernel panic) while chrooting when using curlftpfs. So wget is used instead but hence it needs more memory because the entire ISO must be loaded into RAM prior than booting.
+  - no user/password authentification supported over HTTP
+  - no wireless network supported
+  - no DNS resolution supported
+
+CONFIGURATION:
+--------------
+One file is used for configuration:
+  - modules
+    used at compile-time for network card and the like
+
+'modules' file is a kernel module file list where each module is on one line. The path starts from /lib/modules/kver/kernel/ where '/' is not mentionned.
+Exemple:
+drivers/net/e100.ko
+drivers/net/e1000/e1000.ko
+drivers/net/e1000e/e1000e.ko
+drivers/net/e2100.ko
+
+COMPILATION:
+------------
+You need to have the same settings ready as for the regular initrd.
+You also need to have in your running environment the following binaries:
+  - /usr/bin/ssh
+  - /usr/bin/curlftpfs
+  - /usr/sbin/mount.cifs
+  - /usr/sbin/umount.cifs
+You then need to run 'create-initextra.sh' script. You could optionnaly pass it the compression for the initrd (xz is preffered if you kernel support it).
+It will use (and compile) the regular initrd. So see the README file of this initrd for more information.
+
+NETBOOTING:
+-----------
+In order to netboot, you first need to set up a PXE environment. This needs a DHCP server with the BOOTP protocol and a TFTP server.
+The following instructions are for a Slackware distro. You can easily adapt it to another distro or find information about PXE on the web.
+- Install the 'dhcp' server package.
+- Create the following service: /etc/rc.d/rc.dhcpd
+    #!/bin/sh
+    #
+    # /etc/rc.d/rc.dhcpd
+    #      This shell script takes care of starting and stopping
+    #      the ISC DHCPD service
+    #
+    # Put the command line options here that you want to pass to dhcpd:
+    DHCPD_OPTIONS="-q eth0"
+    [ -x /usr/sbin/dhcpd ] || exit 0
+    [ -f /etc/dhcpd.conf ] || exit 0
+    start() {
+          # Start daemons.
+          echo -n "Starting dhcpd:  /usr/sbin/dhcpd $DHCPD_OPTIONS "
+          /usr/sbin/dhcpd $DHCPD_OPTIONS
+          echo
+    }
+    stop() {
+          # Stop daemons.
+          echo -n "Shutting down dhcpd: "
+          killall -TERM dhcpd
+          echo
+    }
+    status() {
+      PIDS=$(pidof dhcpd)
+      if [ "$PIDS" == "" ]; then
+        echo "dhcpd is not running!"
+      else
+        echo "dhcpd is running at pid(s) ${PIDS}."
+      fi
+    }
+    restart() {
+          stop
+          start
+    }
+    # See how we were called.
+    case "$1" in
+      start)
+            start
+            ;;
+      stop)
+            stop
+            ;;
+      restart)
+            stop
+            start
+            ;;
+      status)
+            status
+            ;;
+      *)
+            echo "Usage: $0 {start|stop|status|restart}"
+            ;;
+    esac
+    exit 0
+- Configure the dhcp server to answer the BOOTP protocol with the location of the PXE boot manager to fetch by TFTP. You also configure the network information that will be fetched by the PXE client and by the live distro. The config file is /etc/dhcpd.conf:
+    # dhcpd.conf
+    #
+    # Configuration file for ISC dhcpd (see 'man dhcpd.conf')
+    
+    # If this DHCP server is the official DHCP server for the local
+    # network, the authoritative directive should be uncommented.
+    authoritative;
+    ddns-update-style none;
+    
+    # Allow bootp requests
+    allow bootp;
+    
+    # Point to the TFTP server:
+    next-server 192.168.0.1;
+    
+    # Default lease is 1 week (604800 sec.)
+    default-lease-time 604800;
+    # Max lease is 4 weeks (2419200 sec.)
+    max-lease-time 2419200;
+    
+    subnet 192.168.0.0 netmask 255.255.255.0 {
+        option domain-name "my.lan";
+        option broadcast-address 192.168.0.255;
+        option subnet-mask 255.255.255.0;
+        option domain-name-servers 192.168.0.1;
+        option routers 192.168.0.10;
+        range dynamic-bootp 192.168.0.50 192.168.0.100;
+        use-host-decl-names on;
+        if substring (option vendor-class-identifier, 0, 9) = "PXEClient" {
+          filename "/tftpboot/pxelinux.0";
+        }
+    }
+- Install a TFTP server, the 'tftp-hpa' package.
+- Create the following directory structure:
+    /tftpboot/
+    /tftpboot/pxelinux.cfg/
+    /tftpboot/pxelinux.cfg/default
+    /tftpboot/pxelinux.0
+    /tftpboot/menu.c32
+    /tftpboot/salixlive/vmlinuz
+    /tftpboot/salixlive/initextra.xz
+  vmlinuz is the live kernel
+  initextra.xz is the special initrd you've just created
+  Of course you should tweak the config of pxelinux.cfg/default and the content of the salixlive directory (or any other directory).
+- Set up either NFS, SSH, HTTP, Samba or FTP to serve the Live CD iso (file for HTTP and FTP, content for the others).
+- Launch the TFTP server:
+    # in.tftpd -l /tftpboot/
+- Launch the DHCP server:
+    # service start dhcpd
+- Boot your other PC/device on the LAN.
