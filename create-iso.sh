@@ -134,25 +134,23 @@ if [ $? -eq 0 ]; then
     (
       cd $ISODIR
       # prepare the grub2 initial tree
+      eval $(grep '^libdir=' $(which grub-mkrescue))
+      eval $(grep '^PACKAGE_TARNAME=' $(which grub-mkrescue))
+      GRUB_DIR=$libdir/$PACKAGE_TARNAME/i386-pc
       mkdir -p boot
-      # ask grub2 to build the rescue ISO to get the initial tree
-      grub-mkrescue --output=rescue.iso
-      mkdir rescue && mount -o loop rescue.iso rescue
-      cp -r rescue/boot/* boot/ && chmod u+w -R boot
-      umount rescue && rm -r rescue*
-      grub-mkimage -o boot/grub/core.img
+      grub-mkimage -p /boot/grub -o /tmp/core.img -O i386-pc biosdisk iso9660 multiboot configfile
+      cat $GRUB_DIR/cdboot.img /tmp/core.img > boot/eltorito.img
+      rm /tmp/core.img
       cp -ar "$grubdir"/build/* .
       cat "$grubdir"/grub.cfg >> boot/grub/grub.cfg
       sed -i "s:\(set debug=\).*:\1$DEBUG:" boot/grub/grub.cfg
       sed -i "s:initrd\.gz:initrd.$COMP:" boot/grub/boot.cfg
-      # copy the mod files and lst files to the grub directory too for USB support.
-      find boot/grub -name '*.mod' -exec cp '{}' boot/grub/ \;
-      find boot/grub -name '*.lst' -exec cp '{}' boot/grub/ \;
+      cp $GRUB_DIR/*.mod $GRUB_DIR/*.lst boot/grub/
     )
     # add script files and boot loader install for USB
     cp -v "$grubdir"/grub_* "$grubdir"/install-on-USB* "$grubdir"/4windows/* $ISODIR/boot/
     rm -r "$grubdir"
-    BOOTFILE=boot/grub/i386-pc/eltorito.img
+    BOOTFILE=boot/eltorito.img
     CATALOGFILE=boot/grub.cat
   fi
   cp -rv overlay/* $ISODIR/
