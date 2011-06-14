@@ -1,12 +1,11 @@
 source ${cfgprefix}/include.cfg
-initmenu()
+initmenu
 
 set default=${kbnum}
 
 # next config file to load
-function 'nextconfig()' {
-  globalexports()
-  cheatcodeexports()
+function nextconfig {
+  loadkeymap
   configfile ${cfgprefix}/boot.cfg
 }
 

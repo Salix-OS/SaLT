@@ -4,11 +4,12 @@
 Use this script to generate the translations and the language and
 keyboard selection menu.
 It should be called like this:
-./genlocale <localecfgdir> <cfgdir>
+./genlocale <localecfgdir> <cfgdir> <kbdir>
 
 Usually such values should be fine:
 localecfgdir = <someprefix>/boot/grub/locale
 cfgdir = <someprefix>/boot/grub
+kbdir = <someprefix>/boot/grub/keymaps
 
 IMPORTANT! Always call it from the directory it's stored in. Otherwise
 we're unable to find some needed files as we use cwd.
@@ -22,14 +23,16 @@ projectname = "genlocale"
 cwd = os.getcwd()
 localedir = os.path.join(cwd, "locale")  # where tranlsations are stored
 
-# Here we "parse" commandline arguments
-localecfgdir = sys.argv[1];  # where to store the <locale>.cfg files
-cfgdir = sys.argv[2];  # where to store all other .cfg files
+if sys.argv[1] != 'dumpkbs':
+  # Here we "parse" commandline arguments
+  localecfgdir = sys.argv[1];  # where to store the <locale>.cfg files
+  cfgdir = sys.argv[2];  # where to store all other .cfg files
+  kbdir = sys.argv[3]; # where to store grub keymaps
 
-kbtpl = os.path.join(cwd, 'keyboard.cfg.tpl')
-langtpl = os.path.join(cwd, 'lang.cfg.tpl')
-kbcfg = os.path.join(cfgdir, 'keyboard.cfg')
-langcfg = os.path.join(cfgdir, 'lang.cfg')
+  kbtpl = os.path.join(cwd, 'keyboard.cfg.tpl')
+  langtpl = os.path.join(cwd, 'lang.cfg.tpl')
+  kbcfg = os.path.join(cfgdir, 'keyboard.cfg')
+  langcfg = os.path.join(cfgdir, 'lang.cfg')
 
 # Initialize gettext
 gettext.bindtextdomain(projectname, localedir)
@@ -63,7 +66,7 @@ langavailable = [
     ['nl_NL.utf8', 'Dutch', 'Nederlands', ['nl']],
     ['pl_PL.utf8', 'Polish', 'Polski', ['pl']],
     ['pt_PT.utf8', 'Portuguese (European)', 'Português (Europeu)', ['pt-latin1']],
-    ['pt_BR.utf8', 'Portuguese (Brazilian)', 'Português (Brasileiro)', ['br']],
+    ['pt_BR.utf8', 'Portuguese (Brazilian)', 'Português (Brasileiro)', ['br-abnt2']],
     ['ru_RU.utf8', 'Russian', 'Русский', ['ru_win']],
     ['sv_SE.utf8', 'Swedish', 'Svenska', ['sv-latin1']],
     ['tr_TR.utf8', 'Turkish', 'Türkçe', ['trq']],
@@ -88,23 +91,28 @@ def strings():
     ("Ldisnumlock", _("Disable numlock on boot (default)")),
     ("Lensynaptics", _("Enable synaptics fdi (sometimes unreliable)")),
     ("Ldissynaptics", _("Disable synaptics fdi (reliable) (default)")),
+    ("Lengfxpayload", _("Enable gfxpayload=keep (default)")),
+    ("Ldisgfxpayload", _("Disable gfxpayload=keep (if salix doesn't load try this)")),
+    ("Lliveloading", _("Live system is loading...")),
     ("Lback", _("Return to boot menu")),
   ]
 
 kbmenuentry = """
-menuentry "%s" {
+menuentry "%s"%s {
   set kb="%s"
   set kbnum="%d"
-  nextconfig()
+  nextconfig
 }
 """
 
 langmenuentry = """
-menuentry "%s" {
+menuentry "%s"%s {
   set locale="%s"
+  set lang="%s"
+  set langnum="%s"
   set kb="%s"
   set kbnum="%d"
-  nextconfig()
+  nextconfig
 }
 """
 
@@ -164,25 +172,55 @@ def genkbcfg(tpl, cfg, kbs):
   with open(tpl, 'r') as ftpl:
     with open(cfg, 'w') as fcfg:
       fcfg.write(ftpl.read())
+      lasthotkey = ''
       for k, v in kbs.iteritems():
-        fcfg.write(kbmenuentry % (v, v, k))
+        hotkey = str.lower(v[0])
+        if hotkey == lasthotkey or hotkey in [ 'c', 'e' ]:
+          hotkey = ''
+        if hotkey != '':
+          lasthotkey = hotkey
+          hotkey = ' --hotkey ' + hotkey
+        fcfg.write(kbmenuentry % (v, hotkey, v, k))
 
-def genlangcfg(tpl, cfg, langs, invkbs, deflangnum):
+def genlangcfg(tpl, cfg, langs, invkbs, deflangnum, invlanglocale):
   with open(tpl, 'r') as ftpl:
     with open(cfg, 'w') as fcfg:
       fcfg.write(ftpl.read())
-      fcfg.write('\nset default=%d\n' % deflangnum)
+      fcfg.write('\n')
+      fcfg.write('if [ "x${langnum}" = "x" ]; then\n')
+      fcfg.write('  set locale=%s\n' % defaultlang)
+      fcfg.write('  set lang=%s\n' % str.replace(defaultlang, '.utf8', ''))
+      fcfg.write('  set langnum=%d\n' % deflangnum)
+      fcfg.write('fi\n')
+      fcfg.write('set default=${langnum}\n')
+      lasthotkey = ''
       for l in langs:
         name = l['nativename']
+        hotkey = str.lower(name[0])
+        if hotkey == lasthotkey or hotkey in [ 'c', 'e' ]:
+          hotkey = ''
+        if hotkey != '':
+          lasthotkey = hotkey
+          hotkey = ' --hotkey ' + hotkey
         loc = l['locale']
+        lang = str.replace(loc, '.utf8', '')
+        num = invlanglocale[loc]
         kb = l['kb'][0]  # first element is the default
         kbnum = invkbs[kb]  # look the position up
-        fcfg.write(langmenuentry % (name, loc, kb, kbnum))
+        fcfg.write(langmenuentry % (name, hotkey, loc, lang, num, kb, kbnum))
 
 def main():
-  for dir in [localecfgdir, cfgdir]:
+  if sys.argv[1] == 'dumpkbs':
+    for k, kb in getkbs().iteritems():
+      print kb
+    sys.exit()
+  
+  for dir in [localecfgdir, cfgdir, kbdir]:
     if not os.path.isdir(dir):
       os.makedirs(dir)
+  
+  if kbdir == '':
+    print "error: you must set kbdir"
 
   kbs = getkbs()
   invkbs = inversedict(getkbs())
@@ -195,6 +233,12 @@ def main():
     genlocalecfg(localecfgdir, lang['locale'])
 
   genkbcfg(kbtpl, kbcfg, kbs)
-  genlangcfg(langtpl, langcfg, langs, invkbs, deflangnum)
+  genlangcfg(langtpl, langcfg, langs, invkbs, deflangnum, invlanglocale)
+  
+  for k, v in kbs.iteritems():
+    os.chdir(kbdir)
+    os.system('grub-kbdcomp ' + v)
+    if os.path.isfile(v + '.gkb') and os.stat(v + '.gkb').st_size == 0:
+      os.remove(v + '.gkb')
 
 main()

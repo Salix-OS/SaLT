@@ -1,8 +1,8 @@
 source ${cfgprefix}/include.cfg
-initmenu()
+initmenu
 
 # next config file to load
-function 'nextconfig()' {
-  globalexports()
+function nextconfig {
+  loadkeymap
   configfile ${cfgprefix}/boot.cfg
 }

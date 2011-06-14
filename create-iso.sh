@@ -128,7 +128,7 @@ if [ $? -eq 0 ]; then
       sed -i "s/_DISTRONAME_/$VOLNAME/" genlocale
       # compile mo files, create locale dir containg translations
       make install
-      ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub"
+      ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps"
     )
     # add grub2 menu
     (
@@ -138,14 +138,24 @@ if [ $? -eq 0 ]; then
       eval $(grep '^PACKAGE_TARNAME=' $(which grub-mkrescue))
       GRUB_DIR=$libdir/$PACKAGE_TARNAME/i386-pc
       mkdir -p boot
-      grub-mkimage -p /boot/grub -o /tmp/core.img -O i386-pc biosdisk iso9660 multiboot configfile
+      grub-mkimage -p /boot/grub -o /tmp/core.img -O i386-pc iso9660 biosdisk
       cat $GRUB_DIR/cdboot.img /tmp/core.img > boot/eltorito.img
       rm /tmp/core.img
       cp -ar "$grubdir"/build/* .
       cat "$grubdir"/grub.cfg >> boot/grub/grub.cfg
       sed -i "s:\(set debug=\).*:\1$DEBUG:" boot/grub/grub.cfg
       sed -i "s:initrd\.gz:initrd.$COMP:" boot/grub/boot.cfg
-      cp $GRUB_DIR/*.mod $GRUB_DIR/*.lst boot/grub/
+      mkdir -p boot/grub/locale/
+      for i in /usr/share/locale/*; do
+        if [ -f "$i/LC_MESSAGES/grub.mo" ]; then
+          cp -f "$i/LC_MESSAGES/grub.mo" "boot/grub/locale/${i##*/}.mo"
+        fi
+      done
+      for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do
+        if [ -f $i ]; then
+          cp -f $i boot/grub/
+        fi
+      done
     )
     # add script files and boot loader install for USB
     cp -v "$grubdir"/grub_* "$grubdir"/install-on-USB* "$grubdir"/4windows/* $ISODIR/boot/
