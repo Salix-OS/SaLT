@@ -11,16 +11,17 @@ ISODIR=$startdir/iso
 grubdir=$startdir
 rm -rf $ISODIR
 mkdir -p $ISODIR
-mv bg.png "$grubdir/build/boot/grub/bg.png"
+cp bg.png "$grubdir/build/boot/grub/bg.png"
 # generate grub config
 (
   cd "$grubdir/genlocale"
-  find po -name '.svn' -type d -prune -exec rm -rf '{}' +
   find po -type f -exec sed -i "s/_DISTRONAME_/$VOLNAME/" '{}' \;
+  cp genlocale $startdir/genlocale.bak
   sed -i "s/_DISTRONAME_/GRUB2 Test/" genlocale
   # compile mo files, create locale dir containg translations
   make install
   ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps"
+  mv $startdir/genlocale.bak genlocale
 )
 # add grub2 menu
 (
@@ -53,7 +54,6 @@ CATALOGFILE=boot/grub.cat
 rm -rf boot/dos boot/isolinux boot/pxelinux.cfg boot/syslinux boot/bootinst.* boot/*.c32 boot/liloinst.sh
 # create the iso
 echo "Creating ISO..."
-find . -name '.svn' -exec rm -rf '{}' \; 2>/dev/null
 cd $startdir
 mkisofs -r -J -V "grub2_menu" -b $BOOTFILE -c $CATALOGFILE -no-emul-boot -boot-load-size 4 -boot-info-table -o "grub2menu.iso" $ISODIR
 rm -rf $ISODIR
