@@ -233,23 +233,10 @@ init_dev() {
 
 # Load USB modules
 load_usb_modules() {
-  lspciusb=$(lspci -v | grep -i prog-if)
-  found=
-  if [ -n "$(echo $lspciusb | grep -i ehci)" ]; then
-    modprobe_check ehci-hcd
-    found=y
-  fi
-  if [ -n "$(echo $lspciusb | grep -i ohci)" ]; then
-    modprobe_check ohci-hcd
-    found=y
-  fi
-  if [ -n "$(echo $lspciusb | grep -i uhci)" ]; then
-    modprobe_check uhci-hcd
-    found=y
-  fi
-  if [ -n "$found" ]; then
-    modprobe_check usb-storage
-  fi
+  modprobe_check ehci-hcd
+  modprobe_check ohci-hcd
+  modprobe_check uhci-hcd
+  modprobe_check usb-storage
 }
 
 # Load PCMCIA modules
@@ -266,7 +253,7 @@ find_mountable_devices() {
   if [ -e /tmp/devices ]; then
     cut -d: -f1 /tmp/devices
   else
-    blkid|grep -v '^/dev/ram'|cut -d: -f1|sort -r|file -s -f -|tee /tmp/devices|cut -d: -f1
+    blkid -o device|grep -v '^/dev/ram'|sort -r|file -s -f -|tee /tmp/devices|cut -d: -f1
   fi
 }
 
@@ -298,7 +285,7 @@ find_fs_type() {
       echo ''
     fi
   else
-    echo ''
+    debuglog "$1 no valid device, doesn't start with /dev"
   fi
 }
 
@@ -327,16 +314,21 @@ find_fs_options() {
 mount_device() {
   echo "$1"|grep -q '^/dev/'
   if [ $? -eq 0 ]; then
-    DEV=$(echo "$1"|sed 's:/dev/::')
+    # Could be e.g. a subdirectory of /dev so replace additional slashes
+    DEV=$(echo "$1"|sed -e 's:/dev/::' -e 's:/:_:')
     if mountpoint -q /mnt/$DEV; then
-      debuglog "/dev/$DEV already mounted on /mnt/$DEV"
+      debuglog "$1 already mounted on /mnt/$DEV"
     else
-      TYPE=$(find_fs_type /dev/$DEV)
+      TYPE=$(find_fs_type $1)
+      [ -n "$TYPE" ] && TYPE_PART="-t '$TYPE'"
       OPTIONS=$(find_fs_options $TYPE)
+      [ -n "$OPTIONS" ] && OPTIONS_PART="-o '$OPTIONS'"
       mkdir -p /mnt/$DEV
-      debuglog "Mounting /dev/$DEV on /mnt/$DEV with type $TYPE and options: $OPTIONS"
-      mount /dev/$DEV -t "$TYPE" -o "$OPTIONS" /mnt/$DEV >/dev/null 2>&1 && echo "/mnt/$DEV" || rmdir /mnt/$DEV
+      debuglog "Mounting $1 on /mnt/$DEV with type '$TYPE' and options: '$OPTIONS'"
+      mount $1 $TYPE_PART $OPTIONS_PART /mnt/$DEV >/dev/null 2>&1 && echo "/mnt/$DEV" || rmdir /mnt/$DEV
     fi
+  else
+    debuglog "$1 no valid device, doesn't start with /dev"
   fi
 }
 
@@ -345,13 +337,16 @@ mount_device() {
 umount_device() {
   echo "$1"|grep -q '^/dev/'
   if [ $? -eq 0 ]; then
-    DEV=$(echo "$1"|sed 's:/dev/::')
+    # Could be e.g. a subdirectory of /dev so replace additional slashes
+    DEV=$(echo "$1"|sed -e 's:/dev/::' -e 's:/:_:')
     if mountpoint -q /mnt/$DEV; then
       debuglog "Umounting /mnt/$DEV"
       (umount -r -d /mnt/$DEV || umount -l /mnt/$DEV) && rmdir /mnt/$DEV
     else
       debuglog "/mnt/$DEV is already umounted"
     fi
+  else
+    debuglog "$1 no valid device, doesn't start with /dev"
   fi
 }
 
