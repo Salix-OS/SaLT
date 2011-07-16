@@ -237,6 +237,9 @@ load_usb_modules() {
   modprobe_check ohci-hcd
   modprobe_check uhci-hcd
   modprobe_check usb-storage
+  modprobe_check hid
+  modprobe_check usbhid
+  sleep 3
 }
 
 # Load PCMCIA modules
@@ -253,7 +256,7 @@ find_mountable_devices() {
   if [ -e /tmp/devices ]; then
     cut -d: -f1 /tmp/devices
   else
-    blkid -o device|grep -v '^/dev/ram'|sort -r|file -s -f -|tee /tmp/devices|cut -d: -f1
+    blkid|grep -v '^/dev/ram'|cut -d: -f1|sort -r|file -s -f -|tee /tmp/devices|cut -d: -f1
   fi
 }
 
@@ -320,9 +323,9 @@ mount_device() {
       debuglog "$1 already mounted on /mnt/$DEV"
     else
       TYPE=$(find_fs_type $1)
-      [ -n "$TYPE" ] && TYPE_PART="-t '$TYPE'"
+      [ -n "$TYPE" ] && TYPE_PART="-t $TYPE" || TYPE_PART=''
       OPTIONS=$(find_fs_options $TYPE)
-      [ -n "$OPTIONS" ] && OPTIONS_PART="-o '$OPTIONS'"
+      [ -n "$OPTIONS" ] && OPTIONS_PART="-o $OPTIONS" || OPTIONS_PART=''
       mkdir -p /mnt/$DEV
       debuglog "Mounting $1 on /mnt/$DEV with type '$TYPE' and options: '$OPTIONS'"
       mount $1 $TYPE_PART $OPTIONS_PART /mnt/$DEV >/dev/null 2>&1 && echo "/mnt/$DEV" || rmdir /mnt/$DEV

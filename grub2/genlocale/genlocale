@@ -92,9 +92,17 @@ def strings():
     ("Lensynaptics", _("Enable synaptics fdi (sometimes unreliable)")),
     ("Ldissynaptics", _("Disable synaptics fdi (reliable) (default)")),
     ("Lengfxpayload", _("Enable gfxpayload=keep (default)")),
-    ("Ldisgfxpayload", _("Disable gfxpayload=keep (if salix doesn't load try this)")),
+    ("Ldisgfxpayload", _("Disable gfxpayload=keep (if it doesn't load try this)")),
     ("Lliveloading", _("Live system is loading...")),
     ("Lback", _("Return to boot menu")),
+    ("Lsavesettings", _("Save all settings to be autoloaded for future boots")),
+    ("Lskiplang", _("Do you want to skip the language selection menu? [y/N] ")),
+    ("Linvalrep", _("Invalid response")),
+    ("Lsaveenverr", _("There was an error saving your settings. Are the live files located on a writeable media like an USB key (i.e. not a CDROM)?")),
+    ("Lyes", _("y")),
+    ("LYES", _("Y")),
+    ("Lno", _("n")),
+    ("LNO", _("N")),
   ]
 
 kbmenuentry = """
@@ -159,7 +167,7 @@ def inversedict(map):
 
 # Generates the <locale>.cfg files containing the translations.
 def genlocalecfg(targetdir, locale):
-  os.environ['LANGUAGE'] = locale # force use of another locae
+  os.environ['LANGUAGE'] = locale # force use of another locale
   localefile = os.path.join(targetdir, locale + '.cfg')
   with open(localefile, 'w') as f:
     for string in strings():

@@ -15,6 +15,7 @@ cp bg.png "$grubdir/build/boot/grub/bg.png"
 # generate grub config
 (
   cd "$grubdir/genlocale"
+  find po -type f -exec cp '{}' '{}'.bak \;
   find po -type f -exec sed -i "s/_DISTRONAME_/$VOLNAME/" '{}' \;
   cp genlocale $startdir/genlocale.bak
   sed -i "s/_DISTRONAME_/GRUB2 Test/" genlocale
@@ -22,6 +23,7 @@ cp bg.png "$grubdir/build/boot/grub/bg.png"
   make install
   ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps"
   mv $startdir/genlocale.bak genlocale
+  find po -type f -name '*.bak' -exec rename .bak '' '{}' \;
 )
 # add grub2 menu
 (
@@ -47,6 +49,7 @@ cp bg.png "$grubdir/build/boot/grub/bg.png"
       cp -f $i boot/grub/
     fi
   done
+  grub-editenv boot/grub/salt.env create
 )
 BOOTFILE=boot/eltorito.img
 CATALOGFILE=boot/grub.cat

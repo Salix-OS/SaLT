@@ -1,3 +1,5 @@
+drivers/hid/hid.ko
+drivers/hid/usbhid/usbhid.ko
 drivers/mmc/core/mmc_core.ko 
 drivers/pcmcia/pcmcia.ko 
 drivers/pcmcia/pcmcia_core.ko 

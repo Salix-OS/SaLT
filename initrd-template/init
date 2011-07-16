@@ -61,6 +61,9 @@ infolog "Finding $LIVE_NAME device..."
 identfile=$(get_value_cmdline identfile)
 [ -n "$identfile" ] && IDENT_FILE=$identfile
 unset identfile
+identcontent=$(get_value_cmdline identcontent)
+[ -n "$identcontent" ] && IDENT_CONTENT=$identcontent
+unset identcontent
 DISTRO_INFO=$(find_distro_device)
 if [ -z "$DISTRO_INFO" ]; then
   fumble "Could not find the distro to boot\nFile searched: $IDENT_FILE\nContent searched: $IDENT_CONTENT"

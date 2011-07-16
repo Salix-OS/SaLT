@@ -4,22 +4,24 @@
 # This file is part of SaLT.
 cd $(dirname $0)
 . ./config
-BL=isolinux
+BL=grub2
 IMAGE=bg.png
 KERNEL=
 DEBUG=
 VOLNAME='SaLT'
 ISONAME='salt.iso'
 # MemTest86+ version
-MEMTEST_VER=4.10
+MEMTEST_VER=4.20
+# Syslinux+ version
+SYSLINUX_VER=4.04
 # Compression used for the initrd, default to gz
 [ -z "$COMP" ] && COMP=gz
 while [ -n "$1" ]; do
   case "$1" in
     '-h'|'--help')
       echo 'create-iso.sh -l|-g [-i image] [-k kernelpackage] [-d 0|1] [-v volume_name] [-o iso_name]'
-      echo '  -l: specify to use isolinux (default)'
-      echo '  -g: specify to use grub2'
+      echo '  -l: specify to use isolinux'
+      echo '  -g: specify to use grub2 (default)'
       echo '  -i image: specify an image to use as background. The image will be converted to PNG 8bit 640x480.'
       echo '    The conversion is done through Image Magic and xcftools if needed. Default: bg.png'
       echo '  -k kernelpackage: specify a kernel package to use for kernel modules and vmlinuz.'
@@ -78,6 +80,7 @@ if [ $? -eq 0 ]; then
   BOOTFILE=
   CATALOGFILE=
   [ ! -e mt86p ] && wget "http://www.memtest.org/download/$MEMTEST_VER/memtest86+-$MEMTEST_VER.bin.gz" -O - | zcat > mt86p
+  [ ! -e syslinux-$SYSLINUX_VER.tar.bz2 ] && wget http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VER.tar.bz2
   ISODIR=$(mktemp -d)
   mkdir -p $ISODIR/$ROOT_DIR/persistence
   echo "$IDENT_CONTENT" > $ISODIR/$IDENT_FILE
@@ -102,16 +105,19 @@ if [ $? -eq 0 ]; then
     exit 1
   fi
   if [ "$BL" = "isolinux" ]; then
-    cp -r isolinux $ISODIR/
+    BOOTFILE=isolinux/isolinux.bin
+    CATALOGFILE=isolinux/isolinux.cat
+    ISOLINUX_DIR=/usr/share/syslinux
+    cp -r isolinux $ISOLINUX_DIR/isolinux.bin $ISOLINUX_DIR/vesamenu.c32 $ISODIR/
     cp kernel/boot/vmlinuz-* $ISODIR/isolinux/vmlinuz
     cp initrd.$COMP $ISODIR/isolinux/initrd.$COMP
     cp mt86p $ISODIR/isolinux/mt86p
     mv .bg.png $ISODIR/isolinux/bg.png
     sed -i "s:\(.*/dev/ram0\).*:\1 $DEBUG:; s/_DISTRONAME_/$VOLNAME/g" $ISODIR/isolinux/isolinux.cfg
     sed -i "s:initrd\.gz:initrd.$COMP:" $ISODIR/isolinux/isolinux.cfg
-    BOOTFILE=isolinux/isolinux.bin
-    CATALOGFILE=isolinux/isolinux.cat
   else
+    BOOTFILE=boot/eltorito.img
+    CATALOGFILE=boot/grub.cat
     mkdir -p $ISODIR/boot
     cp kernel/boot/vmlinuz-* $ISODIR/boot/vmlinuz
     cp initrd.$COMP $ISODIR/boot/initrd.$COMP
@@ -133,35 +139,49 @@ if [ $? -eq 0 ]; then
     # add grub2 menu
     (
       cd $ISODIR
-      # prepare the grub2 initial tree
+      # determine grub files location
       eval $(grep '^libdir=' $(which grub-mkrescue))
       eval $(grep '^PACKAGE_TARNAME=' $(which grub-mkrescue))
       GRUB_DIR=$libdir/$PACKAGE_TARNAME/i386-pc
-      mkdir -p boot
-      grub-mkimage -p /boot/grub -o /tmp/core.img -O i386-pc iso9660 biosdisk
-      cat $GRUB_DIR/cdboot.img /tmp/core.img > boot/eltorito.img
-      rm /tmp/core.img
+      # copy the config files
+      mkdir -p boot/grub
       cp -ar "$grubdir"/build/* .
-      cat "$grubdir"/grub.cfg >> boot/grub/grub.cfg
+      cp "$grubdir"/grub.cfg "$grubdir"/embed.cfg boot/grub/
+      # modify the config files
       sed -i "s:\(set debug=\).*:\1$DEBUG:" boot/grub/grub.cfg
       sed -i "s:initrd\.gz:initrd.$COMP:" boot/grub/boot.cfg
+      sed -i "s:@@IDENT_FILE@@:$IDENT_FILE:" boot/grub/embed.cfg
+      # install locales
       mkdir -p boot/grub/locale/
       for i in /usr/share/locale/*; do
         if [ -f "$i/LC_MESSAGES/grub.mo" ]; then
           cp -f "$i/LC_MESSAGES/grub.mo" "boot/grub/locale/${i##*/}.mo"
         fi
       done
+      # copy modules and other grub files
       for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do
         if [ -f $i ]; then
           cp -f $i boot/grub/
         fi
       done
+      # create the boot images
+      grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
+        -c "$grubdir"/embed.cfg \
+        biosdisk ohci uhci usbms iso9660 ext2 fat ntfs xfs btrfs jfs reiserfs part_msdos part_gpt search_fs_file echo normal
+      cat $GRUB_DIR/lnxboot.img /tmp/core.img > boot/grub2-linux.img
+      grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
+        biosdisk iso9660
+      cat $GRUB_DIR/cdboot.img /tmp/core.img > $BOOTFILE
+      rm /tmp/core.img
+      # create the env file used for saving settings
+      grub-editenv boot/grub/salt.env create
     )
     # add script files and boot loader install for USB
-    cp -v "$grubdir"/grub_* "$grubdir"/install-on-USB* "$grubdir"/4windows/* $ISODIR/boot/
+    cp -v "$grubdir"/install-on-USB* $ISODIR/boot/
+    tar xf syslinux-$SYSLINUX_VER.tar.bz2
+    cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
+    rm -rf syslinux-$SYSLINUX_VER
     rm -r "$grubdir"
-    BOOTFILE=boot/eltorito.img
-    CATALOGFILE=boot/grub.cat
   fi
   cp -rv overlay/* $ISODIR/
   find $ISODIR -name '.svn' -type d -prune -exec rm -rf '{}' +

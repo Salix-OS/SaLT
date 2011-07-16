@@ -3,7 +3,7 @@
 
 # Used when displaying information
 LIVE_NAME="Salix Live"
-# File search at the root of CD/USB disk/partition
+# File search at the root of CD/USB disk/partition.
 IDENT_FILE=salix.live
 # Content to valid the disk/partition.
 IDENT_CONTENT=salixlive

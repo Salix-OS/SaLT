@@ -74,6 +74,7 @@ Features:
     * nosound: will mute the sound if present
     * autologin: will autologin if present and if gdm is used and configured for it
     * identfile: name of the file to find the distro. Overrides the name in the config file
+    * identcontent: content of the file to find the distro. Overrides the content in the config file
     * savefile: name of the save file. Overrides the name in the config file
     * memonly: will boot using memory only. The CD/DVD/USB will not be read/used after booting (or just the savefile if it's on the USB key)
     * proxy: url of the http and ftp proxy.
@@ -113,6 +114,8 @@ Two files are used for configuration:
 
 'modules' file is a kernel module file list where each module is on one line. The path starts from /lib/modules/kver/kernel/ where '/' is not mentionned.
 Exemple:
+drivers/hid/hid.ko
+drivers/hid/usbhid/usbhid.ko
 drivers/usb/host/ehci-hcd.ko 
 drivers/usb/host/ohci-hcd.ko 
 drivers/usb/host/uhci-hcd.ko 
