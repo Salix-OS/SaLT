@@ -12,7 +12,7 @@ COMP=$1
 [ -z "$COMP" ] && COMP=gz
 DEBUG=$2
 
-BBVER=1.18.4
+BBVER=1.18.5
 BBURL=http://busybox.net/downloads/busybox-$BBVER.tar.bz2
 FILEVER=5.06
 FILEURL=ftp://ftp.astron.com/pub/file/file-$FILEVER.tar.gz
