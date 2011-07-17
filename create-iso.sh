@@ -159,15 +159,16 @@ if [ $? -eq 0 ]; then
         fi
       done
       # copy modules and other grub files
+      mkdir boot/grub/i386-pc/
       for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do
         if [ -f $i ]; then
-          cp -f $i boot/grub/
+          cp -f $i boot/grub/i386-pc/
         fi
       done
       # create the boot images
       grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
         -c "$grubdir"/embed.cfg \
-        biosdisk ohci uhci usbms iso9660 ext2 fat ntfs xfs btrfs jfs reiserfs part_msdos part_gpt search_fs_file echo normal
+        biosdisk ohci uhci usbms $(cat $GRUB_DIR/fs.lst) $(cat $GRUB_DIR/partmap.lst) lvm raid search_fs_file echo
       cat $GRUB_DIR/lnxboot.img /tmp/core.img > boot/grub2-linux.img
       grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
         biosdisk iso9660
