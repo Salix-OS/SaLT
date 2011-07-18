@@ -146,7 +146,6 @@ if [ $? -eq 0 ]; then
       # copy the config files
       mkdir -p boot/grub
       cp -ar "$grubdir"/build/* .
-      cp "$grubdir"/grub.cfg "$grubdir"/embed.cfg boot/grub/
       # modify the config files
       sed -i "s:\(set debug=\).*:\1$DEBUG:" boot/grub/grub.cfg
       sed -i "s:initrd\.gz:initrd.$COMP:" boot/grub/boot.cfg
@@ -166,10 +165,20 @@ if [ $? -eq 0 ]; then
         fi
       done
       # create the boot images
+      # zfs causes slow disk access with 1.99
       grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
         -c "$grubdir"/embed.cfg \
-        biosdisk ohci uhci usbms $(cat $GRUB_DIR/fs.lst) $(cat $GRUB_DIR/partmap.lst) lvm raid search_fs_file echo
+        biosdisk ext2 fat iso9660 ntfs reiserfs xfs part_msdos part_gpt lvm raid search echo
       cat $GRUB_DIR/lnxboot.img /tmp/core.img > boot/grub2-linux.img
+      if [ -e $GRUB_DIR/g2hdr.img ] && [ -e $GRUB_DIR/g2ldr.mbr ]; then
+		# this image can only be directly loaded by Vista and later
+        cat $GRUB_DIR/g2hdr.img /tmp/core.img > boot/g2ldr
+        # this image just loads the g2ldr image (so don't rename it!)
+        # it must be used by xp and earlier
+        cp $GRUB_DIR/g2ldr.mbr boot/g2ldr.mbr
+      else
+        echo "You're version of grub lacks ntldr-img from grub-extras. Disabling generation of ntldr images."
+      fi
       grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
         biosdisk iso9660
       cat $GRUB_DIR/cdboot.img /tmp/core.img > $BOOTFILE

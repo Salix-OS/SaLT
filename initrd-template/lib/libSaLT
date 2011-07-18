@@ -378,11 +378,20 @@ find_distro_device() {
     for d in $(find_mountable_devices); do
       MP=$(mount_device "$d")
       if [ -n "$MP" ]; then
-        if [ -e "$MP/$IDENT_FILE" ]; then
-          C="$(cat "$MP/$IDENT_FILE")"
-          if [ "$C" = "$IDENT_CONTENT" ]; then
-            echo "$MP:$d"|tee /tmp/distro_infos
+        if [ -n "$FROMISO" ]; then
+          if [ -e "$MP/$FROMISO" ]; then
+            mkdir -p /mnt/fromiso
+            mount -t iso9660 "$MP/$FROMISO" /mnt/fromiso -o loop,ro
+            echo "/mnt/fromiso:$MP/$FROMISO"|tee /tmp/distro_infos
             break
+          fi
+        else
+          if [ -e "$MP/$IDENT_FILE" ]; then
+            C="$(cat "$MP/$IDENT_FILE")"
+            if [ "$C" = "$IDENT_CONTENT" ]; then
+              echo "$MP:$d"|tee /tmp/distro_infos
+              break
+            fi
           fi
         fi
         debuglog "'/$IDENT_FILE:$IDENT_CONTENT' not found in $d"

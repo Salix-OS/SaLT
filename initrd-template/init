@@ -64,6 +64,9 @@ unset identfile
 identcontent=$(get_value_cmdline identcontent)
 [ -n "$identcontent" ] && IDENT_CONTENT=$identcontent
 unset identcontent
+fromiso=$(get_value_cmdline fromiso)
+[ -n "$fromiso" ] && FROMISO=$fromiso
+unset fromiso
 DISTRO_INFO=$(find_distro_device)
 if [ -z "$DISTRO_INFO" ]; then
   fumble "Could not find the distro to boot\nFile searched: $IDENT_FILE\nContent searched: $IDENT_CONTENT"
