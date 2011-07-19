@@ -64,20 +64,21 @@ Features:
   - kernel cmdline parameters to tweak the boot/distro:
     * debug
     * 1-5: runlevel
-    * lang: language to use as locale, like fr-FR.utf8 (default: en_US)
-    * keyb: keyboard to use, like fr-latin9 (default: us)
-    * numlock: could be 'on' or 'off' (default: off)
-    * scim: could be 'on' or 'off' (default: off)
-    * ibus: could be 'on' or 'off' (default: off)
-    * synaptics: could be 'on' or 'off' (default: off)
-    * passwd: could be 'ask' (will ask the password) or directly the new password (default: no change)
+    * lang=: language to use as locale, like fr-FR.utf8 (default: en_US)
+    * keyb=: keyboard to use, like fr-latin9 (default: us)
+    * numlock=: could be 'on' or 'off' (default: off)
+    * scim=: could be 'on' or 'off' (default: off)
+    * ibus=: could be 'on' or 'off' (default: off)
+    * synaptics=: could be 'on' or 'off' (default: off)
+    * passwd=: could be 'ask' (will ask the password) or directly the new password (default: no change)
     * nosound: will mute the sound if present
     * autologin: will autologin if present and if gdm is used and configured for it
-    * identfile: name of the file to find the distro. Overrides the name in the config file
-    * identcontent: content of the file to find the distro. Overrides the content in the config file
-    * savefile: name of the save file. Overrides the name in the config file
+    * identfile=: name of the file to find the distro. Overrides the name in the config file
+    * identcontent=: content of the file to find the distro. Overrides the content in the config file
+    * savefile=: name of the save file. Overrides the name in the config file
     * memonly: will boot using memory only. The CD/DVD/USB will not be read/used after booting (or just the savefile if it's on the USB key)
-    * proxy: url of the http and ftp proxy.
+    * fromiso=: will boot using the ISO provided instead of the CD/DVD/USB media
+    * proxy=: url of the http and ftp proxy.
   - can netboot in PXE (using the extra initrd) using the following protocols:
     * NFS
     * SSH

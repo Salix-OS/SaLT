@@ -4,15 +4,14 @@
 Use this script to generate the translations and the language and
 keyboard selection menu.
 It should be called like this:
-./genlocale <localecfgdir> <cfgdir> <kbdir>
+./genlocale <localecfgdir> <cfgdir> <kbdir> <volumename>
 
 Usually such values should be fine:
 localecfgdir = <someprefix>/boot/grub/locale
 cfgdir = <someprefix>/boot/grub
 kbdir = <someprefix>/boot/grub/keymaps
+volumename = SalixLive
 
-IMPORTANT! Always call it from the directory it's stored in. Otherwise
-we're unable to find some needed files as we use cwd.
 """
 
 import sys, os
@@ -20,6 +19,7 @@ import locale
 import gettext
 
 projectname = "genlocale"
+os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 cwd = os.getcwd()
 localedir = os.path.join(cwd, "locale")  # where tranlsations are stored
 
@@ -28,6 +28,7 @@ if sys.argv[1] != 'dumpkbs':
   localecfgdir = sys.argv[1];  # where to store the <locale>.cfg files
   cfgdir = sys.argv[2];  # where to store all other .cfg files
   kbdir = sys.argv[3]; # where to store grub keymaps
+  volumename = sys.argv[4]; # volume name to use
 
   kbtpl = os.path.join(cwd, 'keyboard.cfg.tpl')
   langtpl = os.path.join(cwd, 'lang.cfg.tpl')
@@ -78,21 +79,33 @@ langavailable = [
 # translations
 def strings():
   return  [
-    ("Lstart", _("Start _DISTRONAME_")),
+    ("Lstart", _("Start " + volumename)),
     ("Lmemtest", _("Memory Test")),
     ("Lchangelang", _("Change language")),
     ("Lchangekb", _("Change keyboard layout")),
     ("Lcheatcode", _("Change boot options")),
     ("Lrunlevel3", _("Boot to runlevel '3' (text mode)")),
     ("Lrunlevel4", _("Boot to runlevel '4' (graphical login) (default)")),
-    ("Lentoram", _("Enable 'Copy everything to RAM'")),
-    ("Ldistoram", _("Disable 'Copy everything to RAM' (default)")),
+    ("Lenmemonly", _("Enable 'Copy everything to RAM'")),
+    ("Ldismemonly", _("Disable 'Copy everything to RAM' (default)")),
     ("Lennumlock", _("Enable numlock on boot")),
     ("Ldisnumlock", _("Disable numlock on boot (default)")),
+    ("Lenibus", _("Enable Ibus")),
+    ("Ldisibus", _("Disable Ibus (default)")),
     ("Lensynaptics", _("Enable synaptics fdi (sometimes unreliable)")),
     ("Ldissynaptics", _("Disable synaptics fdi (reliable) (default)")),
+    ("Lennosound", _("No sound on boot")),
+    ("Ldisnosound", _("Enable sound on boot (default)")),
+    ("Lenautologin", _("Enable autologin on boot (default)")),
+    ("Ldisautologin", _("Disable autologin on boot")),
     ("Lengfxpayload", _("Enable gfxpayload=keep (default)")),
     ("Ldisgfxpayload", _("Disable gfxpayload=keep (if it doesn't load try this)")),
+    ("Lpassword", _("Change root password")),
+    ("Lpasswordask", _("New root password (choose 'ask' to be asked at boot): ")),
+    ("Lproxy", _("Set a proxy")),
+    ("Lproxyask", _("New proxy (empty for no proxy): ")),
+    ("Lfromiso", _("Boot from an ISO")),
+    ("Lfromisoask", _("Path to the ISO to boot from: ")),
     ("Lliveloading", _("Live system is loading...")),
     ("Lback", _("Return to boot menu")),
     ("Lsavesettings", _("Save all settings to be autoloaded for future boots")),

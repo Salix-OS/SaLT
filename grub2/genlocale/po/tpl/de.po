@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: genlocale\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-16 23:55+0200\n"
+"POT-Creation-Date: 2011-07-19 12:49+0200\n"
 "PO-Revision-Date: 2010-05-26 13:45+0100\n"
 "Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
 "Language-Team: \n"
@@ -17,6 +17,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
+
+#: genlocale:52 genlocale:63 genlocale:73 genlocale:81
+msgid "Start _DISTRONAME_"
+msgstr "_DISTRONAME_ starten"
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82
 msgid "Memory Test"
@@ -58,64 +62,113 @@ msgstr "Aktiviere Numlock beim Starten"
 msgid "Disable numlock on boot (default)"
 msgstr "Deaktiviere Numlock beim Starten (Standard)"
 
-#: genlocale:63 genlocale:74 genlocale:84 genlocale:92
+#: genlocale:63 genlocale:74 genlocale:84 genlocale:94
 msgid "Enable synaptics fdi (sometimes unreliable)"
 msgstr "Aktiviere synaptics fdi (manchmal unzuverlässig)"
 
-#: genlocale:64 genlocale:75 genlocale:85 genlocale:93
+#: genlocale:64 genlocale:75 genlocale:85 genlocale:95
 msgid "Disable synaptics fdi (reliable) (default)"
 msgstr "Deaktiviere synaptics fdi (bewährt) (Standard)"
 
-#: genlocale:65 genlocale:76 genlocale:86 genlocale:97
+#: genlocale:65 genlocale:76 genlocale:86 genlocale:109
 msgid "Return to boot menu"
 msgstr "Zurück zum Startmenü"
 
-#: genlocale:81
-msgid "Start _DISTRONAME_"
-msgstr "_DISTRONAME_ starten"
+#: genlocale:92
+msgid "Enable Ibus"
+msgstr ""
 
-#: genlocale:94
+#: genlocale:93
+#, fuzzy
+msgid "Disable Ibus (default)"
+msgstr "Deaktiviere Numlock beim Starten (Standard)"
+
+#: genlocale:96
+msgid "No sound on boot"
+msgstr ""
+
+#: genlocale:97
+#, fuzzy
+msgid "Enable sound on boot (default)"
+msgstr "Deaktiviere Numlock beim Starten (Standard)"
+
+#: genlocale:98
+#, fuzzy
+msgid "Enable autologin on boot (default)"
+msgstr "Deaktiviere Numlock beim Starten (Standard)"
+
+#: genlocale:99
+#, fuzzy
+msgid "Disable autologin on boot"
+msgstr "Aktiviere Numlock beim Starten"
+
+#: genlocale:100
 msgid "Enable gfxpayload=keep (default)"
 msgstr ""
 
-#: genlocale:95
+#: genlocale:101
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
 msgstr ""
 
-#: genlocale:96
+#: genlocale:102
+#, fuzzy
+msgid "Change root password"
+msgstr "Bootoptionen ändern"
+
+#: genlocale:103
+msgid "New root password (choose 'ask' to be asked at boot): "
+msgstr ""
+
+#: genlocale:104
+msgid "Set a proxy"
+msgstr ""
+
+#: genlocale:105
+msgid "New proxy (empty for no proxy): "
+msgstr ""
+
+#: genlocale:106
+msgid "Boot from an ISO"
+msgstr ""
+
+#: genlocale:107
+msgid "Path to the ISO to boot from: "
+msgstr ""
+
+#: genlocale:108
 msgid "Live system is loading..."
 msgstr ""
 
-#: genlocale:98
+#: genlocale:110
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
 
-#: genlocale:99
+#: genlocale:111
 msgid "Do you want to skip the language selection menu? [y/N] "
 msgstr ""
 
-#: genlocale:100
+#: genlocale:112
 msgid "Invalid response"
 msgstr ""
 
-#: genlocale:101
+#: genlocale:113
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
 
-#: genlocale:102
+#: genlocale:114
 msgid "y"
 msgstr ""
 
-#: genlocale:103
+#: genlocale:115
 msgid "Y"
 msgstr ""
 
-#: genlocale:104
+#: genlocale:116
 msgid "n"
 msgstr ""
 
-#: genlocale:105
+#: genlocale:117
 msgid "N"
 msgstr ""

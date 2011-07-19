@@ -41,12 +41,12 @@ while [ -n "$1" ]; do
       ;;
     '-i')
       shift
-      IMAGE=$1
+      IMAGE="$1"
       shift
       ;;
     '-k')
       shift
-      KERNEL=$1
+      KERNEL="$1"
       shift
       ;;
     '-d')
@@ -57,12 +57,12 @@ while [ -n "$1" ]; do
       ;;
     '-v')
       shift
-      VOLNAME=$1
+      VOLNAME="$1"
       shift
       ;;
     '-o')
       shift
-      export ISONAME=$1
+      export ISONAME="$1"
       shift
       ;;
     *)
@@ -129,12 +129,9 @@ if [ $? -eq 0 ]; then
     # generate grub config
     (
       cd "$grubdir/genlocale"
-      find po -name '.svn' -type d -prune -exec rm -rf '{}' +
-      find po -type f -exec sed -i "s/_DISTRONAME_/$VOLNAME/" '{}' \;
-      sed -i "s/_DISTRONAME_/$VOLNAME/" genlocale
       # compile mo files, create locale dir containg translations
-      make install
-      ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps"
+      make install VOLUMENAME="$VOLNAME"
+      ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$VOLNAME"
     )
     # add grub2 menu
     (
@@ -158,7 +155,7 @@ if [ $? -eq 0 ]; then
         fi
       done
       # copy modules and other grub files
-      mkdir boot/grub/i386-pc/
+      mkdir -p boot/grub/i386-pc/
       for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do
         if [ -f $i ]; then
           cp -f $i boot/grub/i386-pc/
@@ -171,7 +168,7 @@ if [ $? -eq 0 ]; then
         biosdisk ext2 fat iso9660 ntfs reiserfs xfs part_msdos part_gpt lvm raid search echo
       cat $GRUB_DIR/lnxboot.img /tmp/core.img > boot/grub2-linux.img
       if [ -e $GRUB_DIR/g2hdr.img ] && [ -e $GRUB_DIR/g2ldr.mbr ]; then
-		# this image can only be directly loaded by Vista and later
+		    # this image can only be directly loaded by Vista and later
         cat $GRUB_DIR/g2hdr.img /tmp/core.img > boot/g2ldr
         # this image just loads the g2ldr image (so don't rename it!)
         # it must be used by xp and earlier

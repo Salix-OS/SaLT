@@ -3,15 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: genlocale\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-19 12:49+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2010-05-26 01:37+0100\n"
+"Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
+"Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,83 +18,87 @@ msgstr ""
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81
 msgid "Start _DISTRONAME_"
-msgstr "Start _DISTRONAME_"
+msgstr "Έναρξη του _DISTRONAME_"
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82
 msgid "Memory Test"
-msgstr "Memory Test"
+msgstr "Έλεγχος μνήμης"
 
 #: genlocale:54 genlocale:65 genlocale:75 genlocale:83
 msgid "Change language"
-msgstr "Change language"
+msgstr "Αλλαγή γλώσσας"
 
 #: genlocale:55 genlocale:66 genlocale:76 genlocale:84
 msgid "Change keyboard layout"
-msgstr "Change keyboard layout"
+msgstr "Αλλαγή διάταξης πληκτρολογίου"
 
 #: genlocale:56 genlocale:67 genlocale:77 genlocale:85
 msgid "Change boot options"
-msgstr "Change boot options"
+msgstr "Αλλαγή επιλογών εκκίνησης"
 
 #: genlocale:57 genlocale:68 genlocale:78 genlocale:86
 msgid "Boot to runlevel '3' (text mode)"
-msgstr "Boot to runlevel '3' (text mode)"
+msgstr "Έναρξη σε runlevel '3' (τερματικό)"
 
 #: genlocale:58 genlocale:69 genlocale:79 genlocale:87
 msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Boot to runlevel '4' (graphical login) (default)"
+msgstr "Έναρξη σε runlevel '4' (γραφικό περιβάλλον) (εξ ορισμού)"
 
 #: genlocale:59 genlocale:70 genlocale:80 genlocale:88
 msgid "Enable 'Copy everything to RAM'"
-msgstr "Enable 'Copy everything to RAM'"
+msgstr "Ενεργοποίηση αντιγραφής όλων στη μνήμη RAM"
 
 #: genlocale:60 genlocale:71 genlocale:81 genlocale:89
 msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Disable 'Copy everything to RAM' (default)"
+msgstr "Απενεργοποίηση αντιγραφής όλων στη μνήμη RAM (εξ ορισμού)"
 
 #: genlocale:61 genlocale:72 genlocale:82 genlocale:90
 msgid "Enable numlock on boot"
-msgstr "Enable numlock on boot"
+msgstr "Ενεργοποίηση του numlock κατά την έναρξη"
 
 #: genlocale:62 genlocale:73 genlocale:83 genlocale:91
 msgid "Disable numlock on boot (default)"
-msgstr "Disable numlock on boot (default)"
+msgstr "Απενεργοποίηση του numlock κατά την έναρξη (εξ ορισμού)"
 
 #: genlocale:63 genlocale:74 genlocale:84 genlocale:94
 msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Enable synaptics fdi (sometimes unreliable)"
+msgstr "Ενεργοποίηση του synaptics fdi (αναξιόπιστο μερικές φορές)"
 
 #: genlocale:64 genlocale:75 genlocale:85 genlocale:95
 msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Disable synaptics fdi (reliable) (default)"
+msgstr "Απενεργοποίηση του synaptics fdi (αξιόπιστο) (εξ ορισμού)"
 
 #: genlocale:65 genlocale:76 genlocale:86 genlocale:109
 msgid "Return to boot menu"
-msgstr "Return to boot menu"
+msgstr "Επιστροφή στο μενού εκκίνησης"
 
 #: genlocale:92
 msgid "Enable Ibus"
 msgstr ""
 
 #: genlocale:93
+#, fuzzy
 msgid "Disable Ibus (default)"
-msgstr ""
+msgstr "Απενεργοποίηση του numlock κατά την έναρξη (εξ ορισμού)"
 
 #: genlocale:96
 msgid "No sound on boot"
 msgstr ""
 
 #: genlocale:97
+#, fuzzy
 msgid "Enable sound on boot (default)"
-msgstr ""
+msgstr "Απενεργοποίηση του numlock κατά την έναρξη (εξ ορισμού)"
 
 #: genlocale:98
+#, fuzzy
 msgid "Enable autologin on boot (default)"
-msgstr ""
+msgstr "Απενεργοποίηση του numlock κατά την έναρξη (εξ ορισμού)"
 
 #: genlocale:99
+#, fuzzy
 msgid "Disable autologin on boot"
-msgstr ""
+msgstr "Ενεργοποίηση του numlock κατά την έναρξη"
 
 #: genlocale:100
 msgid "Enable gfxpayload=keep (default)"
@@ -106,8 +109,9 @@ msgid "Disable gfxpayload=keep (if it doesn't load try this)"
 msgstr ""
 
 #: genlocale:102
+#, fuzzy
 msgid "Change root password"
-msgstr ""
+msgstr "Αλλαγή επιλογών εκκίνησης"
 
 #: genlocale:103
 msgid "New root password (choose 'ask' to be asked at boot): "

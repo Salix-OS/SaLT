@@ -11,19 +11,15 @@ ISODIR=$startdir/iso
 grubdir=$startdir
 rm -rf $ISODIR
 mkdir -p $ISODIR
+BOOTFILE=boot/eltorito.img
+CATALOGFILE=boot/grub.cat
 cp bg.png "$grubdir/build/boot/grub/bg.png"
 # generate grub config
 (
   cd "$grubdir/genlocale"
-  find po -type f -exec cp '{}' '{}'.bak \;
-  find po -type f -exec sed -i "s/_DISTRONAME_/$VOLNAME/" '{}' \;
-  cp genlocale $startdir/genlocale.bak
-  sed -i "s/_DISTRONAME_/GRUB2 Test/" genlocale
   # compile mo files, create locale dir containg translations
-  make install
-  ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps"
-  mv $startdir/genlocale.bak genlocale
-  find po -type f -name '*.bak' -exec rename .bak '' '{}' \;
+  make install VOLUMENAME="GRUB2 Test"
+  ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "GRUB2 Test"
 )
 # add grub2 menu
 (
@@ -32,27 +28,29 @@ cp bg.png "$grubdir/build/boot/grub/bg.png"
   eval $(grep '^libdir=' $(which grub-mkrescue))
   eval $(grep '^PACKAGE_TARNAME=' $(which grub-mkrescue))
   GRUB_DIR=$libdir/$PACKAGE_TARNAME/i386-pc
-  mkdir -p boot
-  grub-mkimage -p /boot/grub -o /tmp/core.img -O i386-pc iso9660 biosdisk
-  cat $GRUB_DIR/cdboot.img /tmp/core.img > boot/eltorito.img
-  rm /tmp/core.img
+  mkdir -p boot/grub
   cp -ar "$grubdir"/build/* .
-  cat "$grubdir"/grub.cfg >> boot/grub/grub.cfg
+  sed -i "s:\(set debug=\).*:\1=debug:" boot/grub/grub.cfg
+  sed -i "s:@@IDENT_FILE@@:qemu:" boot/grub/embed.cfg
+  touch qemu
   mkdir -p boot/grub/locale/
   for i in /usr/share/locale/*; do
     if [ -f "$i/LC_MESSAGES/grub.mo" ]; then
       cp -f "$i/LC_MESSAGES/grub.mo" "boot/grub/locale/${i##*/}.mo"
     fi
   done
+  mkdir -p boot/grub/i386-pc/
   for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do
     if [ -f $i ]; then
-      cp -f $i boot/grub/
+      cp -f $i boot/grub/i386-pc/
     fi
   done
+  grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
+    biosdisk iso9660
+  cat $GRUB_DIR/cdboot.img /tmp/core.img > $BOOTFILE
+  rm /tmp/core.img
   grub-editenv boot/grub/salt.env create
 )
-BOOTFILE=boot/eltorito.img
-CATALOGFILE=boot/grub.cat
 # remove uneeded/unwanted files
 rm -rf boot/dos boot/isolinux boot/pxelinux.cfg boot/syslinux boot/bootinst.* boot/*.c32 boot/liloinst.sh
 # create the iso

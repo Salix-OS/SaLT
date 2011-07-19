@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: genlocale\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-16 23:55+0200\n"
+"POT-Creation-Date: 2011-07-19 12:49+0200\n"
 "PO-Revision-Date: 2010-05-26 01:37+0100\n"
 "Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
 "Language-Team: \n"
@@ -15,6 +15,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: genlocale:52 genlocale:63 genlocale:73 genlocale:81
+msgid "Start _DISTRONAME_"
+msgstr "Démarrer _DISTRONAME_"
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82
 msgid "Memory Test"
@@ -56,68 +60,113 @@ msgstr "Activer le verrou numérique au démarrage"
 msgid "Disable numlock on boot (default)"
 msgstr "Désactiver le verrou numérique au démarrage (défaut)"
 
-#: genlocale:63 genlocale:74 genlocale:84 genlocale:92
+#: genlocale:63 genlocale:74 genlocale:84 genlocale:94
 msgid "Enable synaptics fdi (sometimes unreliable)"
 msgstr ""
 "Activer la prise en charge Synaptic FDI du pavé tactile (parfois non fiable)"
 
-#: genlocale:64 genlocale:75 genlocale:85 genlocale:93
+#: genlocale:64 genlocale:75 genlocale:85 genlocale:95
 msgid "Disable synaptics fdi (reliable) (default)"
 msgstr ""
 "Désactiver la prise en charge Synaptic FDI du pavé tactile (fiable) (défaut)"
 
-#: genlocale:65 genlocale:76 genlocale:86 genlocale:97
+#: genlocale:65 genlocale:76 genlocale:86 genlocale:109
 msgid "Return to boot menu"
 msgstr "Retourner au menu de démarrage"
 
-#: genlocale:81
-msgid "Start _DISTRONAME_"
-msgstr "Lancer _DISTRONAME_"
+#: genlocale:92
+msgid "Enable Ibus"
+msgstr "Activer Ibus"
 
-#: genlocale:94
+#: genlocale:93
+msgid "Disable Ibus (default)"
+msgstr "Désactiver Ibus (défaut)"
+
+#: genlocale:96
+msgid "No sound on boot"
+msgstr "Pas de son au démarrage"
+
+#: genlocale:97
+msgid "Enable sound on boot (default)"
+msgstr "Activer le son au démarrage (défaut)"
+
+#: genlocale:98
+msgid "Enable autologin on boot (default)"
+msgstr "Activer l'autologin au démarrage (défaut)"
+
+#: genlocale:99
+msgid "Disable autologin on boot"
+msgstr "Désactiver l'autologin au démarrage"
+
+#: genlocale:100
 msgid "Enable gfxpayload=keep (default)"
 msgstr "Activer gfxpayload=keep (défaut)"
 
-#: genlocale:95
+#: genlocale:101
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
 msgstr "Désactiver gfxpayload=keep (si ça ne se lance pas, essayez ceci)"
 
-#: genlocale:96
-msgid "Live system is loading..."
-msgstr "Le système Live se lance..."
+#: genlocale:102
+msgid "Change root password"
+msgstr "Changer le mot de passe root"
 
-#: genlocale:98
+#: genlocale:103
+msgid "New root password (choose 'ask' to be asked at boot): "
+msgstr "Nouveau mot de passe root (saisissez 'ask' pour qu'on vous le demande au démarrage) : "
+
+#: genlocale:104
+msgid "Set a proxy"
+msgstr "Mettre un proxy"
+
+#: genlocale:105
+msgid "New proxy (empty for no proxy): "
+msgstr "Nouveau proxy (vide pour aucun proxy) : "
+
+#: genlocale:106
+msgid "Boot from an ISO"
+msgstr "Démarrer depuis un ISO"
+
+#: genlocale:107
+msgid "Path to the ISO to boot from: "
+msgstr "Chemin vers le fichier ISO duquel démarrer : "
+
+#: genlocale:108
+msgid "Live system is loading..."
+msgstr "Chargement du système Live..."
+
+#: genlocale:110
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "Enregistrer les paramètres à autocharger aux futurs démarrages"
 
-#: genlocale:99
+#: genlocale:111
 msgid "Do you want to skip the language selection menu? [y/N] "
 msgstr "Voulez-vous passer le menu de sélection de langue ? [o/N] "
 
-#: genlocale:100
+#: genlocale:112
 msgid "Invalid response"
 msgstr "Réponse invalide"
 
-#: genlocale:101
+#: genlocale:113
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
-msgstr "Il y a eu une erreur lors de l'enregistrement des paramètres."
-"Les fichiers live sont-ils sur un support enregistrable type clé USB"
-"(c'est-à-dire pas sur un CDROM) ?" 
+msgstr ""
+"Il y a eu une erreur lors de l'enregistrement des paramètres.Les fichiers "
+"live sont-ils sur un support enregistrable type clé USB(c'est-à-dire pas sur "
+"un CDROM) ?"
 
-#: genlocale:102
+#: genlocale:114
 msgid "y"
 msgstr "o"
 
-#: genlocale:103
+#: genlocale:115
 msgid "Y"
 msgstr "O"
 
-#: genlocale:104
+#: genlocale:116
 msgid "n"
 msgstr "n"
 
-#: genlocale:105
+#: genlocale:117
 msgid "N"
 msgstr "N"
