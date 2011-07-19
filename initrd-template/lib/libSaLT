@@ -318,7 +318,7 @@ mount_device() {
   echo "$1"|grep -q '^/dev/'
   if [ $? -eq 0 ]; then
     # Could be e.g. a subdirectory of /dev so replace additional slashes
-    DEV=$(echo "$1"|sed -e 's:/dev/::' -e 's:/:_:')
+    DEV=$(echo "$1"|sed -e 's:/dev/::' -e 's:/:_:g')
     if mountpoint -q /mnt/$DEV; then
       debuglog "$1 already mounted on /mnt/$DEV"
     else
@@ -341,7 +341,7 @@ umount_device() {
   echo "$1"|grep -q '^/dev/'
   if [ $? -eq 0 ]; then
     # Could be e.g. a subdirectory of /dev so replace additional slashes
-    DEV=$(echo "$1"|sed -e 's:/dev/::' -e 's:/:_:')
+    DEV=$(echo "$1"|sed -e 's:/dev/::' -e 's:/:_:g')
     if mountpoint -q /mnt/$DEV; then
       debuglog "Umounting /mnt/$DEV"
       (umount -r -d /mnt/$DEV || umount -l /mnt/$DEV) && rmdir /mnt/$DEV

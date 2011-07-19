@@ -164,8 +164,8 @@ if [ $? -eq 0 ]; then
       # create the boot images
       # zfs causes slow disk access with 1.99
       grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
-        -c "$grubdir"/embed.cfg \
-        biosdisk ext2 fat iso9660 ntfs reiserfs xfs part_msdos part_gpt lvm raid search echo
+        -c boot/grub/embed.cfg \
+        biosdisk ext2 fat iso9660 ntfs reiserfs xfs part_msdos part_gpt search echo
       cat $GRUB_DIR/lnxboot.img /tmp/core.img > boot/grub2-linux.img
       if [ -e $GRUB_DIR/g2hdr.img ] && [ -e $GRUB_DIR/g2ldr.mbr ]; then
 		    # this image can only be directly loaded by Vista and later

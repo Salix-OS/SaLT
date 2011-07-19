@@ -4,6 +4,8 @@ cd $(dirname $0)
 VER=1.4
 AUTHOR='Pontvieux Cyrille - jrd@enialis.net'
 LICENCE='GPL v3+'
+SCRIPT=$(basename $0)
+SCRIPT=$(readlink -f "$SCRIPT")
 
 version() {
   echo "install-on-USB v$VER by $AUTHOR"
@@ -18,40 +20,42 @@ usage() {
   exit 1
 }
 
-get_dev_root() {
+get_dev_part() {
   MNTDIR="$1"
   DEVPART=$(mount | grep "on $MNTDIR " | cut -d' ' -f1 | head -n 1)
   if [ -z "$DEVPART" ]; then
     echo "Error: $MNTDIR doesn't seem to be mounted" >&2
     exit 2
-  elif ([ "$(echo $DEVPART | awk '{s=substr($1, 1, 1); print s;}')" != "/" ] || [ ! -r "$DEVPART" ]); then
+  elif ([ "$(echo $DEVPART | awk '{s=substr($1, 1, 1); print s;}')" != "/" ] || [ ! -r "$DEVPART" ] || [ ! -b "$DEVPART" ]); then
     echo "Error: $DEVPART detected as a the device of" >&2
     echo "  $MNTDIR but seems invalid." >&2
     exit 2
-  else
-    echo $DEVPART | awk -v l=${#DEVPART} '{s=substr($1, 1, l - 1); print s;}'
   fi
+  echo $DEVPART
 }
 
 get_partition_num() {
-  MNTDIR="$1"
-  DEVPART=$(mount | grep "on $MNTDIR " | cut -d' ' -f1 | head -n 1)
-  if [ -z "$DEVPART" ]; then
-    echo "Error: $MNTDIR doesn't seem to be mounted" >&2
+  DEVPART="$1"
+  echo $DEVPART|sed 's/^.*[^0-9]\([0-9]*\)$/\1/'
+}
+
+get_dev_root() {
+  DEVPART="$1"
+  PARTNUM="$2"
+  DEVROOT=$(echo $DEVPART|sed "s/$PARTNUM\$//")
+  if ([ "$(echo $DEVROOT | awk '{s=substr($1, 1, 1); print s;}')" != "/" ] || [ ! -r "$DEVROOT" ] || [ ! -b "$DEVROOT" ]); then
+    echo "Error: $DEVROOT detected as a the root device of" >&2
+    echo "  $DEVPART but seems invalid." >&2
     exit 2
-  elif ([ "$(echo $DEVPART | awk '{s=substr($1, 1, 1); print s;}')" != "/" ] || [ ! -r "$DEVPART" ]); then
-    echo "Error: $DEVPART detected as a the device of" >&2
-    echo "  $MNTDIR but seems invalid." >&2
-    exit 2
-  else
-    echo $DEVPART|sed 's/^.*[^0-9]\([0-9]\+\)$/\1/'
   fi
+  echo $DEVROOT
 }
 
 install_syslinux() {
   DIR="$1"
   DEVICE="$2"
-  PARTNUM="$3"
+  DEVPART="$3"
+  PARTNUM="$4"
   which syslinux >/dev/null 2>&1
   if [ $? -ne 0 ]; then
     echo "Error: syslinux is not available on your system." >&2
@@ -65,11 +69,23 @@ install_syslinux() {
     exit 2
   fi
   echo "Warning: syslinux+grub2 is about to be installed in $DEVICE"
+  # check if we hit an unpartitioned stick e.g. fat fs directly on
+  # /dev/sdc without /dev/sdc1
+  if [ "$DEVPART" != "$DEVICE" ]; then
+    echo "on partition $DEVPART"
+  fi
   printf "Do you want to continue? [y/N] "
   read R
   if ([ "$R" = "y" ] || [ "$R" = "Y" ]); then
-    syslinux $DEVICE$PARTNUM
-    parted $DEVICE set $PARTNUM boot on
+    bakfile="$DIR"/boot/$(echo $DEVICE|tr '/' '_').mbr.$(date +%Y%m%d%H%m)
+    echo "Backing up mbr of $DEVICE to '$bakfile'..."
+    dd if=$DEVICE of=$bakfile bs=512 count=1
+    echo "Installing syslinux..."
+    syslinux $DEVPART
+    if [ "$DEVPART" != "$DEVICE" ]; then
+      echo "Setting bootable flag of $DEVPART..."
+      parted $DEVICE set $PARTNUM boot on
+    fi
     sync
     cat <<EOF > "$DIR"/syslinux.cfg
 DEFAULT grub2
@@ -84,6 +100,21 @@ EOF
   fi
 }
 
+run_as_root() {
+  if which gksu >/dev/null 2>&1; then
+    gksu $@
+  fi
+}
+
+# check if we are run non-interactive (e.g. from file manager)
+if [ ! -t 0 ]; then
+  CMD="sh -c '$SCRIPT; echo Press enter to exit; read;'"
+  if which xterm >/dev/null 2>&1; then
+    run_as_root xterm -e $CMD
+    exit
+  fi
+fi
+
 if ([ "$1" = "--version" ] || [ "$1" = "-v" ]); then
   version
   exit 0
@@ -96,7 +127,8 @@ if [ "$(id -ru)" -ne "0" ]; then
   exit 2
 fi
 MNTDIR=$(cd ..; echo "$PWD")
-DEVROOT=$(get_dev_root "$MNTDIR"); [ $? -ne 0 ] && exit $?
-PARTNUM=$(get_partition_num "$MNTDIR"); [ $? -ne 0 ] && exit $?
-install_syslinux "$MNTDIR" $DEVROOT $PARTNUM
+DEVPART=$(get_dev_part "$MNTDIR"); [ $? -ne 0 ] && exit $?
+PARTNUM=$(get_partition_num "$DEVPART"); [ $? -ne 0 ] && exit $?
+DEVROOT=$(get_dev_root "$DEVPART" "$PARTNUM"); [ $? -ne 0 ] && exit $?
+install_syslinux "$MNTDIR" $DEVROOT $DEVPART $PARTNUM
 exit 0
