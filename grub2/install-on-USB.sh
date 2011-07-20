@@ -4,8 +4,8 @@ cd $(dirname $0)
 VER=1.4
 AUTHOR='Pontvieux Cyrille - jrd@enialis.net'
 LICENCE='GPL v3+'
-SCRIPT=$(basename $0)
-SCRIPT=$(readlink -f "$SCRIPT")
+SCRIPT="$(basename "$0")"
+SCRIPT="$(readlink -f "$SCRIPT")"
 
 version() {
   echo "install-on-USB v$VER by $AUTHOR"
@@ -102,16 +102,15 @@ EOF
 
 run_as_root() {
   if which gksu >/dev/null 2>&1; then
-    gksu $@
+    exec gksu $@
   fi
 }
 
 # check if we are run non-interactive (e.g. from file manager)
 if [ ! -t 0 ]; then
-  CMD="sh -c '$SCRIPT; echo Press enter to exit; read;'"
+  CMD="/bin/sh '$SCRIPT; echo Press enter to exit; read;'"
   if which xterm >/dev/null 2>&1; then
     run_as_root xterm -e $CMD
-    exit
   fi
 fi
 

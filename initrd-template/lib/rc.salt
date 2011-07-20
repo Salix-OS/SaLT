@@ -8,211 +8,203 @@
 
 [ -e /mnt/salt/lib/libSaLT ] || exit 1
 . /mnt/salt/lib/libSaLT
-case "$1" in
-  start)
-    [ -e /mnt/salt/tmp/rc.lock ] && exit 1
-    touch /mnt/salt/tmp/rc.lock
-    lang=$(get_value_cmdline lang)
-    if [ -n "$lang" ]; then
-      if [ -x /usr/sbin/localesetup ]; then
-        /usr/sbin/localesetup $lang # Salix
-      elif [ -e /etc/profile.d ]; then
-        if [ -f /etc/profile.d/lang.sh ]; then
-  	      grep -q -i '^ *export LANG=' /etc/profile.d/lang.sh
-          if [ $? -eq 0 ]; then
-          	sed -i "s/^ *\(export LANG=\).*$/\1$lang/" /etc/profile.d/lang.sh
-          else
-            echo "export LANG=$lang" >> /etc/profile.d/lang.sh
-          fi
-        fi
-        if [ -f /etc/profile.d/lang.csh ]; then
-  	      grep -q -i '^ *setenv LANG ' /etc/profile.d/lang.csh
-          if [ $? -eq 0 ]; then
-          	sed -i "s/^ *\(setenv LANG \).*$/\1$lang/" /etc/profile.d/lang.csh
-          else
-            echo "setenv LANG $lang" >> /etc/profile.d/lang.csh
-          fi
-        fi
-        if [ -f /etc/kde/kdm/kdmrc ]; then
-          locale_noutf8=$(echo $lang | sed 's/\.utf8//')
-          sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" /etc/kde/kdm/kdmrc
-        fi
-      fi
-      if [ -e /etc/profile.d/lang.sh ]; then
-        . /etc/profile.d/lang.sh
-      fi
-      # Make firefox match OS locale
-      if [ -w /usr/lib/firefox/greprefs/all.js ]; then
-        sed -i -e 's/pref("intl.locale.matchOS",                 false);/pref("intl.locale.matchOS",                 true);/g' /usr/lib/firefox/greprefs/all.js
-      fi
-      # Make thunderbird match OS locale
-      if [ -w /usr/lib/thunderbird/greprefs/all.js ]; then
-        sed -i -e 's/pref("intl.locale.matchOS",                 false);/pref("intl.locale.matchOS",                 true);/g' /usr/lib/thunderbird/greprefs/all.js
-      fi
-    fi
-    restart_hal=no
-    synaptics=$(get_value_cmdline synaptics)
-    if [ "$synaptics" = "on" ]; then
-      if [ ! -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
-        if [ -e /usr/share/hal/fdi/policy/10osvendor/11-x11-synaptics.fdi ]; then
-          mkdir -p /etc/hal/fdi/policy
-          cp /usr/share/hal/fdi/policy/10osvendor/11-x11-synaptics.fdi /etc/hal/fdi/policy/
-          restart_hal=yes
-        fi
-      fi
-    elif [ "$synaptics" = "off" ]; then
-      if [ -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
-        rm -f /etc/hal/fdi/policy/11-x11-synaptics.fdi
-        restart_hal=yes
-      fi
-    fi
-    keyb=$(get_value_cmdline keyb)
-    numlock=$(get_value_cmdline numlock)
-    scim=$(get_value_cmdline scim)
-    ibus=$(get_value_cmdline ibus)
-    if [ -n "$keyb" -o -n "$numlock" -o -n "$scim" -o -n "$ibus" ]; then
-      # keyboard settting
-      [ -n "$keyb" ] || keyb=us
-      [ -n "$numlock" ] || numlock=off
-      [ -n "$scim" ] || scim=off
-      [ -n "$ibus" ] || ibus=off
-      if [ -x /usr/sbin/keyboardsetup ]; then # Salix
-        /usr/sbin/keyboardsetup -k $keyb -n $numlock -s $scim -i $ibus
-        restart_hal=no
+lang=$(get_value_cmdline lang)
+if [ -n "$lang" ]; then
+  if [ -x /usr/sbin/localesetup ]; then
+    /usr/sbin/localesetup $lang # Salix
+  elif [ -e /etc/profile.d ]; then
+    if [ -f /etc/profile.d/lang.sh ]; then
+      grep -q -i '^ *export LANG=' /etc/profile.d/lang.sh
+      if [ $? -eq 0 ]; then
+        sed -i "s/^ *\(export LANG=\).*$/\1$lang/" /etc/profile.d/lang.sh
       else
-        grep "^$keyb|.*|.*|.*" /mnt/salt/lib/keymaps | sed -e "s/^.*|\(.*\)|\(.*\)|\(.*\)/\1|\2|\3/" > /tmp/xkb
-        xkblayout="$(sed -e "s/^\(.*\)|.*|.*/\1/" /tmp/xkb)"
-        xkbvariant="$(sed -e "s/^.*|\(.*\)|.*/\1/" /tmp/xkb)"
-        xkboptions="$(sed -e "s/^.*|.*|\(.*\)/\1/" /tmp/xkb)"
-        rm /tmp/xkb
-        # Fall back to keymap if no xkb maping available
-        if [ -z "$xkblayout" ]; then
-          xkblayout="$keyb"
-          xkbvariant=""
-          xkboptions=""
-        fi
-        /usr/bin/loadkeys -u $keyb.map 1>&2 2>/dev/null
-        if [ -e /etc/rc.d/rc.keymap ]; then
-          sed -i "s/\(^[ \t]*\/usr\/bin\/loadkeys -u\).*$/\1 $keyb.map/" /etc/rc.d/rc.keymap
-        fi
-        if [ -e /etc/X11/xorg.conf.d ]; then
-          cat <<EOF > /etc/X11/xorg.conf.d/10-keymap.conf
+        echo "export LANG=$lang" >> /etc/profile.d/lang.sh
+      fi
+    fi
+    if [ -f /etc/profile.d/lang.csh ]; then
+      grep -q -i '^ *setenv LANG ' /etc/profile.d/lang.csh
+      if [ $? -eq 0 ]; then
+        sed -i "s/^ *\(setenv LANG \).*$/\1$lang/" /etc/profile.d/lang.csh
+      else
+        echo "setenv LANG $lang" >> /etc/profile.d/lang.csh
+      fi
+    fi
+    if [ -f /etc/kde/kdm/kdmrc ]; then
+      locale_noutf8=$(echo $lang | sed 's/\.utf8//')
+      sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" /etc/kde/kdm/kdmrc
+    fi
+  fi
+  if [ -e /etc/profile.d/lang.sh ]; then
+    . /etc/profile.d/lang.sh
+  fi
+  # Make firefox match OS locale
+  if [ -w /usr/lib/firefox/greprefs/all.js ]; then
+    sed -i -e 's/pref("intl.locale.matchOS",                 false);/pref("intl.locale.matchOS",                 true);/g' /usr/lib/firefox/greprefs/all.js
+  fi
+  # Make thunderbird match OS locale
+  if [ -w /usr/lib/thunderbird/greprefs/all.js ]; then
+    sed -i -e 's/pref("intl.locale.matchOS",                 false);/pref("intl.locale.matchOS",                 true);/g' /usr/lib/thunderbird/greprefs/all.js
+  fi
+fi
+restart_hal=no
+synaptics=$(get_value_cmdline synaptics)
+if [ "$synaptics" = "on" ]; then
+  if [ ! -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
+    if [ -e /usr/share/hal/fdi/policy/10osvendor/11-x11-synaptics.fdi ]; then
+      mkdir -p /etc/hal/fdi/policy
+      cp /usr/share/hal/fdi/policy/10osvendor/11-x11-synaptics.fdi /etc/hal/fdi/policy/
+      restart_hal=yes
+    fi
+  fi
+elif [ "$synaptics" = "off" ]; then
+  if [ -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
+    rm -f /etc/hal/fdi/policy/11-x11-synaptics.fdi
+    restart_hal=yes
+  fi
+fi
+keyb=$(get_value_cmdline keyb)
+numlock=$(get_value_cmdline numlock)
+scim=$(get_value_cmdline scim)
+ibus=$(get_value_cmdline ibus)
+if [ -n "$keyb" -o -n "$numlock" -o -n "$scim" -o -n "$ibus" ]; then
+  # keyboard settting
+  [ -n "$keyb" ] || keyb=us
+  [ -n "$numlock" ] || numlock=off
+  [ -n "$scim" ] || scim=off
+  [ -n "$ibus" ] || ibus=off
+  if [ -x /usr/sbin/keyboardsetup ]; then # Salix
+    /usr/sbin/keyboardsetup -k $keyb -n $numlock -s $scim -i $ibus
+    restart_hal=no
+  else
+    grep "^$keyb|.*|.*|.*" /mnt/salt/lib/keymaps | sed -e "s/^.*|\(.*\)|\(.*\)|\(.*\)/\1|\2|\3/" > /tmp/xkb
+    xkblayout="$(sed -e "s/^\(.*\)|.*|.*/\1/" /tmp/xkb)"
+    xkbvariant="$(sed -e "s/^.*|\(.*\)|.*/\1/" /tmp/xkb)"
+    xkboptions="$(sed -e "s/^.*|.*|\(.*\)/\1/" /tmp/xkb)"
+    rm /tmp/xkb
+    # Fall back to keymap if no xkb maping available
+    if [ -z "$xkblayout" ]; then
+      xkblayout="$keyb"
+      xkbvariant=""
+      xkboptions=""
+    fi
+    /usr/bin/loadkeys -u $keyb.map 1>&2 2>/dev/null
+    if [ -e /etc/rc.d/rc.keymap ]; then
+      sed -i "s/\(^[ \t]*\/usr\/bin\/loadkeys -u\).*$/\1 $keyb.map/" /etc/rc.d/rc.keymap
+    fi
+    if [ -e /etc/X11/xorg.conf.d ]; then
+      cat <<EOF > /etc/X11/xorg.conf.d/10-keymap.conf
 Section "InputClass"
-	Identifier	"Keyboard settings"
-	MatchIsKeyboard	"yes"
-	Driver		"evdev"
-	Option		"XkbLayout" "$xkblayout"
-	Option		"XkbVariant" $xkbvariant"
-	Option		"XkbOptions" "$xkboptions"
+Identifier	"Keyboard settings"
+MatchIsKeyboard	"yes"
+Driver		"evdev"
+Option		"XkbLayout" "$xkblayout"
+Option		"XkbVariant" $xkbvariant"
+Option		"XkbOptions" "$xkboptions"
 EndSection
 EOF
-        elif [ -e /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi ]; then
-          if [ ! -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
-            mkdir -p /etc/hal/fdi/policy
-            cp -f /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi /etc/hal/fdi/policy/10-keymap.fdi
-          fi
-          if [ -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
-            sed -i "s/\"input.xkb.layout\" type=\"string\">.*</\"input.xkb.layout\" type=\"string\">"$xkblayout"</;
-              s|\(<merge key=\"input.xkb.variant\" type=\"string\"\).*|\1>"$xkbvariant"</merge>|;
-              s/\"input.xkb.options\" type=\"string\">.*</\"input.xkb.options\" type=\"string\">"$xkboptions"</" /etc/hal/fdi/policy/10-keymap.fdi
-          fi
-        fi
-        if [ "$numlock" = "on" ]; then
-          [ -e /etc/rc.d/rc.numlock ] && chmod 755 /etc/rc.d/rc.numlock
-          for t in 1 2 3 4 5 6 7 8; do setleds +num < /dev/tty$t > /dev/null; done
-          if [ -f /etc/lxdm/lxdm.conf ]; then
-            sed -i "/numlock/d; s/\[base\]/\[base\]\nnumlock=1/" /etc/lxdm/lxdm.conf
-          fi
-          if [ -f /etc/kde/kdm/kdmrc ]; then
-            if [ `grep "\(^\|#\)NumLock=" /etc/kde/kdm/kdmrc` ]; then
-              sed -i "s/\(^\|#\)NumLock=.*/NumLock=On/" /etc/kde/kdm/kdmrc
-            else
-              sed -i "s/\[X-\*-Greeter\]/\[X-\*-Greeter\]\nNumLock=On/" /etc/kde/kdm/kdmrc
-            fi
-          fi
-        else
-          [ -e /etc/rc.d/rc.numlock ] && chmod 644 /etc/rc.d/rc.numlock
-          for t in 1 2 3 4 5 6 7 8; do setleds -num < /dev/tty$t > /dev/null; done
-          if [ -f /etc/lxdm/lxdm.conf ]; then
-            sed -i "/numlock/d; s/\[base\]/\[base\]\nnumlock=0/" /etc/lxdm/lxdm.conf
-          fi
-          if [ -f /etc/kde/kdm/kdmrc ]; then
-            if [ `grep "\(^\|#\)NumLock=" /etc/kde/kdm/kdmrc` ]; then
-              sed -i "s/\(^\|#\)NumLock=.*/NumLock=Off/" /etc/kde/kdm/kdmrc
-            else
-              sed -i "s/\[X-\*-Greeter\]/\[X-\*-Greeter\]\nNumLock=Off/" /etc/kde/kdm/kdmrc
-            fi
-          fi
-        fi
-        if [ "$scim" = "on" ]; then
-          [ -f /etc/profile.d/scim.sh ] && chmod +x /etc/profile.d/scim.sh
-          [ -f /etc/profile.d/scim.csh ] && chmod +x /etc/profile.d/scim.csh
-        else
-          [ -f /etc/profile.d/scim.sh ] && chmod -x /etc/profile.d/scim.sh
-          [ -f /etc/profile.d/scim.csh ] && chmod -x /etc/profile.d/scim.csh
-        fi
-        if [ "$ibus" = "on" ]; then
-          [ -f /etc/profile.d/ibus.sh ] && chmod +x /etc/profile.d/ibus.sh
-          [ -f /etc/profile.d/ibus.csh ] && chmod +x /etc/profile.d/ibus.csh
-        else
-          [ -f /etc/profile.d/ibus.sh ] && chmod -x /etc/profile.d/ibus.sh
-          [ -f /etc/profile.d/ibus.csh ] && chmod -x /etc/profile.d/ibus.csh
-        fi
-        restart_hal=yes
+    elif [ -e /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi ]; then
+      if [ ! -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
+        mkdir -p /etc/hal/fdi/policy
+        cp -f /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi /etc/hal/fdi/policy/10-keymap.fdi
+      fi
+      if [ -e /etc/hal/fdi/policy/10-keymap.fdi ]; then
+        sed -i "s/\"input.xkb.layout\" type=\"string\">.*</\"input.xkb.layout\" type=\"string\">"$xkblayout"</;
+          s|\(<merge key=\"input.xkb.variant\" type=\"string\"\).*|\1>"$xkbvariant"</merge>|;
+          s/\"input.xkb.options\" type=\"string\">.*</\"input.xkb.options\" type=\"string\">"$xkboptions"</" /etc/hal/fdi/policy/10-keymap.fdi
       fi
     fi
-    [ "$restart_hal" = "yes" ] && /etc/rc.d/rc.hald restart
-    passwd=$(get_value_cmdline passwd)
-    if [ -n "$passwd" ]; then
-      # root password
-      if [ "$passwd" = "ask" ]; then
-        echo -ne "\nEnter new password for root: "
-        read -s passwd
+    if [ "$numlock" = "on" ]; then
+      [ -e /etc/rc.d/rc.numlock ] && chmod 755 /etc/rc.d/rc.numlock
+      for t in 1 2 3 4 5 6 7 8; do setleds +num < /dev/tty$t > /dev/null; done
+      if [ -f /etc/lxdm/lxdm.conf ]; then
+        sed -i "/numlock/d; s/\[base\]/\[base\]\nnumlock=1/" /etc/lxdm/lxdm.conf
       fi
-      if [ -n "$passwd" ]; then
-        echo "root:$passwd" | /usr/sbin/chpasswd
+      if [ -f /etc/kde/kdm/kdmrc ]; then
+        if [ `grep "\(^\|#\)NumLock=" /etc/kde/kdm/kdmrc` ]; then
+          sed -i "s/\(^\|#\)NumLock=.*/NumLock=On/" /etc/kde/kdm/kdmrc
+        else
+          sed -i "s/\[X-\*-Greeter\]/\[X-\*-Greeter\]\nNumLock=On/" /etc/kde/kdm/kdmrc
+        fi
       fi
-    fi
-    if is_on_cmdline nosound; then
-      echoinfo 'Muting sound volume'
-      for SCONTROL in Master PCM Front Surround Center CD Video Wave Music AC97 Headphone; do
-        /usr/bin/amixer -q sset $SCONTROL 0 mute 2>/dev/null
-      done
     else
-      if [ -r /etc/asound.state ]; then
-        /usr/sbin/alsactl restore
-      else
-        echoinfo 'Setting sound volume to 71%'
-        for SCONTROL in Master PCM Front Surround Center CD Video Wave Music AC97 Headphone; do
-          /usr/bin/amixer -q sset $SCONTROL 71% unmute 2>/dev/null
-        done
+      [ -e /etc/rc.d/rc.numlock ] && chmod 644 /etc/rc.d/rc.numlock
+      for t in 1 2 3 4 5 6 7 8; do setleds -num < /dev/tty$t > /dev/null; done
+      if [ -f /etc/lxdm/lxdm.conf ]; then
+        sed -i "/numlock/d; s/\[base\]/\[base\]\nnumlock=0/" /etc/lxdm/lxdm.conf
+      fi
+      if [ -f /etc/kde/kdm/kdmrc ]; then
+        if [ `grep "\(^\|#\)NumLock=" /etc/kde/kdm/kdmrc` ]; then
+          sed -i "s/\(^\|#\)NumLock=.*/NumLock=Off/" /etc/kde/kdm/kdmrc
+        else
+          sed -i "s/\[X-\*-Greeter\]/\[X-\*-Greeter\]\nNumLock=Off/" /etc/kde/kdm/kdmrc
+        fi
       fi
     fi
-    if is_on_cmdline autologin; then
-      [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=true/' /etc/gdm/custom.conf
+    if [ "$scim" = "on" ]; then
+      [ -f /etc/profile.d/scim.sh ] && chmod +x /etc/profile.d/scim.sh
+      [ -f /etc/profile.d/scim.csh ] && chmod +x /etc/profile.d/scim.csh
     else
-      [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=false/' /etc/gdm/custom.conf
+      [ -f /etc/profile.d/scim.sh ] && chmod -x /etc/profile.d/scim.sh
+      [ -f /etc/profile.d/scim.csh ] && chmod -x /etc/profile.d/scim.csh
     fi
-    proxy=$(get_value_cmdline proxy)
-    if [ -n "$proxy" ]; then
-      # set http and ftp proxy (same for both)
-      cat <<EOF > /etc/profile.d/proxy.sh
+    if [ "$ibus" = "on" ]; then
+      [ -f /etc/profile.d/ibus.sh ] && chmod +x /etc/profile.d/ibus.sh
+      [ -f /etc/profile.d/ibus.csh ] && chmod +x /etc/profile.d/ibus.csh
+    else
+      [ -f /etc/profile.d/ibus.sh ] && chmod -x /etc/profile.d/ibus.sh
+      [ -f /etc/profile.d/ibus.csh ] && chmod -x /etc/profile.d/ibus.csh
+    fi
+    restart_hal=yes
+  fi
+fi
+[ "$restart_hal" = "yes" ] && /etc/rc.d/rc.hald restart
+passwd=$(get_value_cmdline passwd)
+if [ -n "$passwd" ]; then
+  # root password
+  if [ "$passwd" = "ask" ]; then
+    echo -ne "\nEnter new password for root: "
+    read -s passwd
+    echo
+  fi
+  if [ -n "$passwd" ]; then
+    echo "root:$passwd" | /usr/sbin/chpasswd
+  fi
+fi
+if is_on_cmdline nosound; then
+  echoinfo 'Muting sound volume'
+  for SCONTROL in Master PCM Front Surround Center CD Video Wave Music AC97 Headphone; do
+    /usr/bin/amixer -q sset $SCONTROL 0 mute 2>/dev/null
+  done
+else
+  if [ -r /etc/asound.state ]; then
+    /usr/sbin/alsactl restore
+  else
+    echoinfo 'Setting sound volume to 71%'
+    for SCONTROL in Master PCM Front Surround Center CD Video Wave Music AC97 Headphone; do
+      /usr/bin/amixer -q sset $SCONTROL 71% unmute 2>/dev/null
+    done
+  fi
+fi
+if is_on_cmdline autologin; then
+  [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=true/' /etc/gdm/custom.conf
+else
+  [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=false/' /etc/gdm/custom.conf
+fi
+proxy=$(get_value_cmdline proxy)
+if [ -n "$proxy" ]; then
+  # set http and ftp proxy (same for both)
+  cat <<EOF > /etc/profile.d/proxy.sh
 #!/bin/sh
 export http_proxy=$proxy
 export ftp_proxy=$http_proxy
 EOF
-      chmod +x /etc/profile.d/proxy.sh
-      /etc/profile.d/proxy.sh
-      which gconftool-2 >/dev/null 2>&1
-      if [ $? -eq 0 -a -d /etc/gconf ]; then
-        gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/host $(echo $proxy|cut -d: -f1)
-        gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/host $(echo $proxy|cut -d: -f1)
-        gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/port $(echo $proxy|grep -q ':' && echo $proxy|cut -d: -f2 || echo 3128)
-        gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/port $(echo $proxy|grep -q ':' && echo $proxy|cut -d: -f2 || echo 3128)
-      fi
-    fi
-    ;;
-  *)
-    echodebug "rc.salt: $1 not supported"
-    ;;
-esac
+  chmod +x /etc/profile.d/proxy.sh
+  /etc/profile.d/proxy.sh
+  which gconftool-2 >/dev/null 2>&1
+  if [ $? -eq 0 -a -d /etc/gconf ]; then
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/host $(echo $proxy|cut -d: -f1)
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/host $(echo $proxy|cut -d: -f1)
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/port $(echo $proxy|grep -q ':' && echo $proxy|cut -d: -f2 || echo 3128)
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/port $(echo $proxy|grep -q ':' && echo $proxy|cut -d: -f2 || echo 3128)
+  fi
+fi

@@ -141,8 +141,19 @@ cat <<EOF > /mnt/union/sbin/fsck.aufs
 # This is for having no error at boot when using fsck -C -a / on a aufs root mount point.
 EOF
 chmod +x /mnt/union/sbin/fsck.aufs
-debuglog 'Installing rc.salt service'
-cp lib/rc.salt /mnt/union/etc/rc.d/ && chmod +x /mnt/union/etc/rc.d/rc.salt
+debuglog 'Making rc.salt running at boot'
+if [ -e /mnt/union/etc/rc.d/rc.M ]; then
+  if [ -w /mnt/union/etc/rc.d/rc.M ]; then
+    if ! grep -q 'rc\.salt' /mnt/union/etc/rc.d/rc.M; then
+      echo -e "\n\n#SaLT\n[ -x /mnt/salt/lib/rc.salt ] && . /mnt/salt/lib/rc.salt" >> /mnt/union/etc/rc.d/rc.M
+      chmod u+x /lib/rc.salt
+    fi
+  else
+    errorlog "/etc/rc.d/rc.M does not seem to be writable in the distro: cheatcodes will not work."
+  fi
+else
+  errorlog "/etc/rc.d/rc.M does not seem to exist in the distro: cheatcodes will not work."
+fi
 debuglog 'Early configure locale'
 lang=$(get_value_cmdline lang)
 if [ -n "$lang" -a -e /mnt/union/etc/profile.d ]; then
