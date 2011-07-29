@@ -94,12 +94,12 @@ if [ -n "$keyb" -o -n "$numlock" -o -n "$scim" -o -n "$ibus" ]; then
     if [ -e /etc/X11/xorg.conf.d ]; then
       cat <<EOF > /etc/X11/xorg.conf.d/10-keymap.conf
 Section "InputClass"
-Identifier	"Keyboard settings"
-MatchIsKeyboard	"yes"
-Driver		"evdev"
-Option		"XkbLayout" "$xkblayout"
-Option		"XkbVariant" $xkbvariant"
-Option		"XkbOptions" "$xkboptions"
+Identifier  "Keyboard settings"
+MatchIsKeyboard  "yes"
+Driver    "evdev"
+Option    "XkbLayout" "$xkblayout"
+Option    "XkbVariant" $xkbvariant"
+Option    "XkbOptions" "$xkboptions"
 EndSection
 EOF
     elif [ -e /usr/share/hal/fdi/policy/10osvendor/10-keymap.fdi ]; then
@@ -200,11 +200,39 @@ export ftp_proxy=$http_proxy
 EOF
   chmod +x /etc/profile.d/proxy.sh
   /etc/profile.d/proxy.sh
+  phost=$(echo $proxy| sed 's,\(.*://\)\?\([^:]*\)\(:[0-9]*\)\?,\2,')
+  pport=$(echo $proxy| sed 's,\(.*://\)\?\([^:]*\)\(:[0-9]*\)\?,\3,')
   which gconftool-2 >/dev/null 2>&1
   if [ $? -eq 0 -a -d /etc/gconf ]; then
-    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/host $(echo $proxy|cut -d: -f1)
-    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/host $(echo $proxy|cut -d: -f1)
-    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/port $(echo $proxy|grep -q ':' && echo $proxy|cut -d: -f2 || echo 3128)
-    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/port $(echo $proxy|grep -q ':' && echo $proxy|cut -d: -f2 || echo 3128)
+    [ -z "$pport" ] && pport=3128
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/host $phost
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/host $phost
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/port $pport
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/port $pport
+  fi
+  ffpreffile=$('ls' -d /usr/lib/firefox-*/defaults/pref/all*.js)
+  if [ -n "$ffpreffile" ]; then
+    cat <<EOF > $ffpreffile
+pref("network.proxy.type", 1);
+pref("network.proxy.http", "$phost");
+pref("network.proxy.http_port", $pport);
+pref("network.proxy.ftp", "$phost");
+pref("network.proxy.ftp_port", "$pport");
+pref("network.proxy.no_proxies_on", "localhost, 127.0.0.1");
+EOF
+  fi
+else
+  [ -e /etc/profile.d/proxy.sh ] && rm -f /etc/profile.d/proxy.sh
+  unset http_proxy ftp_proxy
+  which gconftool-2 >/dev/null 2>&1
+  if [ $? -eq 0 -a -e /etc/gconf/gconf.xml.mandatory/system/http_proxy/\%gconf.xml ]; then
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --unset /system/http_proxy/host
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --unset /system/ftp_proxy/host
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --unset /system/http_proxy/port
+    gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --unset /system/ftp_proxy/port
+  fi
+  ffpreffile=$('ls' -d /usr/lib/firefox-*/defaults/pref/all*.js)
+  if [ -n "$ffpreffile" ]; then
+    sed -i '/proxy/d' $ffpreffile
   fi
 fi
