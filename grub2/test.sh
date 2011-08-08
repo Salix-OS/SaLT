@@ -31,8 +31,8 @@ cp bg.png "$grubdir/build/boot/grub/bg.png"
   mkdir -p boot/grub
   cp -ar "$grubdir"/build/* .
   sed -i "s:\(set debug=\).*:\1=debug:" boot/grub/grub.cfg
-  sed -i "s:@@IDENT_FILE@@:qemu:" boot/grub/embed.cfg
-  touch qemu
+  # useless because will boot using eltorito but try to be consistent
+  sed -i "s:@@GRUB2_IDENT_FILE@@:grub2-qemu:" boot/grub/embed.cfg; touch boot/grub/grub2-qemu
   mkdir -p boot/grub/locale/
   for i in /usr/share/locale/*; do
     if [ -f "$i/LC_MESSAGES/grub.mo" ]; then

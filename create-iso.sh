@@ -140,13 +140,15 @@ if [ $? -eq 0 ]; then
       eval $(grep '^libdir=' $(which grub-mkrescue))
       eval $(grep '^PACKAGE_TARNAME=' $(which grub-mkrescue))
       GRUB_DIR=$libdir/$PACKAGE_TARNAME/i386-pc
+      GRUB2_IDENT_FILE="$(grub-mkimage -V | cut -d' ' -f2- | tr -d '()\n' | tr ' ' '_')-$(date +%Y%m%d-%H%M)"
       # copy the config files
       mkdir -p boot/grub
       cp -ar "$grubdir"/build/* .
       # modify the config files
       sed -i "s:\(set debug=\).*:\1$DEBUG:" boot/grub/grub.cfg
       sed -i "s:initrd\.gz:initrd.$COMP:" boot/grub/boot.cfg
-      sed -i "s:@@IDENT_FILE@@:$IDENT_FILE:" boot/grub/embed.cfg
+      sed -i "s:@@GRUB2_IDENT_FILE@@:$GRUB2_IDENT_FILE:" boot/grub/embed.cfg
+      echo "DO NOT REMOVE THIS FILE. It helps grub2 find its root device when chainloaded." > boot/grub/$GRUB2_IDENT_FILE
       # install locales
       mkdir -p boot/grub/locale/
       for i in /usr/share/locale/*; do
