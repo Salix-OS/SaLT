@@ -64,7 +64,7 @@ updatetrans:
 		-o $(POTFILE) \
 		$(PACKAGE)
 	for i in $(POTPLFILES); do \
-		msgmerge -U $$i $(POTFILE); \
+		msgmerge -NU $$i $(POTFILE); \
 	done
 
 .PHONY: clean uninstall clean-all install installmo updatetrans build compiletpl all help
