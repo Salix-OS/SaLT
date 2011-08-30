@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: genlocale\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-19 12:49+0200\n"
+"POT-Creation-Date: 2011-08-30 12:08+0200\n"
 "PO-Revision-Date: 2010-05-26 01:37+0100\n"
 "Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
 "Language-Team: \n"
@@ -16,137 +16,137 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: genlocale:52 genlocale:63 genlocale:73 genlocale:81
+#: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
 msgid "Start _DISTRONAME_"
 msgstr "Démarrer _DISTRONAME_"
 
-#: genlocale:53 genlocale:64 genlocale:74 genlocale:82
+#: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
 msgid "Memory Test"
 msgstr "Tester la mémoire (RAM)"
 
-#: genlocale:54 genlocale:65 genlocale:75 genlocale:83
+#: genlocale:54 genlocale:65 genlocale:75 genlocale:83 genlocale:84
 msgid "Change language"
 msgstr "Changer la langue"
 
-#: genlocale:55 genlocale:66 genlocale:76 genlocale:84
+#: genlocale:55 genlocale:66 genlocale:76 genlocale:84 genlocale:85
 msgid "Change keyboard layout"
 msgstr "Changer la disposition du clavier"
 
-#: genlocale:56 genlocale:67 genlocale:77 genlocale:85
+#: genlocale:56 genlocale:67 genlocale:77 genlocale:85 genlocale:86
 msgid "Change boot options"
 msgstr "Changer les options de démarrage"
 
-#: genlocale:57 genlocale:68 genlocale:78 genlocale:86
+#: genlocale:57 genlocale:68 genlocale:78 genlocale:86 genlocale:87
 msgid "Boot to runlevel '3' (text mode)"
 msgstr "Démarrer en runlevel '3' (mode texte)"
 
-#: genlocale:58 genlocale:69 genlocale:79 genlocale:87
+#: genlocale:58 genlocale:69 genlocale:79 genlocale:87 genlocale:88
 msgid "Boot to runlevel '4' (graphical login) (default)"
 msgstr "Démarrer en runlevel '4' (mode graphique) (défaut)"
 
-#: genlocale:59 genlocale:70 genlocale:80 genlocale:88
+#: genlocale:59 genlocale:70 genlocale:80 genlocale:88 genlocale:89
 msgid "Enable 'Copy everything to RAM'"
 msgstr "Activer la 'Copie intégrale vers la RAM'"
 
-#: genlocale:60 genlocale:71 genlocale:81 genlocale:89
+#: genlocale:60 genlocale:71 genlocale:81 genlocale:89 genlocale:90
 msgid "Disable 'Copy everything to RAM' (default)"
 msgstr "Désactiver la 'Copie intégrale vers la RAM' (défaut)"
 
-#: genlocale:61 genlocale:72 genlocale:82 genlocale:90
+#: genlocale:61 genlocale:72 genlocale:82 genlocale:90 genlocale:91
 msgid "Enable numlock on boot"
 msgstr "Activer le verrou numérique au démarrage"
 
-#: genlocale:62 genlocale:73 genlocale:83 genlocale:91
+#: genlocale:62 genlocale:73 genlocale:83 genlocale:91 genlocale:92
 msgid "Disable numlock on boot (default)"
 msgstr "Désactiver le verrou numérique au démarrage (défaut)"
 
-#: genlocale:63 genlocale:74 genlocale:84 genlocale:94
+#: genlocale:63 genlocale:74 genlocale:84 genlocale:94 genlocale:95
 msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr ""
-"Activer la prise en charge Synaptic FDI du pavé tactile (parfois non fiable)"
+msgstr "Activer Synaptic FDI pour le pavé tactile (parfois non fiable)"
 
-#: genlocale:64 genlocale:75 genlocale:85 genlocale:95
+#: genlocale:64 genlocale:75 genlocale:85 genlocale:95 genlocale:96
 msgid "Disable synaptics fdi (reliable) (default)"
-msgstr ""
-"Désactiver la prise en charge Synaptic FDI du pavé tactile (fiable) (défaut)"
+msgstr "Désactiver Synaptic FDI pour le pavé tactile (fiable) (défaut)"
 
-#: genlocale:65 genlocale:76 genlocale:86 genlocale:109
+#: genlocale:65 genlocale:76 genlocale:86 genlocale:109 genlocale:110
 msgid "Return to boot menu"
 msgstr "Retourner au menu de démarrage"
 
-#: genlocale:92
+#: genlocale:92 genlocale:93
 msgid "Enable Ibus"
 msgstr "Activer Ibus"
 
-#: genlocale:93
+#: genlocale:93 genlocale:94
 msgid "Disable Ibus (default)"
 msgstr "Désactiver Ibus (défaut)"
 
-#: genlocale:96
+#: genlocale:96 genlocale:97
 msgid "No sound on boot"
 msgstr "Pas de son au démarrage"
 
-#: genlocale:97
+#: genlocale:97 genlocale:98
 msgid "Enable sound on boot (default)"
 msgstr "Activer le son au démarrage (défaut)"
 
-#: genlocale:98
+#: genlocale:98 genlocale:99
 msgid "Enable autologin on boot (default)"
 msgstr "Activer l'autologin au démarrage (défaut)"
 
-#: genlocale:99
+#: genlocale:99 genlocale:100
 msgid "Disable autologin on boot"
 msgstr "Désactiver l'autologin au démarrage"
 
-#: genlocale:100
+#: genlocale:100 genlocale:101
 msgid "Enable gfxpayload=keep (default)"
 msgstr "Activer gfxpayload=keep (défaut)"
 
-#: genlocale:101
+#: genlocale:101 genlocale:102
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
 msgstr "Désactiver gfxpayload=keep (si ça ne se lance pas, essayez ceci)"
 
-#: genlocale:102
+#: genlocale:102 genlocale:103
 msgid "Change root password"
 msgstr "Changer le mot de passe root"
 
-#: genlocale:103
+#: genlocale:103 genlocale:104
 msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr "Nouveau mot de passe root (saisissez 'ask' pour qu'on vous le demande au démarrage) : "
+msgstr ""
+"Nouveau mot de passe root (saisissez 'ask' pour qu'on vous le demande au "
+"démarrage) : "
 
-#: genlocale:104
+#: genlocale:104 genlocale:105
 msgid "Set a proxy"
 msgstr "Mettre un proxy"
 
-#: genlocale:105
+#: genlocale:105 genlocale:106
 msgid "New proxy (empty for no proxy): "
 msgstr "Nouveau proxy (vide pour aucun proxy) : "
 
-#: genlocale:106
+#: genlocale:106 genlocale:107
 msgid "Boot from an ISO"
 msgstr "Démarrer depuis un ISO"
 
-#: genlocale:107
+#: genlocale:107 genlocale:108
 msgid "Path to the ISO to boot from: "
 msgstr "Chemin vers le fichier ISO duquel démarrer : "
 
-#: genlocale:108
+#: genlocale:108 genlocale:109
 msgid "Live system is loading..."
 msgstr "Chargement du système Live..."
 
-#: genlocale:110
+#: genlocale:110 genlocale:111
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "Enregistrer les paramètres à autocharger aux futurs démarrages"
 
-#: genlocale:111
+#: genlocale:111 genlocale:112
 msgid "Do you want to skip the language selection menu? [y/N] "
 msgstr "Voulez-vous passer le menu de sélection de langue ? [o/N] "
 
-#: genlocale:112
+#: genlocale:112 genlocale:113
 msgid "Invalid response"
 msgstr "Réponse invalide"
 
-#: genlocale:113
+#: genlocale:113 genlocale:114
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -155,18 +155,18 @@ msgstr ""
 "live sont-ils sur un support enregistrable type clé USB(c'est-à-dire pas sur "
 "un CDROM) ?"
 
-#: genlocale:114
+#: genlocale:114 genlocale:115
 msgid "y"
 msgstr "o"
 
-#: genlocale:115
+#: genlocale:115 genlocale:116
 msgid "Y"
 msgstr "O"
 
-#: genlocale:116
+#: genlocale:116 genlocale:117
 msgid "n"
 msgstr "n"
 
-#: genlocale:117
+#: genlocale:117 genlocale:118
 msgid "N"
 msgstr "N"
