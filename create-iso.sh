@@ -186,7 +186,7 @@ if [ $? -eq 0 ]; then
       grub-editenv boot/grub/salt.env create
     )
     # add script files and boot loader install for USB
-    cp -v "$grubdir"/install-on-USB* $ISODIR/boot/
+    cp -v "$grubdir"/install-on-USB* "$grubdir"/update-grub2.sh $ISODIR/boot/
     tar xf syslinux-$SYSLINUX_VER.tar.bz2
     cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
     rm -rf syslinux-$SYSLINUX_VER
