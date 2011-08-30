@@ -102,13 +102,15 @@ EOF
 
 run_as_root() {
   if which gksu >/dev/null 2>&1; then
-    exec gksu $@
+    exec gksu "$@"
+  else
+    exec "$@" # will fail
   fi
 }
 
 # check if we are run non-interactive (e.g. from file manager)
 if [ ! -t 0 ]; then
-  CMD="/bin/sh '$SCRIPT; echo Press enter to exit; read;'"
+  CMD="/bin/sh -c '$SCRIPT; echo Press enter to exit; read;'"
   if which xterm >/dev/null 2>&1; then
     run_as_root xterm -e $CMD
   fi
@@ -121,7 +123,7 @@ fi
 if ([ "$1" = "--help" ] || [ "$1" = "-h" ]); then
   usage
 fi
-if [ "$(id -ru)" -ne "0" ]; then
+if [ $(id -ru) -ne 0 ]; then
   echo "Error : you must run this script as root" >&2
   exit 2
 fi
