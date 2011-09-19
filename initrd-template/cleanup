@@ -19,7 +19,6 @@ else
 fi
 
 echodebug "cleanup: called with: $0 $@"
-d=$(dirname $0)
 orig=/hooks/$(basename $0)
 echo "$@"|grep -q -- -w
 if [ $? -eq 0 ]; then
@@ -97,6 +96,26 @@ debuglog 'Destroying union filesystem...'
 destroy_union
 rm /mnt/rw
 if [ -e /mnt/ram ]; then
+  if [ -e /sync-persistence ]; then
+    dev=$(cut -d: -f1 /sync-persistence)
+    relpath=$(cut -d: -f2 /sync-persistence)
+    dir=$(mount_device $dev)
+    if [ -e "$dir"/"$relpath" ]; then
+      infolog 'Syncing RAM -> persistence file...'
+      mkdir /mnt/sync
+      mount -o loop "$dir"/"$relpath" /mnt/sync
+      if [ $? -eq 0 ]; then
+        cp -a /mnt/ram/* /mnt/ram/.??* /mnt/sync
+        sync
+        umount /mnt/sync
+        infolog "  $dir/$relpath synchronized"
+      else
+        errorlog "  Cannot mount $dir/$relpath, bad persistence file"
+      fi
+      rmdir /mnt/sync
+    fi
+    umount_device $dev
+  fi
   umount /mnt/ram || umount -l /mnt/ram
   rmdir /mnt/ram
 elif [ -e /mnt/save ]; then

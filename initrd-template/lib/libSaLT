@@ -631,6 +631,7 @@ kill_all_before() {
   kill -15 $lst 2>/dev/null
   sleep 1
   kill -9  $lst 2>/dev/null
+  sleep 1
 }
 
 # Umount all sub-mounts that appear inside the specified mountpoint.
