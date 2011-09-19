@@ -79,7 +79,7 @@ langavailable = [
 # translations
 def strings():
   return  [
-    ("Lstart", _("Start _DISTRONAME_").replace("_DISTRONAME", volumename)),
+    ("Lstart", _("Start _DISTRONAME_").replace("_DISTRONAME_", volumename)),
     ("Lmemtest", _("Memory Test")),
     ("Lchangelang", _("Change language")),
     ("Lchangekb", _("Change keyboard layout")),
