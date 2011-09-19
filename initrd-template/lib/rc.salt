@@ -8,6 +8,9 @@
 
 [ -e /mnt/salt/lib/libSaLT ] || exit 1
 . /mnt/salt/lib/libSaLT
+echoinfo '+--------------------------------+'
+echoinfo '| Starting Live configuration... |'
+echoinfo '+--------------------------------+'
 lang=$(get_value_cmdline lang)
 if [ -n "$lang" ]; then
   if [ -x /usr/sbin/localesetup ]; then
@@ -236,3 +239,6 @@ else
     sed -i '/proxy/d' $ffpreffile
   fi
 fi
+echoinfo '+----------------------------+'
+echoinfo '| Live configuration applied |'
+echoinfo '+----------------------------+'
