@@ -549,31 +549,18 @@ unload_module() {
 # $1 = mount point
 install_hookers() {
   MP="$1"
-  mkdir -p "$MP/hooks"
-  echo "#DO NOT REMOVE THIS FILE" > "$MP/hooks.salt"
-  for b in halt poweroff reboot; do
-    for d in sbin usr/sbin; do
-      if [ -x "$MP/$d/$b" -o -L "$MP/$d/$b" ]; then
-        debuglog "  - Hook for $b in /$d installed"
-        mv "$MP/$d/$b" "$MP/hooks/"
-        (cd "$MP/$d"; ln -s /mnt/salt/cleanup "$b")
-        cat <<EOF >> "$MP/hooks.salt"
-[ -e "hooks/$b" ] && mv "hooks/$b" "$d/"
-
-EOF
-      fi
+  if [ ! -e "$MP/hooks.salt" ]; then
+    mkdir -p "$MP/hooks"
+    echo "#DO NOT REMOVE THIS FILE" > "$MP/hooks.salt"
+    for b in halt poweroff reboot; do
+      for d in sbin usr/sbin; do
+        if [ -x "$MP/$d/$b" -o -L "$MP/$d/$b" ]; then
+          debuglog "  - Hook for $b in /$d installed"
+          mv "$MP/$d/$b" "$MP/hooks/"
+          (cd "$MP/$d"; ln -s /mnt/salt/cleanup "$b")
+        fi
+      done
     done
-  done
-  echo '[ -d hooks ] && rm -rf hooks' >> "$MP/hooks.salt"
-}
-
-# Uninstall hookers for cleanup.
-# $1 = mount point
-uninstall_hookers() {
-  MP="$1"
-  if [ -e "$MP/hooks.salt" ]; then
-    ( cd "$MP"; sh hooks.salt )
-    rm "$MP/hooks.salt"
   fi
 }
 

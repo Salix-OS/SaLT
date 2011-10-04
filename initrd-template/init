@@ -200,13 +200,14 @@ else
     debuglog '"init" is dynamically linked, "ld" and "libc" must be moved to /tmp'
     LIBDIR=/mnt/union/lib
     [ -d /mnt/union/lib64 ] && LIBDIR=/mnt/union/lib64
+    rm -f /mnt/union/init-hooks.salt
     LD=$(ls -1 $LIBDIR/ld-[0-9]*)
-    if [ -f "$LD" ]; then
+    if [ -f "$LD" -a ! -e "$LD.saltbak" ]; then
       cp $LD $LD.saltbak
       mv $LD /tmp/
       ( cd $LIBDIR; ln -s /mnt/salt/tmp/$(basename $LD) . )
       LD=$(echo "$LD"|sed 's:/mnt/union/::')
-      cat <<EOF >> /mnt/union/hooks.salt
+      cat <<EOF >> /mnt/union/init-hooks.salt
 if [ -e "$LD.saltbak" ]; then
   rm -f "$LD"
   mv "$LD.saltbak" "$LD"
@@ -216,12 +217,12 @@ EOF
     fi
     unset LD
     LIBC=$(ls -1 $LIBDIR/libc-[0-9]*)
-    if [ -f "$LIBC" ]; then
+    if [ -f "$LIBC" -a ! -e "$LIBC.saltbak"]; then
       cp $LIBC $LIBC.saltbak
       mv $LIBC /tmp/
       ( cd $LIBDIR; ln -s /mnt/salt/tmp/$(basename $LIBC) . )
       LIBC=$(echo "$LIBC"|sed 's:/mnt/union/::')
-      cat <<EOF >> /mnt/union/hooks.salt
+      cat <<EOF >> /mnt/union/init-hooks.salt
 if [ -e "$LIBC.saltbak" ]; then
   rm -f "$LIBC"
   mv "$LIBC.saltbak" "$LIBC"

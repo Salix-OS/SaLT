@@ -68,11 +68,13 @@ debuglog 'Remounting /mnt/union read/write'
 mount -o remount,rw /mnt/union
 
 infolog 'Untweaking target distro'
-debuglog 'Uninstalling hookers in /mnt/union...'
-uninstall_hookers /mnt/union
-debugshell
 # remove any /mnt/union/dev/initctl file
 rm -f /mnt/union/dev/initctl
+# remove symlinks to /mnt/union/salt/tmp when init is dynamically linked.
+if [ -e /mnt/union/init-hooks.salt ]; then
+  sh /mnt/union/init-hooks.salt
+  rm -f /mnt/union/init-hooks.salt
+fi
 debugshell
 
 infolog 'Synchronizing memory data on disk'
