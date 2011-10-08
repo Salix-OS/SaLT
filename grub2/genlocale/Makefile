@@ -1,36 +1,26 @@
 PACKAGE = genlocale
-POTPLFILES = $(wildcard po/tpl/*.po)
 POFILES = $(wildcard po/*.po)
 MOFILES = $(POFILES:.po=.mo)
 POTFILE = po/$(PACKAGE).pot
 LOCALEDIR = locale
-VOLUMENAME = VolumeName
 
 help:
 	@echo "Help:"
 	@echo "  build        build the .mo files"
-	@echo "  compiletpl   compile the template po files using ${VOLUMENAME}"
-	@echo "  all          compiletpl + build"
+	@echo "  all          build"
 	@echo "  install      all + install them in ${LOCALEDIR}/"
-	@echo "  clean        remove all .mo, .po and tpl/.po~ files"
+	@echo "  clean        remove all .mo and .po~ files"
 	@echo "  uninstall    remove what has been installed in ${LOCALEDIR}/"
 	@echo "  clean-all    remove all generated and installed files"
-	@echo "  udatetrans   update ${POTFILE} from ${PACKAGE} and generage/update .po.tpl files"
+	@echo "  udatetrans   update ${POTFILE} from ${PACKAGE} and generage/update .po files"
+
+all: build
 
 build: $(MOFILES)
 
 %.mo : %.po
 	@echo "Compiling $<"
 	msgfmt -f $< -o $@
-
-compiletpl:
-	for i in ${POTPLFILES}; do \
-		po=po/$$(basename "$$i" .tpl); \
-		sed "s/_DISTRONAME_/${VOLUMENAME}/" "$$i" > "$$po"; \
-	done
-
-all: compiletpl
-	make build
 
 install: all
 	make installmo
@@ -46,8 +36,7 @@ installmo:
 
 clean:
 	@rm -f $(MOFILES)
-	@rm -f $(POFILES)
-	@rm -f $(POTPLFILES:.po=.po~)
+	@rm -f $(POFILES:.po=.po~)
 
 uninstall:
 	@rm -f $(LOCALEDIR)/*/LC_MESSAGES/$(PACKAGE).mo
@@ -67,4 +56,4 @@ updatetrans:
 		msgmerge -NU $$i $(POTFILE); \
 	done
 
-.PHONY: clean uninstall clean-all install installmo updatetrans build compiletpl all help
+.PHONY: clean uninstall clean-all install installmo updatetrans build all help
