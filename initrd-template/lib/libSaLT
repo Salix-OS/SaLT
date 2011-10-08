@@ -604,17 +604,28 @@ change_root_to_initrd() {
 
 # Kill all process where the PID is before the specified PID.
 # Process with PID 1 is ignore.
+# Every process parent of the given pid will also be ignored.
 # Kernel thread process are ignored too.
-# Some process are ignored: mount, ntfs
+# Some process are ignored: mount*, ntfs*
 # $1 = maximum pid
 kill_all_before() {
   PID=$1
+  echodebug "kill all before $PID"
+  ignorelst=:
+  ignore=$PID
+  while [ $ignore -gt 1 ]; do
+    ignorelist="$ignorelst$ignore:"
+    ignore=$(grep '^PPid:' /proc/$ignore/status|sed 's/.*:[ \t]*//')
+  done
+  echodebug $ignorelst
   lst=
   for pid in $(ps|grep -v 'PID USER'|grep -v ' \[[^ ]*\]$'|grep -v mount|grep -v ntfs|cut -d' ' -f2|sort -r); do
-    if [ $pid -lt $PID -a $pid -ne 1 ]; then
+    if [ $pid -lt $PID -a $pid -ne 1 -a -z "$(echo $ignorelst|grep :$pid:)" ]; then
       lst="$lst $pid"
     fi
   done
+  echodebug $lst
+  debugshell
   kill -15 $lst 2>/dev/null
   sleep 1
   kill -9  $lst 2>/dev/null
