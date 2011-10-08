@@ -130,7 +130,7 @@ if [ $? -eq 0 ]; then
     (
       cd "$grubdir/genlocale"
       # compile mo files, create locale dir containg translations
-      make install VOLUMENAME="$VOLNAME"
+      make install
       ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$VOLNAME"
     )
     # add grub2 menu
