@@ -344,7 +344,11 @@ umount_device() {
     DEV=$(echo "$1"|sed -e 's:/dev/::' -e 's:/:_:g')
     if mountpoint -q /mnt/$DEV; then
       debuglog "Umounting /mnt/$DEV"
-      (umount -r -d /mnt/$DEV || umount -l /mnt/$DEV) && rmdir /mnt/$DEV
+      umount -r -d /mnt/$DEV && rmdir /mnt/$DEV
+      if mountpoint -q /mnt/$DEV; then
+        debuglog "Umounting (force) /mnt/$DEV"
+        umount -l -d /mnt/$DEV && rmdir /mnt/$DEV
+      fi
     else
       debuglog "/mnt/$DEV is already umounted"
     fi
@@ -370,7 +374,10 @@ find_distro_device() {
     if [ "$ok" = "false" ]; then
       debuglog "'/$IDENT_FILE:$IDENT_CONTENT' not found in $d"
       debuglog "Umounting $MP"
-      ((umount -r -d $MP || umount -l $MP) && rmdir $MP) >/dev/null 2>&1
+      (umount -r -d $MP && rmdir $MP) >/dev/null 2>&1
+      if [ -e $MP ]; then
+        (umount -l -d $MP && rmdir $MP) >/dev/null 2>&1
+      fi
     fi
     unset ok
   fi
@@ -460,7 +467,10 @@ create_union() {
 destroy_union() {
   if [ -e /mnt/union ]; then
     if mountpoint -q /mnt/union; then
-      umount -r -d /mnt/union || umount -l /mnt/union 2>/dev/null
+      umount -r -d /mnt/union 2>/dev/null
+      if mountpoint -q /mnt/union; then
+        umount -l -d /mnt/union 2>/dev/null
+      fi
     fi
     umount /mnt/xino
     rmdir /mnt/union /mnt/xino
@@ -614,17 +624,19 @@ kill_all_before() {
   ignorelst=:
   ignore=$PID
   while [ $ignore -gt 1 ]; do
-    ignorelist="$ignorelst$ignore:"
+    # don't ignore processes referencing /mnt/union
+    grep -q /mnt/union /proc/$ignore/maps && break
+    ignorelst="$ignorelst$ignore:"
     ignore=$(grep '^PPid:' /proc/$ignore/status|sed 's/.*:[ \t]*//')
   done
-  echodebug $ignorelst
+  echodebug "ignorelst $ignorelst"
   lst=
   for pid in $(ps|grep -v 'PID USER'|grep -v ' \[[^ ]*\]$'|grep -v mount|grep -v ntfs|cut -d' ' -f2|sort -r); do
     if [ $pid -lt $PID -a $pid -ne 1 -a -z "$(echo $ignorelst|grep :$pid:)" ]; then
       lst="$lst $pid"
     fi
   done
-  echodebug $lst
+  echodebug "kill list: $lst"
   debugshell
   kill -15 $lst 2>/dev/null
   sleep 1
@@ -638,7 +650,11 @@ umount_submounts_in() {
   MP="$1"
   for d in $(mount|grep " $MP/"|sed "s:.* \($MP/[^ ]\+\) .*:\1:"|sort -r); do
     debuglog "  - Umount $d"
-    umount -r -d $d || umount -l $d 2>/dev/null
+    umount -r -d $d 2>/dev/null
+  done
+  for d in $(mount|grep " $MP/"|sed "s:.* \($MP/[^ ]\+\) .*:\1:"|sort -r); do
+    debuglog "  - Umount $d (force)"
+    umount -l -d $d 2>/dev/null
   done
 }
 

@@ -110,15 +110,16 @@ if [ -e /mnt/ram ]; then
       debugshell
       if [ $? -eq 0 ]; then
         SIZE_RAM=$(du -sm /mnt/ram|cut -f1)
-        SIZE_SYNC=$(du -sm /mnt/sync|cut -f1)
+        SIZE_SYNC=$(sh -c 'echo $2' -- $(df -m /mnt/sync|tail -n1))
         if [ $SIZE_RAM -lt $SIZE_SYNC ]; then
           cp -a /mnt/ram/* /mnt/ram/.??* /mnt/sync
           sync
           infolog "  $dir/$relpath synchronized"
         else
-          errorlog "  Cannot sync to $dir/$relpath: not enough size (${SIZE_RAM}M)"
+          errorlog "  Cannot sync to $dir/$relpath: not enough size (${SIZE_RAM}M >= ${SIZE_SYNC}M)"
         fi
-        umount /mnt/sync
+        debugshell
+        umount -d /mnt/sync
       else
         errorlog "  Cannot mount $dir/$relpath: bad persistence file"
       fi
@@ -147,7 +148,6 @@ debugshell
 
 echoinfo "Stopping/Rebooting: $CMD"
 debugshell
-sync
 sleep 1
 exec "$CMD" -f
 fumble 'End of cleanup: this line must never be executed!'
