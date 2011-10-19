@@ -102,17 +102,25 @@ if [ -e /mnt/ram ]; then
     dev=$(cut -d: -f1 /sync-persistence)
     relpath=$(cut -d: -f2 /sync-persistence)
     dir=$(mount_device $dev)
+    debugshell
     if [ -e "$dir"/"$relpath" ]; then
       infolog 'Syncing RAM -> persistence file...'
       mkdir /mnt/sync
       mount -o loop "$dir"/"$relpath" /mnt/sync
+      debugshell
       if [ $? -eq 0 ]; then
-        cp -a /mnt/ram/* /mnt/ram/.??* /mnt/sync
-        sync
+        SIZE_RAM=$(du -sm /mnt/ram|cut -f1)
+        SIZE_SYNC=$(du -sm /mnt/sync|cut -f1)
+        if [ $SIZE_RAM -lt $SIZE_SYNC ]; then
+          cp -a /mnt/ram/* /mnt/ram/.??* /mnt/sync
+          sync
+          infolog "  $dir/$relpath synchronized"
+        else
+          errorlog "  Cannot sync to $dir/$relpath: not enough size (${SIZE_RAM}M)"
+        fi
         umount /mnt/sync
-        infolog "  $dir/$relpath synchronized"
       else
-        errorlog "  Cannot mount $dir/$relpath, bad persistence file"
+        errorlog "  Cannot mount $dir/$relpath: bad persistence file"
       fi
       rmdir /mnt/sync
     fi

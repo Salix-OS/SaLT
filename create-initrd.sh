@@ -18,8 +18,7 @@ FILEVER=5.06
 FILEURL=ftp://ftp.astron.com/pub/file/file-$FILEVER.tar.gz
 NTFS3GVER=2011.4.12
 NTFS3GURL=http://tuxera.com/opensource/ntfs-3g_ntfsprogs-$NTFS3GVER.tgz
-LSOFVER=4.84
-LSOFURL=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/lsof_$LSOFVER.tar.bz2
+LSOFURL=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/lsof.tar.bz2
 KERNELDIR=$PWD/kernel
 
 KVER=$KERNELDIR/lib/modules/*
@@ -102,22 +101,22 @@ cp -av ntfs-3g_ntfsprogs-$NTFS3GVER/pkg/bin/ntfs-3g $TREE/bin/
 cp -av ntfs-3g_ntfsprogs-$NTFS3GVER/pkg/sbin/mount.ntfs-3g $TREE/sbin/
 # download, compile and install lsof (only if debug)
 if [ -n "$DEBUG" ]; then
-  if [ ! -e lsof_$LSOFVER.tar.bz2 ]; then
+  if [ ! -e lsof.tar.bz2 ]; then
     wget $LSOFURL
   fi
-  if [ ! -e lsof_$LSOFVER/lsof_${LSOFVER}_src/lsof ]; then
-    rm -rf lsof_$LSOFVER
-    tar -xf lsof_$LSOFVER.tar.bz2
+  if [ ! -e lsof_*/lsof_*_src/lsof ]; then
+    rm -rf lsof_*
+    tar -xf lsof.tar.bz2
     (
-      cd lsof_$LSOFVER
-      tar -xf lsof_${LSOFVER}_src.tar
-      cd lsof_${LSOFVER}_src
+      cd lsof_*
+      tar -xf lsof_*_src.tar
+      cd lsof_*_src
       ./Configure -n linux
       sed -i 's/^CFGL=.*/\0 --static/' Makefile
       make all
     )
   fi
-  cp -av lsof_$LSOFVER/lsof_${LSOFVER}_src/lsof $TREE/bin/
+  cp -av lsof_*/lsof_*_src/lsof $TREE/bin/
 fi
 # copy needed modules
 while read M; do
