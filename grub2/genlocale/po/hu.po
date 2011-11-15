@@ -1,24 +1,27 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Laszlo Dvornik <rezuri@zoho.com>, 2011.
+# Péter Polonkai <polesz@nedudu.hu>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: genlocale\n"
+"Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-30 12:09+0200\n"
-"PO-Revision-Date: 2010-05-26 01:37+0100\n"
-"Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
-"Language-Team: \n"
-"Language: \n"
+"PO-Revision-Date: 2011-10-23 10:09+0000\n"
+"Last-Translator: Polesz <polesz@nedudu.hu>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: hu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
 msgid "Start _DISTRONAME_"
-msgstr "_DISTRONAME_ inditása"
+msgstr ""
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
 msgid "Memory Test"
@@ -26,15 +29,15 @@ msgstr "Memóriateszt"
 
 #: genlocale:54 genlocale:65 genlocale:75 genlocale:83 genlocale:84
 msgid "Change language"
-msgstr "Nyelv választása"
+msgstr "Nyelv megváltoztatása"
 
 #: genlocale:55 genlocale:66 genlocale:76 genlocale:84 genlocale:85
 msgid "Change keyboard layout"
-msgstr "Billentyűzet kiosztás választása"
+msgstr "Billentyűzetkiosztás megváltoztatása"
 
 #: genlocale:56 genlocale:67 genlocale:77 genlocale:85 genlocale:86
 msgid "Change boot options"
-msgstr "Betöltési opciók választása"
+msgstr "Betöltési opciók megváltoztatása"
 
 #: genlocale:57 genlocale:68 genlocale:78 genlocale:86 genlocale:87
 msgid "Boot to runlevel '3' (text mode)"
@@ -47,11 +50,11 @@ msgstr ""
 
 #: genlocale:59 genlocale:70 genlocale:80 genlocale:88 genlocale:89
 msgid "Enable 'Copy everything to RAM'"
-msgstr "Engedélyezi a 'Minden másolása a RAM-ba' opciót"
+msgstr "A 'Minden másolása a memóriába' opció engedélyezése"
 
 #: genlocale:60 genlocale:71 genlocale:81 genlocale:89 genlocale:90
 msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Titlja a 'Minden másolása a RAM-ba' funkciót (alapértelmezett)"
+msgstr "A 'Minden másolása a memóriába' opció tiltása (alapértelmezett)"
 
 #: genlocale:61 genlocale:72 genlocale:82 genlocale:90 genlocale:91
 msgid "Enable numlock on boot"
@@ -63,43 +66,39 @@ msgstr "Numerikus billentyűzet tiltása indításkor (alapértelmezett)"
 
 #: genlocale:63 genlocale:74 genlocale:84 genlocale:94 genlocale:95
 msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Engedélyezi a synaptics fdi használatát (néha megbízhatatlan)"
+msgstr "A synaptics fdi engedélyezése (néha megbízhatatlan)"
 
 #: genlocale:64 genlocale:75 genlocale:85 genlocale:95 genlocale:96
 msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Tiltja a synaptics fdi használatát (megbízható) (alapértelmezett)"
+msgstr "A synaptics fdi tiltása (megbízható) (alapértelmezett)"
 
 #: genlocale:65 genlocale:76 genlocale:86 genlocale:109 genlocale:110
 msgid "Return to boot menu"
-msgstr "Vissza az indító menübe"
+msgstr "Vissza az indítómenübe"
 
 #: genlocale:92 genlocale:93
 msgid "Enable Ibus"
-msgstr ""
+msgstr "Ibus engedélyezése"
 
 #: genlocale:93 genlocale:94
-#, fuzzy
 msgid "Disable Ibus (default)"
-msgstr "Numerikus billentyűzet tiltása indításkor (alapértelmezett)"
+msgstr "Ibus tiltása (alapértelmezett)"
 
 #: genlocale:96 genlocale:97
 msgid "No sound on boot"
-msgstr ""
+msgstr "Ne legyen hang indításkor"
 
 #: genlocale:97 genlocale:98
-#, fuzzy
 msgid "Enable sound on boot (default)"
-msgstr "Numerikus billentyűzet tiltása indításkor (alapértelmezett)"
+msgstr "Hang engedélyezése indításkor (alapértelmezett)"
 
 #: genlocale:98 genlocale:99
-#, fuzzy
 msgid "Enable autologin on boot (default)"
-msgstr "Numerikus billentyűzet tiltása indításkor (alapértelmezett)"
+msgstr "Automatikus belépés engedélyezése (alapértelmezett)"
 
 #: genlocale:99 genlocale:100
-#, fuzzy
 msgid "Disable autologin on boot"
-msgstr "Numerikus billentyűzet engedélyezése indításkor"
+msgstr "Automatikus belépés tiltása"
 
 #: genlocale:100 genlocale:101
 msgid "Enable gfxpayload=keep (default)"
@@ -110,21 +109,20 @@ msgid "Disable gfxpayload=keep (if it doesn't load try this)"
 msgstr ""
 
 #: genlocale:102 genlocale:103
-#, fuzzy
 msgid "Change root password"
-msgstr "Betöltési opciók választása"
+msgstr "Rendszergazda jelszó megváltoztatása"
 
 #: genlocale:103 genlocale:104
 msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr ""
+msgstr "Új rendszergazda jelszó (válassza az 'ask lehetőséget indításkor):"
 
 #: genlocale:104 genlocale:105
 msgid "Set a proxy"
-msgstr ""
+msgstr "Proxy beállítása"
 
 #: genlocale:105 genlocale:106
 msgid "New proxy (empty for no proxy): "
-msgstr ""
+msgstr "Új proxy (hagyja üresen ha nincs):"
 
 #: genlocale:106 genlocale:107
 msgid "Boot from an ISO"
@@ -136,7 +134,7 @@ msgstr ""
 
 #: genlocale:108 genlocale:109
 msgid "Live system is loading..."
-msgstr ""
+msgstr "A Live rendszer töltődik"
 
 #: genlocale:110 genlocale:111
 msgid "Save all settings to be autoloaded for future boots"
@@ -148,7 +146,7 @@ msgstr ""
 
 #: genlocale:112 genlocale:113
 msgid "Invalid response"
-msgstr ""
+msgstr "Érvénytelen válasz"
 
 #: genlocale:113 genlocale:114
 msgid ""
@@ -158,16 +156,18 @@ msgstr ""
 
 #: genlocale:114 genlocale:115
 msgid "y"
-msgstr ""
+msgstr "i"
 
 #: genlocale:115 genlocale:116
 msgid "Y"
-msgstr ""
+msgstr "I"
 
 #: genlocale:116 genlocale:117
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: genlocale:117 genlocale:118
 msgid "N"
-msgstr ""
+msgstr "N"
+
+

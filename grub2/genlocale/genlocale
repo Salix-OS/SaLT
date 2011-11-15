@@ -79,6 +79,7 @@ langavailable = [
 # translations
 def strings():
   return  [
+    ## Please leave _DISTRONAME_ as it is, it's a placeholder.
     ("Lstart", _("Start _DISTRONAME_").replace("_DISTRONAME_", volumename)),
     ("Lmemtest", _("Memory Test")),
     ("Lchangelang", _("Change language")),
@@ -112,6 +113,8 @@ def strings():
     ("Lskiplang", _("Do you want to skip the language selection menu? [y/N] ")),
     ("Linvalrep", _("Invalid response")),
     ("Lsaveenverr", _("There was an error saving your settings. Are the live files located on a writeable media like an USB key (i.e. not a CDROM)?")),
+    ("Lcustomparam", _("Custom linux kernel parameters")),
+    ("Lcustomparamask", _("Enter custom linux kernel parameters: ")),
     ("Lyes", _("y")),
     ("LYES", _("Y")),
     ("Lno", _("n")),

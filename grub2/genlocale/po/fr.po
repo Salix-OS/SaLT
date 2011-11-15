@@ -1,20 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Cyrille Pontvieux <jrd@enialis.net>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: genlocale\n"
+"Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-30 12:08+0200\n"
-"PO-Revision-Date: 2010-05-26 01:37+0100\n"
-"Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
-"Language-Team: \n"
-"Language: \n"
+"POT-Creation-Date: 2011-08-30 12:09+0200\n"
+"PO-Revision-Date: 2011-10-18 14:39+0000\n"
+"Last-Translator: JRD <jrd@enialis.net>\n"
+"Language-Team: French (http://www.transifex.net/projects/p/salix/team/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
 msgid "Start _DISTRONAME_"
@@ -62,11 +64,13 @@ msgstr "Désactiver le verrou numérique au démarrage (défaut)"
 
 #: genlocale:63 genlocale:74 genlocale:84 genlocale:94 genlocale:95
 msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Activer Synaptic FDI pour le pavé tactile (parfois non fiable)"
+msgstr ""
+"Activer la prise en charge Synaptic FDI du pavé tactile (parfois non fiable)"
 
 #: genlocale:64 genlocale:75 genlocale:85 genlocale:95 genlocale:96
 msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Désactiver Synaptic FDI pour le pavé tactile (fiable) (défaut)"
+msgstr ""
+"Désactiver la prise en charge Synaptic FDI du pavé tactile (fiable) (défaut)"
 
 #: genlocale:65 genlocale:76 genlocale:86 genlocale:109 genlocale:110
 msgid "Return to boot menu"
@@ -78,7 +82,7 @@ msgstr "Activer Ibus"
 
 #: genlocale:93 genlocale:94
 msgid "Disable Ibus (default)"
-msgstr "Désactiver Ibus (défaut)"
+msgstr "Désactiver Ibus (par défaut)"
 
 #: genlocale:96 genlocale:97
 msgid "No sound on boot"
@@ -86,74 +90,73 @@ msgstr "Pas de son au démarrage"
 
 #: genlocale:97 genlocale:98
 msgid "Enable sound on boot (default)"
-msgstr "Activer le son au démarrage (défaut)"
+msgstr "Activer le son au démarrage (par défaut)"
 
 #: genlocale:98 genlocale:99
 msgid "Enable autologin on boot (default)"
-msgstr "Activer l'autologin au démarrage (défaut)"
+msgstr "Activer la connexion automatique (par défaut)"
 
 #: genlocale:99 genlocale:100
 msgid "Disable autologin on boot"
-msgstr "Désactiver l'autologin au démarrage"
+msgstr "Désactiver la connexion automatique"
 
 #: genlocale:100 genlocale:101
 msgid "Enable gfxpayload=keep (default)"
-msgstr "Activer gfxpayload=keep (défaut)"
+msgstr "Activer gfxpayload=keep (par défaut)"
 
 #: genlocale:101 genlocale:102
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "Désactiver gfxpayload=keep (si ça ne se lance pas, essayez ceci)"
+msgstr "Désactiver gfxpayload=keep (si ça ne démarrer pas, essayez ça)"
 
 #: genlocale:102 genlocale:103
 msgid "Change root password"
-msgstr "Changer le mot de passe root"
+msgstr "Changer mot de passe root"
 
 #: genlocale:103 genlocale:104
 msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr ""
-"Nouveau mot de passe root (saisissez 'ask' pour qu'on vous le demande au "
-"démarrage) : "
+msgstr "Nouveau mot de passe root («ask» pour le taper plus tard) : "
 
 #: genlocale:104 genlocale:105
 msgid "Set a proxy"
-msgstr "Mettre un proxy"
+msgstr "Définissez un proxy"
 
 #: genlocale:105 genlocale:106
 msgid "New proxy (empty for no proxy): "
-msgstr "Nouveau proxy (vide pour aucun proxy) : "
+msgstr "Nouveau proxy (vide pour aucun proxy) : "
 
 #: genlocale:106 genlocale:107
 msgid "Boot from an ISO"
-msgstr "Démarrer depuis un ISO"
+msgstr "Démarrer à partir d'un ISO"
 
 #: genlocale:107 genlocale:108
 msgid "Path to the ISO to boot from: "
-msgstr "Chemin vers le fichier ISO duquel démarrer : "
+msgstr "Chemin vers l'ISO depuis lequel démarrer : "
 
 #: genlocale:108 genlocale:109
 msgid "Live system is loading..."
-msgstr "Chargement du système Live..."
+msgstr "Le système Live démarre..."
 
 #: genlocale:110 genlocale:111
 msgid "Save all settings to be autoloaded for future boots"
-msgstr "Enregistrer les paramètres à autocharger aux futurs démarrages"
+msgstr ""
+"Enregistrer les paramètres pour qu'ils s'auto-chargent aux futurs démarrages"
 
 #: genlocale:111 genlocale:112
 msgid "Do you want to skip the language selection menu? [y/N] "
-msgstr "Voulez-vous passer le menu de sélection de langue ? [o/N] "
+msgstr "Voulez-vous ignorer le menu de sélection de langue ? [o/N] "
 
 #: genlocale:112 genlocale:113
 msgid "Invalid response"
-msgstr "Réponse invalide"
+msgstr "Réponse non valide"
 
 #: genlocale:113 genlocale:114
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
-"Il y a eu une erreur lors de l'enregistrement des paramètres.Les fichiers "
-"live sont-ils sur un support enregistrable type clé USB(c'est-à-dire pas sur "
-"un CDROM) ?"
+"Il y a eu une erreur d'enregistrer de vos paramètres. Les fichiers se "
+"trouvent-ils sur un support inscriptible comme une clé USB (c'est à dire pas"
+" un CDROM) ?"
 
 #: genlocale:114 genlocale:115
 msgid "y"
@@ -170,3 +173,5 @@ msgstr "n"
 #: genlocale:117 genlocale:118
 msgid "N"
 msgstr "N"
+
+

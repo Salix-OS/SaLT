@@ -20,7 +20,7 @@ build: $(MOFILES)
 
 %.mo : %.po
 	@echo "Compiling $<"
-	msgfmt -f $< -o $@
+	msgfmt $< -o $@
 
 install: all
 	make installmo
@@ -50,6 +50,7 @@ updatetrans:
 	xgettext --from-code=utf-8 \
 		-j \
 		-L Python \
+		--add-comments=\# \
 		-o $(POTFILE) \
 		$(PACKAGE)
 	for i in $(POTPLFILES); do \

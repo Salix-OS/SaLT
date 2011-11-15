@@ -1,118 +1,101 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: genlocale\n"
+"Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-30 12:09+0200\n"
-"PO-Revision-Date: 2010-05-26 01:37+0100\n"
-"Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
-"Language-Team: \n"
-"Language: \n"
+"PO-Revision-Date: 2010-11-30 04:11+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
-#, fuzzy
 msgid "Start _DISTRONAME_"
-msgstr "Загрузить _DISTRONAME_"
+msgstr ""
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
-#, fuzzy
 msgid "Memory Test"
-msgstr "Проверка оперативной памяти"
+msgstr ""
 
 #: genlocale:54 genlocale:65 genlocale:75 genlocale:83 genlocale:84
-#, fuzzy
 msgid "Change language"
-msgstr "Изменить язык"
+msgstr ""
 
 #: genlocale:55 genlocale:66 genlocale:76 genlocale:84 genlocale:85
-#, fuzzy
 msgid "Change keyboard layout"
-msgstr "Настройка клавиатуры"
+msgstr ""
 
 #: genlocale:56 genlocale:67 genlocale:77 genlocale:85 genlocale:86
-#, fuzzy
 msgid "Change boot options"
-msgstr "Изменение варианта загрузки"
+msgstr ""
 
 #: genlocale:57 genlocale:68 genlocale:78 genlocale:86 genlocale:87
-#, fuzzy
 msgid "Boot to runlevel '3' (text mode)"
-msgstr "Текстовая загрузка"
+msgstr ""
 
 #: genlocale:58 genlocale:69 genlocale:79 genlocale:87 genlocale:88
-#, fuzzy
 msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Графическая загрузка"
+msgstr ""
 
 #: genlocale:59 genlocale:70 genlocale:80 genlocale:88 genlocale:89
-#, fuzzy
 msgid "Enable 'Copy everything to RAM'"
-msgstr "Полная загрузка в оперативную память"
+msgstr ""
 
 #: genlocale:60 genlocale:71 genlocale:81 genlocale:89 genlocale:90
-#, fuzzy
 msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Стандартная загрузка в память"
+msgstr ""
 
 #: genlocale:61 genlocale:72 genlocale:82 genlocale:90 genlocale:91
-#, fuzzy
 msgid "Enable numlock on boot"
-msgstr "Запуск системы в консольном режиме"
+msgstr ""
 
 #: genlocale:62 genlocale:73 genlocale:83 genlocale:91 genlocale:92
-#, fuzzy
 msgid "Disable numlock on boot (default)"
-msgstr "Запуск с графическим окружением"
+msgstr ""
 
 #: genlocale:63 genlocale:74 genlocale:84 genlocale:94 genlocale:95
-#, fuzzy
 msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Запуск с сохранённой сессии (ненадёжно)"
+msgstr ""
 
 #: genlocale:64 genlocale:75 genlocale:85 genlocale:95 genlocale:96
-#, fuzzy
 msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Запуск без сохранённой сессии (надёжно)"
+msgstr ""
 
 #: genlocale:65 genlocale:76 genlocale:86 genlocale:109 genlocale:110
-#, fuzzy
 msgid "Return to boot menu"
-msgstr "Вернуться в меню загрузки"
+msgstr ""
 
 #: genlocale:92 genlocale:93
 msgid "Enable Ibus"
 msgstr ""
 
 #: genlocale:93 genlocale:94
-#, fuzzy
 msgid "Disable Ibus (default)"
-msgstr "Запуск с графическим окружением"
+msgstr ""
 
 #: genlocale:96 genlocale:97
 msgid "No sound on boot"
 msgstr ""
 
 #: genlocale:97 genlocale:98
-#, fuzzy
 msgid "Enable sound on boot (default)"
-msgstr "Запуск с графическим окружением"
+msgstr ""
 
 #: genlocale:98 genlocale:99
-#, fuzzy
 msgid "Enable autologin on boot (default)"
-msgstr "Запуск с графическим окружением"
+msgstr ""
 
 #: genlocale:99 genlocale:100
-#, fuzzy
 msgid "Disable autologin on boot"
-msgstr "Запуск системы в консольном режиме"
+msgstr ""
 
 #: genlocale:100 genlocale:101
 msgid "Enable gfxpayload=keep (default)"
@@ -123,9 +106,8 @@ msgid "Disable gfxpayload=keep (if it doesn't load try this)"
 msgstr ""
 
 #: genlocale:102 genlocale:103
-#, fuzzy
 msgid "Change root password"
-msgstr "Изменение варианта загрузки"
+msgstr ""
 
 #: genlocale:103 genlocale:104
 msgid "New root password (choose 'ask' to be asked at boot): "
@@ -184,3 +166,5 @@ msgstr ""
 #: genlocale:117 genlocale:118
 msgid "N"
 msgstr ""
+
+

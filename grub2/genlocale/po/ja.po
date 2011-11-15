@@ -1,21 +1,26 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+#   <hydrangea_and_snail@hotmail.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-30 12:09+0200\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2011-10-19 16:37+0000\n"
 "Last-Translator: tsuren <hydrangea_and_snail@hotmail.com>\n"
-"Language-Team: \n"
-"Language: \n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Japanese\n"
-"X-Poedit-Country: JAPAN\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
 msgid "Start _DISTRONAME_"
-msgstr "_DISTRONAME_を使う"
+msgstr "_DISTRONAME_を起動します。"
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
 msgid "Memory Test"
@@ -71,99 +76,96 @@ msgstr "ブート・メニューに戻る"
 
 #: genlocale:92 genlocale:93
 msgid "Enable Ibus"
-msgstr ""
+msgstr "ibusを有効化する。"
 
 #: genlocale:93 genlocale:94
-#, fuzzy
 msgid "Disable Ibus (default)"
-msgstr "起動時に数字キーパッドをアクチベートしない (デフォ)"
+msgstr "ibusを無効化する（デフォルト）"
 
 #: genlocale:96 genlocale:97
 msgid "No sound on boot"
-msgstr ""
+msgstr "起動時に音を出さない。"
 
 #: genlocale:97 genlocale:98
-#, fuzzy
 msgid "Enable sound on boot (default)"
-msgstr "起動時に数字キーパッドをアクチベートしない (デフォ)"
+msgstr "ブート時の音を有効化する（デフォルト）"
 
 #: genlocale:98 genlocale:99
-#, fuzzy
 msgid "Enable autologin on boot (default)"
-msgstr "起動時に数字キーパッドをアクチベートしない (デフォ)"
+msgstr "ブート時の自動ログインを有効化する（デフォルト）"
 
 #: genlocale:99 genlocale:100
-#, fuzzy
 msgid "Disable autologin on boot"
-msgstr "数字キーパッドを起動時にアクチベートする。"
+msgstr "ブート時の自動ログインを無効化する"
 
 #: genlocale:100 genlocale:101
 msgid "Enable gfxpayload=keep (default)"
-msgstr ""
+msgstr "gfxpayload=keep の有効化（デフォルト）"
 
 #: genlocale:101 genlocale:102
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
+msgstr "gfxpayload=keep の無効化（ロードしない場合）"
 
 #: genlocale:102 genlocale:103
-#, fuzzy
 msgid "Change root password"
-msgstr "ブート・オプションの設定"
+msgstr "ルートパスワードを変更する。"
 
 #: genlocale:103 genlocale:104
 msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr ""
+msgstr "新しいルートパスワード（起動時に問いたい場合は、”ask”を選択）："
 
 #: genlocale:104 genlocale:105
 msgid "Set a proxy"
-msgstr ""
+msgstr "プロキシを設定する。"
 
 #: genlocale:105 genlocale:106
 msgid "New proxy (empty for no proxy): "
-msgstr ""
+msgstr "新しいプロキシ（プロキシなしの場合は、無記入）："
 
 #: genlocale:106 genlocale:107
 msgid "Boot from an ISO"
-msgstr ""
+msgstr "ISOからのブート。"
 
 #: genlocale:107 genlocale:108
 msgid "Path to the ISO to boot from: "
-msgstr ""
+msgstr "起動するためのISOへのパス："
 
 #: genlocale:108 genlocale:109
 msgid "Live system is loading..."
-msgstr ""
+msgstr "ライブシステムがロードされています..."
 
 #: genlocale:110 genlocale:111
 msgid "Save all settings to be autoloaded for future boots"
-msgstr ""
+msgstr "次からのブートのためにオートロードされるすべての設定を保存"
 
 #: genlocale:111 genlocale:112
 msgid "Do you want to skip the language selection menu? [y/N] "
-msgstr ""
+msgstr "言語選択メニューをスキップしますか？ [y/N]"
 
 #: genlocale:112 genlocale:113
 msgid "Invalid response"
-msgstr ""
+msgstr "無効な応答"
 
 #: genlocale:113 genlocale:114
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
-msgstr ""
+msgstr "設定を保存中エラーが発生しました。 ライブファイルは、USBキー（つまり、CDROMではない）などの書き込み可能なメディア上にありますか？"
 
 #: genlocale:114 genlocale:115
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: genlocale:115 genlocale:116
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: genlocale:116 genlocale:117
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: genlocale:117 genlocale:118
 msgid "N"
-msgstr ""
+msgstr "N"
+
+

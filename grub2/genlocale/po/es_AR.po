@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+#   <seacat.linux@gmail.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: genlocale\n"
+"Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-30 12:09+0200\n"
-"PO-Revision-Date: 2010-06-12 16:58-0300\n"
-"Last-Translator: seacat <seacat.lang@gmail.com>\n"
-"Language-Team:  <seacat.lang@gmail.com>\n"
-"Language: \n"
+"PO-Revision-Date: 2011-10-22 01:47+0000\n"
+"Last-Translator: seacat <seacat.linux@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Spanish\n"
-"X-Poedit-Country: ARGENTINA\n"
+"Language: es_AR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
 msgid "Start _DISTRONAME_"
@@ -76,99 +76,102 @@ msgstr "Volver al menú principal"
 
 #: genlocale:92 genlocale:93
 msgid "Enable Ibus"
-msgstr ""
+msgstr "Habilitar Ibus"
 
 #: genlocale:93 genlocale:94
-#, fuzzy
 msgid "Disable Ibus (default)"
-msgstr "Deshabilitar BloqNum en el arranque (por defecto)"
+msgstr "Deshabilitar Ibus (por defecto)"
 
 #: genlocale:96 genlocale:97
 msgid "No sound on boot"
-msgstr ""
+msgstr "Sin sonido en el arranque"
 
 #: genlocale:97 genlocale:98
-#, fuzzy
 msgid "Enable sound on boot (default)"
-msgstr "Deshabilitar BloqNum en el arranque (por defecto)"
+msgstr "Habilitar sonido en el arranque (por defecto)"
 
 #: genlocale:98 genlocale:99
-#, fuzzy
 msgid "Enable autologin on boot (default)"
-msgstr "Deshabilitar BloqNum en el arranque (por defecto)"
+msgstr "Habilitar inicio de sesión automático en el arranque (por defecto)"
 
 #: genlocale:99 genlocale:100
-#, fuzzy
 msgid "Disable autologin on boot"
-msgstr "Habilitar BloqNum en el arranque"
+msgstr "Deshabilitar inicio de sesión automático en el arranque"
 
 #: genlocale:100 genlocale:101
 msgid "Enable gfxpayload=keep (default)"
-msgstr ""
+msgstr "Habilitar gfxpayload=keep (por defecto)"
 
 #: genlocale:101 genlocale:102
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
+msgstr "Deshabilitar gfxpayload=keep (si no carga probar esto)"
 
 #: genlocale:102 genlocale:103
-#, fuzzy
 msgid "Change root password"
-msgstr "Cambiar las opciones de arranque"
+msgstr "Cambiar contraseña de root"
 
 #: genlocale:103 genlocale:104
 msgid "New root password (choose 'ask' to be asked at boot): "
 msgstr ""
+"Nueva contraseña de root (elegir 'pedir' para que se le pida al arranque): "
 
 #: genlocale:104 genlocale:105
 msgid "Set a proxy"
-msgstr ""
+msgstr "Establecer un proxy"
 
 #: genlocale:105 genlocale:106
 msgid "New proxy (empty for no proxy): "
-msgstr ""
+msgstr "Proxy nuevo (vacío para sin proxy): "
 
 #: genlocale:106 genlocale:107
 msgid "Boot from an ISO"
-msgstr ""
+msgstr "Arrancar desde un ISO"
 
 #: genlocale:107 genlocale:108
 msgid "Path to the ISO to boot from: "
-msgstr ""
+msgstr "Ruta para el ISO desde donde arrancar: "
 
 #: genlocale:108 genlocale:109
 msgid "Live system is loading..."
-msgstr ""
+msgstr "El sistema Live está cargando..."
 
 #: genlocale:110 genlocale:111
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
+"Guardar todos los parámetros para cargarlos automáticamente en arranques "
+"futuros"
 
 #: genlocale:111 genlocale:112
 msgid "Do you want to skip the language selection menu? [y/N] "
-msgstr ""
+msgstr "¿Desea saltear el menú de selección del idioma? [s/N]"
 
 #: genlocale:112 genlocale:113
 msgid "Invalid response"
-msgstr ""
+msgstr "Respuesta inválida"
 
 #: genlocale:113 genlocale:114
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
+"Ocurrió un error al guardar sus parámetros. ¿Los archivos live están "
+"localizados en un medio escribible como una llave USB (es decir, no en un "
+"CDROM)?"
 
 #: genlocale:114 genlocale:115
 msgid "y"
-msgstr ""
+msgstr "s"
 
 #: genlocale:115 genlocale:116
 msgid "Y"
-msgstr ""
+msgstr "S"
 
 #: genlocale:116 genlocale:117
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: genlocale:117 genlocale:118
 msgid "N"
-msgstr ""
+msgstr "N"
+
+

@@ -1,20 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+#   <gambit73@gmail.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: genlocale\n"
+"Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-30 12:09+0200\n"
-"PO-Revision-Date: 2010-05-26 01:37+0100\n"
-"Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
-"Language-Team: \n"
-"Language: \n"
+"PO-Revision-Date: 2011-10-18 19:29+0000\n"
+"Last-Translator: gambit73 <gambit73@gmail.com>\n"
+"Language-Team: Dutch (http://www.transifex.net/projects/p/salix/team/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
 msgid "Start _DISTRONAME_"
@@ -74,99 +76,102 @@ msgstr "Terug naar boot menu"
 
 #: genlocale:92 genlocale:93
 msgid "Enable Ibus"
-msgstr ""
+msgstr "Schakel Ibus in"
 
 #: genlocale:93 genlocale:94
-#, fuzzy
 msgid "Disable Ibus (default)"
-msgstr "NumLock bij het opstarten (standaard) uitschakelen"
+msgstr "Schakel ibus uit (standaard)"
 
 #: genlocale:96 genlocale:97
 msgid "No sound on boot"
-msgstr ""
+msgstr "Geen geluid bij opstarten"
 
 #: genlocale:97 genlocale:98
-#, fuzzy
 msgid "Enable sound on boot (default)"
-msgstr "NumLock bij het opstarten (standaard) uitschakelen"
+msgstr "Schakel geluid in bij het opstarten (standaard)"
 
 #: genlocale:98 genlocale:99
-#, fuzzy
 msgid "Enable autologin on boot (default)"
-msgstr "NumLock bij het opstarten (standaard) uitschakelen"
+msgstr "Schakel autologin in bij het opstarten (standaard)"
 
 #: genlocale:99 genlocale:100
-#, fuzzy
 msgid "Disable autologin on boot"
-msgstr "NumLock bij het opstarten inschakelen"
+msgstr "Schakel autologin uit bij opstarten"
 
 #: genlocale:100 genlocale:101
 msgid "Enable gfxpayload=keep (default)"
-msgstr ""
+msgstr "Schakel gfxpayload=keep in (default)"
 
 #: genlocale:101 genlocale:102
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
 msgstr ""
+"Schakel gfxpayload=keep uit (als het niet wordt geladen, probeer deze optie)"
 
 #: genlocale:102 genlocale:103
-#, fuzzy
 msgid "Change root password"
-msgstr "Opstartopties wijzigen"
+msgstr "Root wachtwoord wijzigen"
 
 #: genlocale:103 genlocale:104
 msgid "New root password (choose 'ask' to be asked at boot): "
 msgstr ""
+"Nieuw root wachtwoord (kies 'vragen' om tijdens het opstarten erom gevraagd "
+"te worden):"
 
 #: genlocale:104 genlocale:105
 msgid "Set a proxy"
-msgstr ""
+msgstr "Stel een proxy in"
 
 #: genlocale:105 genlocale:106
 msgid "New proxy (empty for no proxy): "
-msgstr ""
+msgstr "Nieuwe proxy (leeg voor geen proxy):"
 
 #: genlocale:106 genlocale:107
 msgid "Boot from an ISO"
-msgstr ""
+msgstr "Opstarten vanaf een ISO"
 
 #: genlocale:107 genlocale:108
 msgid "Path to the ISO to boot from: "
-msgstr ""
+msgstr "Pad naar de ISO om op te starten:"
 
 #: genlocale:108 genlocale:109
 msgid "Live system is loading..."
-msgstr ""
+msgstr "Live systeem wordt geladen..."
 
 #: genlocale:110 genlocale:111
 msgid "Save all settings to be autoloaded for future boots"
-msgstr ""
+msgstr "Sla alle instellingen op voor alle toekomstige opstartmomenten"
 
 #: genlocale:111 genlocale:112
 msgid "Do you want to skip the language selection menu? [y/N] "
-msgstr ""
+msgstr "Wilt u het taalkeuze menu overslaan? [j/N]"
 
 #: genlocale:112 genlocale:113
 msgid "Invalid response"
-msgstr ""
+msgstr "Ongeldige invoer"
 
 #: genlocale:113 genlocale:114
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
+"Er is een fout opgetreden bij het opslaan van uw instellingen. Staan de "
+"live-bestanden op een beschrijfbare media zoals een USB-stick (dus geen CD-"
+"ROM)?"
 
 #: genlocale:114 genlocale:115
 msgid "y"
-msgstr ""
+msgstr "j"
 
 #: genlocale:115 genlocale:116
 msgid "Y"
-msgstr ""
+msgstr "J"
 
 #: genlocale:116 genlocale:117
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: genlocale:117 genlocale:118
 msgid "N"
-msgstr ""
+msgstr "N"
+
+

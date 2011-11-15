@@ -1,35 +1,33 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
 msgid ""
 msgstr ""
-"Project-Id-Version: genlocale\n"
+"Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-30 12:09+0200\n"
-"PO-Revision-Date: 2010-05-26 01:37+0100\n"
-"Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
-"Language-Team: \n"
-"Language: \n"
+"PO-Revision-Date: 2010-11-30 04:11+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: lt\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
-#, fuzzy
 msgid "Start _DISTRONAME_"
-msgstr "Paleisti _DISTRONAME_"
+msgstr ""
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
-#, fuzzy
 msgid "Memory Test"
-msgstr "Atminties tikrinimas"
+msgstr ""
 
 #: genlocale:54 genlocale:65 genlocale:75 genlocale:83 genlocale:84
-#, fuzzy
 msgid "Change language"
-msgstr "Pakeisti kalbà"
+msgstr ""
 
 #: genlocale:55 genlocale:66 genlocale:76 genlocale:84 genlocale:85
 msgid "Change keyboard layout"
@@ -168,3 +166,5 @@ msgstr ""
 #: genlocale:117 genlocale:118
 msgid "N"
 msgstr ""
+
+

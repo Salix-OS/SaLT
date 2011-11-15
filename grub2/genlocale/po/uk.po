@@ -1,30 +1,26 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# Yarema aka Knedlyk <yupadmin@gmail.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: genlocale\n"
+"Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-30 12:09+0200\n"
-"PO-Revision-Date: 2010-05-24 00:21+0100\n"
-"Last-Translator: Yarema aka Knedlyk <yupadmin@gmail.com>\n"
-"Language-Team: UKRAINIAN <translate@linux.org.ua>\n"
-"Language: \n"
+"PO-Revision-Date: 2011-10-20 07:17+0000\n"
+"Last-Translator: knedlyk <yupadmin@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Poedit-Language: Ukrainian\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Country: UKRAINE\n"
-"X-Generator: Pootle 1.1.0\n"
+"Language: uk\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
 msgid "Start _DISTRONAME_"
-msgstr "Завантажити _DISTRONAME_"
+msgstr "Запустити _DISTRONAME_"
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
 msgid "Memory Test"
@@ -80,99 +76,103 @@ msgstr "Повернутися до меню завантаження"
 
 #: genlocale:92 genlocale:93
 msgid "Enable Ibus"
-msgstr ""
+msgstr "Включити IBUs"
 
 #: genlocale:93 genlocale:94
-#, fuzzy
 msgid "Disable Ibus (default)"
-msgstr "Виключити numlock при завантаженні (типово)"
+msgstr "Вимкнути IBUs (за замовчуванням)"
 
 #: genlocale:96 genlocale:97
 msgid "No sound on boot"
-msgstr ""
+msgstr "Відсутній звук при завантаженні"
 
 #: genlocale:97 genlocale:98
-#, fuzzy
 msgid "Enable sound on boot (default)"
-msgstr "Виключити numlock при завантаженні (типово)"
+msgstr "Увімкнути звук при завантаженні (за замовчуванням)"
 
 #: genlocale:98 genlocale:99
-#, fuzzy
 msgid "Enable autologin on boot (default)"
-msgstr "Виключити numlock при завантаженні (типово)"
+msgstr ""
+"Включити автоматичний вхід при завантаженні системи (за замовчуванням)"
 
 #: genlocale:99 genlocale:100
-#, fuzzy
 msgid "Disable autologin on boot"
-msgstr "Включити numlock при завантаженні"
+msgstr "Відключення автоматичного входу при завантаженні"
 
 #: genlocale:100 genlocale:101
 msgid "Enable gfxpayload=keep (default)"
-msgstr ""
+msgstr "Включити gfxpayload=keep (за замовчуванням)"
 
 #: genlocale:101 genlocale:102
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
+msgstr "Вимкнути gfxpayload=keep (якщо не завантажується спробувати це)"
 
 #: genlocale:102 genlocale:103
-#, fuzzy
 msgid "Change root password"
-msgstr "Змінити опції завантаження"
+msgstr "Зміна пароля суперкористувача"
 
 #: genlocale:103 genlocale:104
 msgid "New root password (choose 'ask' to be asked at boot): "
 msgstr ""
+"Новий пароль суперкористувача (виберіть 'питати', щоб запитувало при "
+"завантаженні):"
 
 #: genlocale:104 genlocale:105
 msgid "Set a proxy"
-msgstr ""
+msgstr "Встановити проксі"
 
 #: genlocale:105 genlocale:106
 msgid "New proxy (empty for no proxy): "
-msgstr ""
+msgstr "Новий проксі-сервер (порожньо без проксі):"
 
 #: genlocale:106 genlocale:107
 msgid "Boot from an ISO"
-msgstr ""
+msgstr "Завантаження з ISO"
 
 #: genlocale:107 genlocale:108
 msgid "Path to the ISO to boot from: "
-msgstr ""
+msgstr "Шлях до ISO для завантаження:"
 
 #: genlocale:108 genlocale:109
 msgid "Live system is loading..."
-msgstr ""
+msgstr "Жива система завантажується ..."
 
 #: genlocale:110 genlocale:111
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
+"Збережіть всі параметри, які будуть автоматично завантажуються для майбутніх"
+" завантажень"
 
 #: genlocale:111 genlocale:112
 msgid "Do you want to skip the language selection menu? [y/N] "
-msgstr ""
+msgstr "Ви бажаєте пропустити меню вибору мови? [y/N]"
 
 #: genlocale:112 genlocale:113
 msgid "Invalid response"
-msgstr ""
+msgstr "Невірна відповідь"
 
 #: genlocale:113 genlocale:114
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
+"Виникла помилка при збереженні налаштувань. Чи файли системи розташовані на "
+"носіях, таких як флешка USB (тобто не на CD-ROM)?"
 
 #: genlocale:114 genlocale:115
 msgid "y"
-msgstr ""
+msgstr "y"
 
 #: genlocale:115 genlocale:116
 msgid "Y"
-msgstr ""
+msgstr "Y"
 
 #: genlocale:116 genlocale:117
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: genlocale:117 genlocale:118
 msgid "N"
-msgstr ""
+msgstr "N"
+
+

@@ -1,170 +1,175 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+#   <futur.andy@googlemail.com>, 2011.
+#   <sgasior1@gmail.com>, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: genlocale\n"
+"Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-08-30 12:09+0200\n"
-"PO-Revision-Date: 2010-05-26 01:37+0100\n"
-"Last-Translator: Andreas Born <futur{{DOT}}andy{{AT}}googlemail{{DOT}}com>\n"
-"Language-Team: \n"
-"Language: \n"
+"PO-Revision-Date: 2011-11-15 21:55+0000\n"
+"Last-Translator: shador <futur.andy@googlemail.com>\n"
+"Language-Team: Polish (http://www.transifex.net/projects/p/salix/team/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
-#, fuzzy
 msgid "Start _DISTRONAME_"
-msgstr "Uruchom _DISTRONAME_"
+msgstr "Start _DISTRONAME_"
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
-#, fuzzy
 msgid "Memory Test"
-msgstr "Test pamieci"
+msgstr "Test pamięci"
 
 #: genlocale:54 genlocale:65 genlocale:75 genlocale:83 genlocale:84
-#, fuzzy
 msgid "Change language"
-msgstr "Zmien jezyk"
+msgstr "Zmień język"
 
 #: genlocale:55 genlocale:66 genlocale:76 genlocale:84 genlocale:85
 msgid "Change keyboard layout"
-msgstr ""
+msgstr "Zmień układ klawiatury"
 
 #: genlocale:56 genlocale:67 genlocale:77 genlocale:85 genlocale:86
 msgid "Change boot options"
-msgstr ""
+msgstr "Zmień opcje boot"
 
 #: genlocale:57 genlocale:68 genlocale:78 genlocale:86 genlocale:87
 msgid "Boot to runlevel '3' (text mode)"
-msgstr ""
+msgstr "Rozruch na poziomie '3' (tryb tekstowy)"
 
 #: genlocale:58 genlocale:69 genlocale:79 genlocale:87 genlocale:88
 msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr ""
+msgstr "Rozruch na poziomie '4' (graficzny tryb logowania) (domyślnie)"
 
 #: genlocale:59 genlocale:70 genlocale:80 genlocale:88 genlocale:89
 msgid "Enable 'Copy everything to RAM'"
-msgstr ""
+msgstr "Włącz 'Kopiuj wszystko do RAM'"
 
 #: genlocale:60 genlocale:71 genlocale:81 genlocale:89 genlocale:90
 msgid "Disable 'Copy everything to RAM' (default)"
-msgstr ""
+msgstr "Wyłącz 'Kopiuj wszystko do RAM' (domyślnie)"
 
 #: genlocale:61 genlocale:72 genlocale:82 genlocale:90 genlocale:91
 msgid "Enable numlock on boot"
-msgstr ""
+msgstr "Włącz numlock przy starcie"
 
 #: genlocale:62 genlocale:73 genlocale:83 genlocale:91 genlocale:92
 msgid "Disable numlock on boot (default)"
-msgstr ""
+msgstr "Wyłącz numlock przy starcie (domyślnie)"
 
 #: genlocale:63 genlocale:74 genlocale:84 genlocale:94 genlocale:95
 msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr ""
+msgstr "Włącz synaptics fdi (czasami niestabilne)"
 
 #: genlocale:64 genlocale:75 genlocale:85 genlocale:95 genlocale:96
 msgid "Disable synaptics fdi (reliable) (default)"
-msgstr ""
+msgstr "Wyłącz synaptics fdi (stabilne) (domyślnie)"
 
 #: genlocale:65 genlocale:76 genlocale:86 genlocale:109 genlocale:110
 msgid "Return to boot menu"
-msgstr ""
+msgstr "Wróć do menu rozruch"
 
 #: genlocale:92 genlocale:93
 msgid "Enable Ibus"
-msgstr ""
+msgstr "Włącz Ibus"
 
 #: genlocale:93 genlocale:94
 msgid "Disable Ibus (default)"
-msgstr ""
+msgstr "Wyłącz Ibus (domyślnie)"
 
 #: genlocale:96 genlocale:97
 msgid "No sound on boot"
-msgstr ""
+msgstr "Wyłącz dźwięk na starcie"
 
 #: genlocale:97 genlocale:98
 msgid "Enable sound on boot (default)"
-msgstr ""
+msgstr "Włącz dźwięk na starcie (domyślnie)"
 
 #: genlocale:98 genlocale:99
 msgid "Enable autologin on boot (default)"
-msgstr ""
+msgstr "Włacz automatyczne logowanie przy starcie (domyślne)"
 
 #: genlocale:99 genlocale:100
 msgid "Disable autologin on boot"
-msgstr ""
+msgstr "Wyłącz automatyczne logowanie przy starcie"
 
 #: genlocale:100 genlocale:101
 msgid "Enable gfxpayload=keep (default)"
-msgstr ""
+msgstr "Włącz gfxpayload=keep (domyślnie)"
 
 #: genlocale:101 genlocale:102
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
+msgstr "Wyłącz gfxpayload=keep (jeśli niemożliwe spróbuj tego)"
 
 #: genlocale:102 genlocale:103
 msgid "Change root password"
-msgstr ""
+msgstr "Zmiana hasła root"
 
 #: genlocale:103 genlocale:104
 msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr ""
+msgstr "Nowe hasło root (wybierz 'pytaj' aby być pytanym na starcie):"
 
 #: genlocale:104 genlocale:105
 msgid "Set a proxy"
-msgstr ""
+msgstr "Ustawienia proxy"
 
 #: genlocale:105 genlocale:106
 msgid "New proxy (empty for no proxy): "
-msgstr ""
+msgstr "Nowe proxy (puste jeśli bez proxy):"
 
 #: genlocale:106 genlocale:107
 msgid "Boot from an ISO"
-msgstr ""
+msgstr "Rozruch z ISO"
 
 #: genlocale:107 genlocale:108
 msgid "Path to the ISO to boot from: "
-msgstr ""
+msgstr "Ścieżka do ISO uruchamiana z:"
 
 #: genlocale:108 genlocale:109
 msgid "Live system is loading..."
-msgstr ""
+msgstr "Live system jest ładowany..."
 
 #: genlocale:110 genlocale:111
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
+"Zachowaj wszystkie ustawienia będące autoładowane dla przyszłych rozruchów"
 
 #: genlocale:111 genlocale:112
 msgid "Do you want to skip the language selection menu? [y/N] "
-msgstr ""
+msgstr "Chcesz pominąć sekcję ustawienia języka? [t/N]"
 
 #: genlocale:112 genlocale:113
 msgid "Invalid response"
-msgstr ""
+msgstr "Nieprawidłowa odpowiedź"
 
 #: genlocale:113 genlocale:114
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
+"Wystąpił błąd podczas zapisywania ustawień. Czy pliki live są na "
+"zapisywalnych nośnikach jak pamięć USB (to jest nie z CD-ROMu)?"
 
 #: genlocale:114 genlocale:115
 msgid "y"
-msgstr ""
+msgstr "t"
 
 #: genlocale:115 genlocale:116
 msgid "Y"
-msgstr ""
+msgstr "T"
 
 #: genlocale:116 genlocale:117
 msgid "n"
-msgstr ""
+msgstr "n"
 
 #: genlocale:117 genlocale:118
 msgid "N"
-msgstr ""
+msgstr "N"
+
+
