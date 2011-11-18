@@ -632,16 +632,22 @@ kill_all_before() {
   echodebug "ignorelst $ignorelst"
   lst=
   for pid in $(ps|grep -v 'PID USER'|grep -v ' \[[^ ]*\]$'|grep -v mount|grep -v ntfs|cut -d' ' -f2|sort -r); do
-    if [ $pid -lt $PID -a $pid -ne 1 -a -z "$(echo $ignorelst|grep :$pid:)" ]; then
+    if [ $pid -lt $PID -a $pid -gt 1 -a -z "$(echo $ignorelst|grep :$pid:)" ]; then
       lst="$lst $pid"
     fi
   done
   echodebug "kill list: $lst"
   debugshell
-  kill -15 $lst 2>/dev/null
-  sleep 1
-  kill -9  $lst 2>/dev/null
-  sleep 1
+  if [ -n "$lst" ]; then
+    echodebug "kill -15 $lst"
+    kill -15 $lst 2>/dev/null
+    sleep 1
+    echodebug "kill -9  $lst"
+    kill -9  $lst 2>/dev/null
+    sleep 1
+  fi
+  echodebug "kill -9 $PID"
+  kill -9 $PID
 }
 
 # Umount all sub-mounts that appear inside the specified mountpoint.

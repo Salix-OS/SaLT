@@ -88,7 +88,7 @@ sleep 3
 debugshell
 
 infolog 'Unloading modules...'
-for m in /mnt/modules/*; do
+for m in $(ls -dr1 /mnt/modules/*); do
   infolog "  - Unloading $m"
   unload_module "$m"
   debugshell
