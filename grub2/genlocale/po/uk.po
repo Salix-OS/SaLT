@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-30 12:09+0200\n"
-"PO-Revision-Date: 2011-10-20 07:17+0000\n"
+"POT-Creation-Date: 2011-11-15 23:16+0100\n"
+"PO-Revision-Date: 2011-11-22 11:28+0000\n"
 "Last-Translator: knedlyk <yupadmin@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,140 +18,155 @@ msgstr ""
 "Language: uk\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
+#. # Please leave _DISTRONAME_ as it is, it's a placeholder.
 #: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
+#: genlocale:83
 msgid "Start _DISTRONAME_"
 msgstr "Запустити _DISTRONAME_"
 
 #: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
+#: genlocale:84
 msgid "Memory Test"
 msgstr "Тестування пам’яті"
 
 #: genlocale:54 genlocale:65 genlocale:75 genlocale:83 genlocale:84
+#: genlocale:85
 msgid "Change language"
 msgstr "Змінити мову"
 
 #: genlocale:55 genlocale:66 genlocale:76 genlocale:84 genlocale:85
+#: genlocale:86
 msgid "Change keyboard layout"
 msgstr "Змінити розкладку клавіатури"
 
 #: genlocale:56 genlocale:67 genlocale:77 genlocale:85 genlocale:86
+#: genlocale:87
 msgid "Change boot options"
 msgstr "Змінити опції завантаження"
 
 #: genlocale:57 genlocale:68 genlocale:78 genlocale:86 genlocale:87
+#: genlocale:88
 msgid "Boot to runlevel '3' (text mode)"
 msgstr "Завантажити '3' рівень (текстовий режим)"
 
 #: genlocale:58 genlocale:69 genlocale:79 genlocale:87 genlocale:88
+#: genlocale:89
 msgid "Boot to runlevel '4' (graphical login) (default)"
 msgstr "Завантажити '4' рівень (графічний режим) (типово)"
 
 #: genlocale:59 genlocale:70 genlocale:80 genlocale:88 genlocale:89
+#: genlocale:90
 msgid "Enable 'Copy everything to RAM'"
 msgstr "Включити 'Копіювання всього у RAM'"
 
 #: genlocale:60 genlocale:71 genlocale:81 genlocale:89 genlocale:90
+#: genlocale:91
 msgid "Disable 'Copy everything to RAM' (default)"
 msgstr "Виключити 'Копіювання всього у RAM' (типово)"
 
 #: genlocale:61 genlocale:72 genlocale:82 genlocale:90 genlocale:91
+#: genlocale:92
 msgid "Enable numlock on boot"
 msgstr "Включити numlock при завантаженні"
 
 #: genlocale:62 genlocale:73 genlocale:83 genlocale:91 genlocale:92
+#: genlocale:93
 msgid "Disable numlock on boot (default)"
 msgstr "Виключити numlock при завантаженні (типово)"
 
 #: genlocale:63 genlocale:74 genlocale:84 genlocale:94 genlocale:95
+#: genlocale:96
 msgid "Enable synaptics fdi (sometimes unreliable)"
 msgstr "Включити synaptics fdi (іноді не працює)"
 
 #: genlocale:64 genlocale:75 genlocale:85 genlocale:95 genlocale:96
+#: genlocale:97
 msgid "Disable synaptics fdi (reliable) (default)"
 msgstr "Виключити synaptics fdi (працює завжди) (типово)"
 
 #: genlocale:65 genlocale:76 genlocale:86 genlocale:109 genlocale:110
+#: genlocale:111
 msgid "Return to boot menu"
 msgstr "Повернутися до меню завантаження"
 
-#: genlocale:92 genlocale:93
+#: genlocale:92 genlocale:93 genlocale:94
 msgid "Enable Ibus"
 msgstr "Включити IBUs"
 
-#: genlocale:93 genlocale:94
+#: genlocale:93 genlocale:94 genlocale:95
 msgid "Disable Ibus (default)"
 msgstr "Вимкнути IBUs (за замовчуванням)"
 
-#: genlocale:96 genlocale:97
+#: genlocale:96 genlocale:97 genlocale:98
 msgid "No sound on boot"
 msgstr "Відсутній звук при завантаженні"
 
-#: genlocale:97 genlocale:98
+#: genlocale:97 genlocale:98 genlocale:99
 msgid "Enable sound on boot (default)"
 msgstr "Увімкнути звук при завантаженні (за замовчуванням)"
 
-#: genlocale:98 genlocale:99
+#: genlocale:98 genlocale:99 genlocale:100
 msgid "Enable autologin on boot (default)"
 msgstr ""
 "Включити автоматичний вхід при завантаженні системи (за замовчуванням)"
 
-#: genlocale:99 genlocale:100
+#: genlocale:99 genlocale:100 genlocale:101
 msgid "Disable autologin on boot"
 msgstr "Відключення автоматичного входу при завантаженні"
 
-#: genlocale:100 genlocale:101
+#: genlocale:100 genlocale:101 genlocale:102
 msgid "Enable gfxpayload=keep (default)"
 msgstr "Включити gfxpayload=keep (за замовчуванням)"
 
-#: genlocale:101 genlocale:102
+#: genlocale:101 genlocale:102 genlocale:103
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
 msgstr "Вимкнути gfxpayload=keep (якщо не завантажується спробувати це)"
 
-#: genlocale:102 genlocale:103
+#: genlocale:102 genlocale:103 genlocale:104
 msgid "Change root password"
 msgstr "Зміна пароля суперкористувача"
 
-#: genlocale:103 genlocale:104
+#: genlocale:103 genlocale:104 genlocale:105
 msgid "New root password (choose 'ask' to be asked at boot): "
 msgstr ""
 "Новий пароль суперкористувача (виберіть 'питати', щоб запитувало при "
 "завантаженні):"
 
-#: genlocale:104 genlocale:105
+#: genlocale:104 genlocale:105 genlocale:106
 msgid "Set a proxy"
 msgstr "Встановити проксі"
 
-#: genlocale:105 genlocale:106
+#: genlocale:105 genlocale:106 genlocale:107
 msgid "New proxy (empty for no proxy): "
 msgstr "Новий проксі-сервер (порожньо без проксі):"
 
-#: genlocale:106 genlocale:107
+#: genlocale:106 genlocale:107 genlocale:108
 msgid "Boot from an ISO"
 msgstr "Завантаження з ISO"
 
-#: genlocale:107 genlocale:108
+#: genlocale:107 genlocale:108 genlocale:109
 msgid "Path to the ISO to boot from: "
 msgstr "Шлях до ISO для завантаження:"
 
-#: genlocale:108 genlocale:109
+#: genlocale:108 genlocale:109 genlocale:110
 msgid "Live system is loading..."
 msgstr "Жива система завантажується ..."
 
-#: genlocale:110 genlocale:111
+#: genlocale:110 genlocale:111 genlocale:112
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
 "Збережіть всі параметри, які будуть автоматично завантажуються для майбутніх"
 " завантажень"
 
-#: genlocale:111 genlocale:112
+#: genlocale:111 genlocale:112 genlocale:113
 msgid "Do you want to skip the language selection menu? [y/N] "
 msgstr "Ви бажаєте пропустити меню вибору мови? [y/N]"
 
-#: genlocale:112 genlocale:113
+#: genlocale:112 genlocale:113 genlocale:114
 msgid "Invalid response"
 msgstr "Невірна відповідь"
 
-#: genlocale:113 genlocale:114
+#: genlocale:113 genlocale:114 genlocale:115
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -159,20 +174,28 @@ msgstr ""
 "Виникла помилка при збереженні налаштувань. Чи файли системи розташовані на "
 "носіях, таких як флешка USB (тобто не на CD-ROM)?"
 
-#: genlocale:114 genlocale:115
+#: genlocale:114 genlocale:115 genlocale:117 genlocale:118
 msgid "y"
 msgstr "y"
 
-#: genlocale:115 genlocale:116
+#: genlocale:115 genlocale:116 genlocale:118 genlocale:119
 msgid "Y"
 msgstr "Y"
 
-#: genlocale:116 genlocale:117
+#: genlocale:116 genlocale:117 genlocale:119 genlocale:120
 msgid "n"
 msgstr "n"
 
-#: genlocale:117 genlocale:118
+#: genlocale:117 genlocale:118 genlocale:120 genlocale:121
 msgid "N"
 msgstr "N"
+
+#: genlocale:115 genlocale:116
+msgid "Custom linux kernel parameters"
+msgstr "Додаткові параметри ядра лінукс"
+
+#: genlocale:116 genlocale:117
+msgid "Enter custom linux kernel parameters: "
+msgstr "Введіть додаткові параметри ядра лінукс: "
 
 
