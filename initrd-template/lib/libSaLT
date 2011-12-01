@@ -646,8 +646,12 @@ kill_all_before() {
     kill -9  $lst 2>/dev/null
     sleep 1
   fi
-  echodebug "kill -9 $PID"
-  kill -9 $PID
+  PPID=$(grep '^PPid:' /proc/$PID/status|grep -o '[0-9]*')
+  echodebug "kill -9 $PPID"
+  kill -9 $PPID
+  # because init will print a message without a new line
+  sleep .1
+  echo
 }
 
 # Umount all sub-mounts that appear inside the specified mountpoint.
