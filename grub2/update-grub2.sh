@@ -9,8 +9,8 @@ if [ $? -eq 0 ]; then
       sed -i "s:\(set grub2_ident_file_path\)=.*:\1=$GRUB2_IDENT_FILE:" grub/embed.cfg
       echo "DO NOT REMOVE THIS FILE. It helps grub2 find its root device when chainloaded." > grub/$GRUB2_IDENT_FILE
       grub-mkimage -d grub/i386-pc -p /boot/grub/i386-pc -o grub2-core.img -O i386-pc -C none -c grub/embed.cfg biosdisk ext2 fat iso9660 ntfs reiserfs xfs part_msdos part_gpt search echo
-      cat grub/i386-pc/lnxboot.img grub2-core.img grub2-linux.img
-      cat grub/i386-pc/g2hdr.img grub2-core.img g2ldr
+      cat grub/i386-pc/lnxboot.img grub2-core.img > grub2-linux.img
+      cat grub/i386-pc/g2hdr.img grub2-core.img > g2ldr
       rm -f grub2-core.img
     else
       echo "This script should be run from a writable media." >&2
