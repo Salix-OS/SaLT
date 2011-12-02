@@ -21,7 +21,7 @@ SSHBIN=/usr/bin/ssh
 CURLFTPFSBIN=/usr/bin/curlftpfs
 HTTPFSURL=http://sourceforge.net/projects/httpfs/files/httpfs2/httpfs2-$HTTPFSVER.tar.gz/download
 CIFSBINS=(/usr/sbin/mount.cifs /usr/sbin/umount.cifs)
-EXTRALIBS="/lib/libnss_*"
+EXTRALIBS="/lib*/libnss_*"
 KERNELDIR=$PWD/../kernel
 
 KVER=$KERNELDIR/lib/modules/*
