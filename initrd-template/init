@@ -217,7 +217,7 @@ EOF
     fi
     unset LD
     LIBC=$(ls -1 $LIBDIR/libc-[0-9]*)
-    if [ -f "$LIBC" -a ! -e "$LIBC.saltbak"]; then
+    if [ -f "$LIBC" -a ! -e "$LIBC.saltbak" ]; then
       cp $LIBC $LIBC.saltbak
       mv $LIBC /tmp/
       ( cd $LIBDIR; ln -s /mnt/salt/tmp/$(basename $LIBC) . )
