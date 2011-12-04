@@ -365,8 +365,9 @@ find_distro_device() {
     d=$(cut -d: -f2- /tmp/distro_infos)
     ok=false
     if [ -e "$MP/$IDENT_FILE" ]; then
-      C="$(cat "$MP/$IDENT_FILE")"
-      if [ "$C" = "$IDENT_CONTENT" ]; then
+      unset ident_content
+      eval $(grep "ident_content=" "$MP/$IDENT_FILE") || true
+      if [ "$ident_content" = "$IDENT_CONTENT" ]; then
         echo "$MP:$d"
         ok=true
       fi
@@ -394,8 +395,9 @@ find_distro_device() {
           fi
         else
           if [ -e "$MP/$IDENT_FILE" ]; then
-            C="$(cat "$MP/$IDENT_FILE")"
-            if [ "$C" = "$IDENT_CONTENT" ]; then
+            unset ident_content
+            eval $(grep "ident_content=" "$MP/$IDENT_FILE") || true
+            if [ "$ident_content" = "$IDENT_CONTENT" ]; then
               echo "$MP:$d"|tee /tmp/distro_infos
               break
             fi

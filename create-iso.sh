@@ -83,7 +83,9 @@ if [ $? -eq 0 ]; then
   [ ! -e syslinux-$SYSLINUX_VER.tar.bz2 ] && wget http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VER.tar.bz2
   ISODIR=$(mktemp -d)
   mkdir -p $ISODIR/$ROOT_DIR/persistence
-  echo "$IDENT_CONTENT" > $ISODIR/$IDENT_FILE
+  echo "ident_content=$IDENT_CONTENT" > $ISODIR/$IDENT_FILE
+  echo "basedir=/" >> $ISODIR/$IDENT_FILE
+  echo "iso_name=$(basename $ISONAME)" >> $ISODIR/$IDENT_FILE
   # generate background image
   if [ ! -e $IMAGE ]; then
     echo "$IMAGE not found" >&2
@@ -140,15 +142,15 @@ if [ $? -eq 0 ]; then
       eval $(grep '^libdir=' $(which grub-mkrescue))
       eval $(grep '^PACKAGE_TARNAME=' $(which grub-mkrescue))
       GRUB_DIR=$libdir/$PACKAGE_TARNAME/i386-pc
-      GRUB2_IDENT_FILE="$(grub-mkimage -V | cut -d' ' -f2- | tr -d '()\n' | tr ' ' '_')-$(date +%Y%m%d-%H%M)"
       # copy the config files
       mkdir -p boot/grub
       cp -ar "$grubdir"/build/* .
       # modify the config files
       sed -i "s:\(set debug=\).*:\1$DEBUG:" boot/grub/grub.cfg
       sed -i "s:initrd\.gz:initrd.$COMP:" boot/grub/boot.cfg
-      sed -i "s:@@GRUB2_IDENT_FILE@@:$GRUB2_IDENT_FILE:" boot/grub/embed.cfg
-      echo "DO NOT REMOVE THIS FILE. It helps grub2 find its root device when chainloaded." > boot/grub/$GRUB2_IDENT_FILE
+      sed -i -e "s:\(ident_file=\).*:\1$IDENT_FILE:" \
+        -e "s:\(searched_ident_content=\).*:\1$IDENT_CONTENT:" \
+        -e "s:\(default_iso_name=\).*:\1$(basename $ISONAME):" boot/grub/memdisk_grub.cfg
       # install locales
       mkdir -p boot/grub/locale/
       for i in /usr/share/locale/*; do
@@ -164,10 +166,20 @@ if [ $? -eq 0 ]; then
         fi
       done
       # create the boot images
+      rm -rf /tmp/memdisk /tmp/memdisk.tar
+      mkdir -p /tmp/memdisk/boot/grub
+      cp boot/grub/memdisk_grub.cfg /tmp/memdisk/boot/grub/grub.cfg
+      (
+        cd /tmp/memdisk
+        tar -cf /tmp/memdisk.tar boot
+      )
+      # memdisk allows us to switch to normal mode, embedded config not
+      # normal mode in turn allows for extended syntax like loops
       # zfs causes slow disk access with 1.99
-      grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
-        -c boot/grub/embed.cfg \
-        biosdisk ext2 fat iso9660 ntfs reiserfs xfs part_msdos part_gpt search echo
+      grub-mkimage -p /boot/grub -o /tmp/core.img -O i386-pc -m /tmp/memdisk.tar \
+        biosdisk ext2 fat iso9660 ntfs reiserfs xfs part_msdos part_gpt \
+        memdisk tar configfile loopback \
+        normal extcmd regexp test read echo
       cat $GRUB_DIR/lnxboot.img /tmp/core.img > boot/grub2-linux.img
       if [ -e $GRUB_DIR/g2hdr.img ] && [ -e $GRUB_DIR/g2ldr.mbr ]; then
 		    # this image can only be directly loaded by Vista and later
@@ -178,6 +190,8 @@ if [ $? -eq 0 ]; then
       else
         echo "You're version of grub lacks ntldr-img from grub-extras. Disabling generation of ntldr images."
       fi
+      rm -r /tmp/memdisk /tmp/memdisk.tar
+      rm /tmp/core.img
       grub-mkimage -p /boot/grub/i386-pc -o /tmp/core.img -O i386-pc \
         biosdisk iso9660
       cat $GRUB_DIR/cdboot.img /tmp/core.img > $BOOTFILE
@@ -186,7 +200,7 @@ if [ $? -eq 0 ]; then
       grub-editenv boot/grub/salt.env create
     )
     # add script files and boot loader install for USB
-    cp -v "$grubdir"/install-on-USB* "$grubdir"/update-grub2.sh $ISODIR/boot/
+    cp -v "$grubdir"/install-on-USB* $ISODIR/boot/
     tar xf syslinux-$SYSLINUX_VER.tar.bz2
     cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
     rm -rf syslinux-$SYSLINUX_VER
