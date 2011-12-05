@@ -58,15 +58,9 @@ load_pcmcia_modules
 [ -e /init_extra ] && sh /init_extra
 
 infolog "Finding $LIVE_NAME device..."
-identfile=$(get_value_cmdline identfile)
-[ -n "$identfile" ] && IDENT_FILE=$identfile
-unset identfile
-identcontent=$(get_value_cmdline identcontent)
-[ -n "$identcontent" ] && IDENT_CONTENT=$identcontent
-unset identcontent
-fromiso=$(get_value_cmdline fromiso)
-[ -n "$fromiso" ] && FROMISO=$fromiso
-unset fromiso
+get_ident_file
+get_ident_content
+get_fromiso
 DISTRO_INFO=$(find_distro_device)
 if [ -z "$DISTRO_INFO" ]; then
   fumble "Could not find the distro to boot\nFile searched: $IDENT_FILE\nContent searched: $IDENT_CONTENT"
@@ -76,9 +70,7 @@ DISTRO_DEV=$(echo $DISTRO_INFO|cut -d: -f2-)
 infolog "  $LIVE_NAME found in $DISTRO_DEV"
 debugshell
 
-savefilename=$(get_value_cmdline savefile)
-[ -n "$savefilename" ] && SAVE_FILE_NAME=$savefilename
-unset savefilename
+get_save_file_name
 infolog "Finding save file $SAVE_FILE_NAME..."
 SAVE_FILE=$(find_save_file "$DISTRO_MP")
 if [ -z "$SAVE_FILE" ]; then

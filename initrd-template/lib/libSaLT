@@ -189,6 +189,38 @@ get_value_cmdline() {
   fi
 }
 
+# Fix the IDENT_FILE variable using the optional command line option
+get_ident_file() {
+  ident_file=$(get_value_cmdline identfile)
+  [ -n "$ident_file" ] && IDENT_FILE=$ident_file
+  unset ident_file
+  export IDENT_FILE
+}
+
+# Fix the IDENT_CONTENT variable using the optional command line option
+get_ident_content() {
+  ident_content=$(get_value_cmdline identcontent)
+  [ -n "$ident_content" ] && IDENT_CONTENT=$ident_content
+  unset ident_content
+  export IDENT_CONTENT
+}
+
+# Fix the FROMISO variable using the optional command line option
+get_fromiso() {
+  fromiso=$(get_value_cmdline fromiso)
+  [ -n "$fromiso" ] && FROMISO=$fromiso
+  unset fromiso
+  export FROMISO
+}
+
+# Fix the SAVE_FILE_NAME variable using the optional command line option
+get_save_file_name() {
+  save_file_name=$(get_value_cmdline savefile)
+  [ -n "$save_file_name" ] && SAVE_FILE_NAME=$save_file_name
+  unset save_file_name
+  export SAVE_FILE_NAME
+}
+
 # Try to load a kernel module. Check if the module is builtin or not.
 # If it's builtin do nothing, else modprobe it.
 # $1 = module name
