@@ -18,7 +18,7 @@ FILEVER=5.06
 FILEURL=ftp://ftp.astron.com/pub/file/file-$FILEVER.tar.gz
 NTFS3GVER=2011.4.12
 NTFS3GURL=http://tuxera.com/opensource/ntfs-3g_ntfsprogs-$NTFS3GVER.tgz
-LSOFURL=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/lsof.tar.bz2
+LSOFURL=ftp://ftp.fu-berlin.de/pub/unix/tools/lsof/lsof.tar.bz2
 KERNELDIR=$PWD/kernel
 
 KVER=$KERNELDIR/lib/modules/*
