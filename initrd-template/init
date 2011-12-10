@@ -68,6 +68,14 @@ fi
 DISTRO_MP=$(echo $DISTRO_INFO|cut -d: -f1)
 DISTRO_DEV=$(echo $DISTRO_INFO|cut -d: -f2-)
 infolog "  $LIVE_NAME found in $DISTRO_DEV"
+BASEDIR="$(get_basedir "$DISTRO_MP")"
+if [ $? -eq 0 ]; then
+  debuglog "Using as basedir: '$BASEDIR'"
+  ROOT_DIR=$BASEDIR$ROOT_DIR
+  debuglog "Using as ROOT_DIR: '$ROOT_DIR'"
+else
+  errorlog "Could not determine basedir from ident file."
+fi
 debugshell
 
 get_save_file_name

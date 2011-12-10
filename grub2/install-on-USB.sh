@@ -111,7 +111,7 @@ install_syslinux() {
       echo "For safety reasons we won't install to such a media."
       exit 3
     fi
-    bakfile="$DIR/${BASEDIR}boot/"$(echo $DEVICE|tr '/' '_').mbr.$(date +%Y%m%d%H%m)
+    bakfile="$DIR/${BASEDIR}boot/"$(echo $DEVICE|tr '/' '_').mbr.$(date +%Y%m%d%H%M)
     echo "Backing up mbr of $DEVICE to '$bakfile'..."
     dd if=$DEVICE of="$bakfile" bs=512 count=1
     echo "Installing syslinux..."

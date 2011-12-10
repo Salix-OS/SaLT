@@ -442,6 +442,24 @@ find_distro_device() {
   fi
 }
 
+# Prints the basedir from the ident file to stdout.
+# $1 = mount point of the distro
+get_basedir() {
+  if [ ! -e "$1/$IDENT_FILE" ]; then
+    warnlog "When determining the basedir '$1/$IDENT_FILE' did not exist"
+    return 1
+  fi
+  eval $(grep "basedir=" "$1/$IDENT_FILE") || true
+  if [ -z "$basedir" ]; then
+    warnlog "Basedir was not set in the ident file or is empty"
+    return 1
+  fi
+  # remove leading slash and add a trailing one for non-empty string
+  echo "$basedir" | sed -e 's:^/::' -e 's:.\+:&/:'
+  unset basedir
+  return 0
+}
+
 # Find the save file if it exists.
 # First search on the distro device then on others partitions.
 # $1 = mount point of the distro
