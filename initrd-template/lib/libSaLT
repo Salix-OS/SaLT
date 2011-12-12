@@ -115,7 +115,9 @@ infolog() {
 # $@ = message
 warnlog() {
   if [ -n "$1" ]; then
-    echowarn "* $@" >&2
+    if [ -n "$SALT_DEBUG" ]; then
+      echowarn "* $@" >&2
+    fi
     log "WARN: $@"
   fi
 }
@@ -443,10 +445,11 @@ find_distro_device() {
 }
 
 # Prints the basedir from the ident file to stdout.
+# Assure it starts with / and does not end with /
 # $1 = mount point of the distro
 get_basedir() {
   if [ ! -e "$1/$IDENT_FILE" ]; then
-    warnlog "When determining the basedir '$1/$IDENT_FILE' did not exist"
+    warnlog "When determining the basedir, '$1/$IDENT_FILE' was not found"
     return 1
   fi
   eval $(grep "basedir=" "$1/$IDENT_FILE") || true
@@ -454,8 +457,8 @@ get_basedir() {
     warnlog "Basedir was not set in the ident file or is empty"
     return 1
   fi
-  # remove leading slash and add a trailing one for non-empty string
-  echo "$basedir" | sed -e 's:^/::' -e 's:.\+:&/:'
+  # add a leading slash if needed and remove the ending slash if present
+  echo "$basedir"|sed 's:^[^/]:/&:; s:\(.\)/$:\1:'
   unset basedir
   return 0
 }
@@ -464,6 +467,7 @@ get_basedir() {
 # First search on the distro device then on others partitions.
 # $1 = mount point of the distro
 find_save_file() {
+  basedir="$(get_basedir "$1" || echo '/')"
   for d in "$1" $(find_mountable_devices); do
     if [ -d "$d" ]; then
       MP="$d"
@@ -474,14 +478,14 @@ find_save_file() {
       fi
     fi
     if [ -n "$MP" ]; then
-      if [ -f "$MP/$ROOT_DIR/persistence/$SAVE_FILE_NAME" ]; then
-        file "$MP/$ROOT_DIR/persistence/$SAVE_FILE_NAME"|grep -q -i 'SGI XFS filesystem data\|Linux rev 1\.0 ext. filesystem\|ReiserFS\|, FAT \|, OEM-ID "NTFS'
+      if [ -f "$MP$basedir/$ROOT_DIR/persistence/$SAVE_FILE_NAME" ]; then
+        file "$MP$basedir/$ROOT_DIR/persistence/$SAVE_FILE_NAME"|grep -q -i 'SGI XFS filesystem data\|Linux rev 1\.0 ext. filesystem\|ReiserFS\|, FAT \|, OEM-ID "NTFS'
         if [ $? -eq 0 ]; then
-          echo "$MP/$ROOT_DIR/persistence/$SAVE_FILE_NAME"
+          echo "$MP$basedir/$ROOT_DIR/persistence/$SAVE_FILE_NAME"
           break
         fi
       fi
-      debuglog "'/$ROOT_DIR/persistence/$SAVE_FILE_NAME' not found in $d"
+      debuglog "'$basedir/$ROOT_DIR/persistence/$SAVE_FILE_NAME' not found in $d"
       if [ ! -d "$d" ]; then
         umount_device "$d" >/dev/null 2>&1
       fi
@@ -535,12 +539,13 @@ destroy_union() {
 find_modules() {
   MP="$1"
   if [ -n "$MP" ]; then
-    if [ -d "$MP/$ROOT_DIR/modules" ]; then
-      for m in "$MP/$ROOT_DIR"/modules/*.salt; do
+    basedir="$(get_basedir "$MP" || echo '/')"
+    if [ -d "$MP$basedir/$ROOT_DIR/modules" ]; then
+      for m in "$MP$basedir/$ROOT_DIR"/modules/*.salt; do
         file "$m"|grep -i -q 'Squashfs filesystem' && echo "$m"
       done
     else
-      errorlog "'$MP/$ROOT_DIR/modules' not found"
+      errorlog "'$MP$basedir/$ROOT_DIR/modules' not found"
       return 1
     fi
   fi
