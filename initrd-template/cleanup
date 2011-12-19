@@ -107,8 +107,8 @@ if [ -e /mnt/ram ]; then
       infolog 'Syncing RAM -> persistence file...'
       mkdir /mnt/sync
       mount -o loop "$dir"/"$relpath" /mnt/sync
-      debugshell
       if [ $? -eq 0 ]; then
+        debugshell
         SIZE_RAM=$(du -sm /mnt/ram|cut -f1)
         SIZE_SYNC=$(sh -c 'echo $2' -- $(df -m /mnt/sync|tail -n1))
         if [ $SIZE_RAM -lt $SIZE_SYNC ]; then

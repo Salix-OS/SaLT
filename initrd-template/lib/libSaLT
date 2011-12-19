@@ -346,6 +346,19 @@ find_fs_options() {
   fi
 }
 
+# Get the mount point that the device will be mounted to.
+# $1 = device in the form /dev/xxx
+get_mount_point() {
+  echo "$1"|grep -q '^/dev/'
+  if [ $? -eq 0 ]; then
+    # Could be e.g. a subdirectory of /dev so replace additional slashes
+    DEV=$(echo "$1"|sed -e 's:/dev/::' -e 's:/:_:g')
+    echo /mnt/$DEV
+  else
+    debuglog "$1 no valid device, doesn't start with /dev"
+  fi
+}
+
 # Mount the specified device and output the mount point.
 # $1 = device in the form /dev/xxx
 mount_device() {
