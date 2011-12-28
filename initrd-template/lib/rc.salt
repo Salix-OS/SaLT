@@ -1,16 +1,17 @@
 #!/bin/sh
-# vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+# vim: set syn=sh ai si et sw=2 st=2 ts=2 tw=0:
 #
 # This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
 # Licence: GPLv3+
+# Version: 0.1
 # Script to tweak the target Slackware distro
 
 [ -e /mnt/salt/lib/libSaLT ] || exit 1
 . /mnt/salt/lib/libSaLT
-echoinfo '+--------------------------------+'
-echoinfo '| Starting Live configuration... |'
-echoinfo '+--------------------------------+'
+echoinfo '+-------------------------------------+'
+echoinfo '| Starting SaLT Live configuration... |'
+echoinfo '+-------------------------------------+'
 LIBSUFFIX=
 [ -d /usr/lib64 ] && LIBSUFFIX=64
 lang=$(get_value_cmdline lang)
@@ -192,8 +193,10 @@ else
 fi
 if is_on_cmdline autologin; then
   [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=true/' /etc/gdm/custom.conf
+  [ -e /etc/kde/kdm/kdmrc ] && sed -i 's/AutoLoginEnable=.*/AutoLoginEnable=true/' /etc/kde/kdm/kdmrc
 else
   [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=false/' /etc/gdm/custom.conf
+  [ -e /etc/kde/kdm/kdmrc ] && sed -i 's/AutoLoginEnable=.*/AutoLoginEnable=false/' /etc/kde/kdm/kdmrc
 fi
 proxy=$(get_value_cmdline proxy)
 if [ -n "$proxy" ]; then
@@ -241,6 +244,6 @@ else
     sed -i '/proxy/d' $ffpreffile
   fi
 fi
-echoinfo '+----------------------------+'
-echoinfo '| Live configuration applied |'
-echoinfo '+----------------------------+'
+echoinfo '+---------------------------------+'
+echoinfo '| SaLT Live configuration applied |'
+echoinfo '+---------------------------------+'

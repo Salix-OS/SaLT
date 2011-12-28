@@ -1,5 +1,5 @@
 #!/bin/sh
-# vim: set syn=sh ai et sw=2 st=2 ts=2 tw=0:
+# vim: set syn=sh ai si et sw=2 st=2 ts=2 tw=0:
 #
 # This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
@@ -598,6 +598,25 @@ load_module() {
   else
     errorlog "load_module: '$m' not found"
     return 1
+  fi
+}
+
+# Try loading rootcopy.tar or rootcopy directory to the union filesystem
+# The archive or directory must be in $ROOT_DIR/
+# $1 = mount point of the distro
+load_rootcopy() {
+  MP="$1"
+  if [ -n "$MP" ]; then
+    basedir="$(get_basedir "$MP" || echo '/')"
+    if [ -f "$MPbasedir/$ROOT_DIR/rootcopy.tar" ]; then
+      debuglog "'$MP$basedir/$ROOT_DIR/rootcopy.tar' found, copying content to /mnt/union/"
+      # ensure to not write outside of /mnt/rw/ while untaring
+      tar -C /mnt/union -p -x -f $MP$basedir/$ROOT_DIR/rootcopy.tar ./
+    elif [ -d "$MP$basedir/$ROOT_DIR/rootcopy" ]; then
+      debuglog "'$MP$basedir/$ROOT_DIR/rootcopy' found, copying content to /mnt/union/"
+      # ensure to also copy hidden files
+      cp -r $MP$basedir/$ROOT_DIR/rootcopy/. /mnt/union/
+    fi
   fi
 }
 

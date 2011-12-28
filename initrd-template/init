@@ -4,6 +4,7 @@
 # This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
 # Licence: GPLv3+
+# Version: 0.1
 # Initial script launched in the initrd of SaLT
 
 [ "$$" -ne 1 ] && exit 1;
@@ -109,6 +110,10 @@ for m in $(find_modules $DISTRO_MP); do
   load_module "$m" || errorlog "$m cannot be loaded"
   debugshell
 done
+# Try loading rootcopy.tar or rootcopy directory
+load_rootcopy $DISTRO_MP
+# Execute /mnt/union/salt-exec.sh if exist and is executable
+[ -x /mnt/union/salt-exec.sh ] && sh /mnt/union/salt-exec.sh
 
 if is_on_cmdline 'memonly'; then
   debuglog "Umounting $DISTRO_MP for using memory only"
@@ -134,12 +139,14 @@ mount -n -t proc none /mnt/union/proc
 [ -d /mnt/union/sys ] || mkdir -p /mnt/union/sys
 mount -n -t sysfs none /mnt/union/sys
 debuglog 'Fixing a bug when / is trying to be fsck'
-[ -d /mnt/union/sbin ] || mkdir -p /mnt/union/sbin
-cat <<EOF > /mnt/union/sbin/fsck.aufs
+if [ ! -x /mnt/union/sbin/fsck.aufs ]; then
+  [ -d /mnt/union/sbin ] || mkdir -p /mnt/union/sbin
+  cat <<EOF > /mnt/union/sbin/fsck.aufs
 #!/bin/sh
 # This is for having no error at boot when using fsck -C -a / on a aufs root mount point.
 EOF
-chmod +x /mnt/union/sbin/fsck.aufs
+  chmod +x /mnt/union/sbin/fsck.aufs
+fi
 debuglog 'Making rc.salt running at boot'
 if [ -e /mnt/union/etc/rc.d/rc.M ]; then
   if [ -w /mnt/union/etc/rc.d/rc.M ]; then
