@@ -1,11 +1,11 @@
 #!/bin/sh
-cd $(dirname $0)
+cd "$(dirname "$0")"
 
-VER=1.5
+VER=1.6
 AUTHOR='Pontvieux Cyrille - jrd@enialis.net'
 LICENCE='GPL v3+'
-SCRIPT="$(basename "$0")"
-SCRIPT="$(readlink -f "$SCRIPT")"
+SCRIPT=$(basename "$0")
+SCRIPT=$(readlink -f "$SCRIPT")
 
 version() {
   echo "install-on-USB v$VER by $AUTHOR"
@@ -21,22 +21,29 @@ usage() {
 }
 
 get_mnt_dir() {
+  # need to support space even in loops
+  OIFS="$IFS"
+  # we need to make a real newline and only a real newline
+  #  (no space, ...) here to make this reliably work
+  IFS='
+'
   # sort reverse order so we try submounts first
   mounts=$(mount | sed -e 's/^.* on \(.*\) type.*$/\1/' | sort -dur)
-  startdir=$PWD
+  startdir="$PWD"
   unset mntdir
   while [ "$PWD" != "/" ]; do
     for m in $mounts; do
       if [ "$PWD" == "$m" ]; then
-        echo $m
-        cd $startdir
+        echo "$m"
+        cd "$startdir"
         return
       fi
     done
     cd ..
   done
+  IFS="$OFIS"
   # should never reach here
-  echo "Error: Could not find mountpoint for: $startdir"
+  echo "Error: Could not find mountpoint for: $startdir" >&2
   exit 2
 }
 
@@ -152,7 +159,7 @@ run_as_root() {
 
 # check if we are run non-interactive (e.g. from file manager)
 if [ ! -t 0 ]; then
-  CMD="/bin/sh -c '$SCRIPT; echo Press enter to exit; read;'"
+  CMD="/bin/sh -c '\"$SCRIPT\"; echo Press enter to exit; read;'"
   if which xterm >/dev/null 2>&1; then
     run_as_root xterm -e $CMD
   fi
@@ -169,7 +176,7 @@ if [ $(id -ru) -ne 0 ]; then
   echo "Error : you must run this script as root" >&2
   exit 2
 fi
-MNTDIR=$(get_mnt_dir)
+MNTDIR=$(get_mnt_dir); [ $? -ne 0 ] && exit $?
 if [ ! -f "$MNTDIR/"*.live ]; then
   echo "Error: You need to put the .live file from the iso into the root of the usb key $MNTDIR"
   exit 2
