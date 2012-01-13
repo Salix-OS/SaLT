@@ -84,6 +84,7 @@ install_syslinux() {
   DEVPART="$3"
   PARTNUM="$4"
   BASEDIR="$5"
+  USELILO=true
   img="$DIR/${BASEDIR}boot/grub2-linux.img"
   relimg="${BASEDIR}boot/grub2-linux.img"
   if ! [ -f "$img" ]; then
@@ -102,6 +103,19 @@ install_syslinux() {
     echo "  Installation on your USB key is therefore impossible." >&2
     exit 2
   fi
+  which lilo >/dev/null 2>&1
+  if [ $? -ne 0 ]; then
+    echo "Warning: lilo is not available on your system."
+    echo "  We recommend installing it, as it allows the USB to boot more"
+    echo "  reliable accross different machines."
+    printf "Do you want to continue without lilo? [y/N] "
+    read R
+    if ([ "$R" = "y" ] || [ "$R" = "Y" ]); then
+      USELILO=false
+    else
+      exit
+    fi
+  fi
   echo "Warning: syslinux+grub2 is about to be installed in $DEVICE"
   # check if we hit an unpartitioned stick e.g. fat fs directly on
   # /dev/sdc without /dev/sdc1
@@ -111,6 +125,7 @@ install_syslinux() {
   printf "Do you want to continue? [y/N] "
   read R
   if ([ "$R" = "y" ] || [ "$R" = "Y" ]); then
+    set -e
     signature="$(dd if=$DEVICE bs=1 count=2 skip=510 2>/dev/null | od -t x1 | tr '\n' ' ')"
     if [ "$signature" != "0000000 55 aa 0000002 " ]; then
       # no valid mbr magic 0x55 0xAA
@@ -129,8 +144,12 @@ install_syslinux() {
       printf "already does what you want. [y/N] "
       read R
       if ([ "$R" = "y" ] || [ "$R" = "Y" ]); then
-        # this makes parted write a mbr loader
-        dd if=/dev/zero of=$DEVICE bs=1 count=1
+        if [ "$USELILO" = "true" ]; then
+          lilo -M $DEVICE mbr -s "$bakfile"
+        else
+          # this makes parted write a mbr loader
+          dd if=/dev/zero of=$DEVICE bs=1 count=1
+        fi
       fi
       echo "Setting bootable flag of $DEVPART..."
       parted $DEVICE set $PARTNUM boot on
@@ -146,6 +165,7 @@ LABEL grub2
   SAY Chainloading to grub2...
   LINUX $relimg
 EOF
+    set +e
   fi
 }
 
@@ -183,7 +203,7 @@ if [ ! -f "$MNTDIR/"*.live ]; then
 fi
 BASEDIR=$(cd ..; echo $PWD | sed -e "s:$MNTDIR::" -e "s:^/::")
 if [ -n "$BASEDIR" ]; then
-	BASEDIR="$BASEDIR/"
+  BASEDIR="$BASEDIR/"
 fi
 DEVPART=$(get_dev_part "$MNTDIR"); [ $? -ne 0 ] && exit $?
 PARTNUM=$(get_partition_num "$DEVPART"); [ $? -ne 0 ] && exit $?
