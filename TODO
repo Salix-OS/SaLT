@@ -11,3 +11,4 @@
 [X] tool to create module as separately as possible
 [_] tool to create an initrd based on current host system
 |_] improve proxy managment: handle kde and handle exception for localhost and socks. Use the information from http://marin.jb.free.fr/proxydriver/proxydriver.sh
+[_] choose a logo and print it (in ascii art, at start)
