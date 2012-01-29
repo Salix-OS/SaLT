@@ -10,7 +10,7 @@
 [ "$$" -ne 1 ] && exit 1;
 args="$@"
 
-echo -e -n '\n\e[1;36mSaLT initializing... '
+echo -e -n '\n\e[1;36mSaLT v0.1 initializing... '
 PATH=:/usr/sbin:/usr/bin:/sbin:/bin
 export PATH
 
