@@ -96,9 +96,13 @@ if [ $? -eq 0 ]; then
   if [ $? -eq 0 ]; then
     cp "$IMAGE" .bg.png
   else
-    if file "$IMAGE"|grep -q 'GIMP XCF image data'; then
+    echo "Image needs conversion"
+    echo "Format: "$(file -L $IMAGE)
+    if file -L "$IMAGE"|grep -q 'GIMP XCF image data'; then
+      echo "Converting from GIMP XCF format to 8 bits 640x480 png..."
       xcf2png "$IMAGE" | convert -depth 8 -alpha deactivate -type truecolor -define png:color-type=2 -resize 640x480 - .bg.png
     else
+      echo "Converting from bitmap to 8 bits 640x480 png..."
       convert -flatten -depth 8 -alpha deactivate -type truecolor -define png:color-type=2 -resize 640x480 "$IMAGE" .bg.png
     fi
   fi
