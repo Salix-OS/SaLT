@@ -25,6 +25,9 @@ cp bg.png "$grubdir/build/boot/grub/bg.png"
 (
   cd $ISODIR
   # prepare the grub2 initial tree
+  eval $(grep '^prefix=' $(which grub-mkrescue))
+  eval $(grep '^exec_prefix=' $(which grub-mkrescue))
+  # libdir might rely on the previous two
   eval $(grep '^libdir=' $(which grub-mkrescue))
   eval $(grep '^PACKAGE_TARNAME=' $(which grub-mkrescue))
   GRUB_DIR=$libdir/$PACKAGE_TARNAME/i386-pc
