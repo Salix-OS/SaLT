@@ -32,7 +32,7 @@ goto start
     endlocal
     exit /b 1
   )
-  if exist %DRIVE%\*.live (
+  if not exist %DRIVE%\*.live (
     echo Error: You need to put the .live file from the iso into the root of the usb key %DRIVE%
     endlocal
     exit /b 1
@@ -42,7 +42,7 @@ goto start
     endlocal
     exit /b %errorlevel%
   )
-  relimg="%BASEDIR%boot/grub2-linux.img"
+  set relimg=%BASEDIR%grub2-linux.img
   echo DEFAULT grub2 > %DRIVE%\syslinux.cfg
   echo PROMPT 0 >> %DRIVE%\syslinux.cfg
   echo NOESCAPE 1 >> %DRIVE%\syslinux.cfg

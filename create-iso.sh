@@ -143,6 +143,9 @@ if [ $? -eq 0 ]; then
     (
       cd $ISODIR
       # determine grub files location
+      eval $(grep '^prefix=' $(which grub-mkrescue))
+      eval $(grep '^exec_prefix=' $(which grub-mkrescue))
+      # libdir might rely on the previous two
       eval $(grep '^libdir=' $(which grub-mkrescue))
       eval $(grep '^PACKAGE_TARNAME=' $(which grub-mkrescue))
       GRUB_DIR=$libdir/$PACKAGE_TARNAME/i386-pc
@@ -205,6 +208,7 @@ if [ $? -eq 0 ]; then
     )
     # add script files and boot loader install for USB
     cp -v "$grubdir"/install-on-USB* $ISODIR/boot/
+    cp -v "$grubdir"/README-UsbInstall $ISODIR
     tar xf syslinux-$SYSLINUX_VER.tar.bz2
     cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
     rm -rf syslinux-$SYSLINUX_VER
