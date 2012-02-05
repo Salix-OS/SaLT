@@ -104,7 +104,7 @@ Identifier  "Keyboard settings"
 MatchIsKeyboard  "yes"
 Driver    "evdev"
 Option    "XkbLayout" "$xkblayout"
-Option    "XkbVariant" $xkbvariant"
+Option    "XkbVariant" "$xkbvariant"
 Option    "XkbOptions" "$xkboptions"
 EndSection
 EOF
