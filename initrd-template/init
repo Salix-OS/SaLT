@@ -4,7 +4,7 @@
 # This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
 # Licence: GPLv3+
-# Version: 0.1
+# Version: 0.1.1
 # Initial script launched in the initrd of SaLT
 
 [ "$$" -ne 1 ] && exit 1;

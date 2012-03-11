@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-15 23:16+0100\n"
-"PO-Revision-Date: 2011-11-17 13:26+0000\n"
-"Last-Translator: djemos <djemos@slackel.gr>\n"
+"PO-Revision-Date: 2012-02-14 13:07+0000\n"
+"Last-Translator: Dimitris Tzemos <djemos@slackel.gr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -120,8 +120,7 @@ msgstr "Ενεργοποίηση του gfxpayload=keep (εξ ορισμού)"
 
 #: genlocale:101 genlocale:102 genlocale:103
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
-"Απενεργοποίηση του gfxpayload=keep (αν υπάρχει πρόβλημα δοκιμάστε αυτό)"
+msgstr "Απενεργοποίηση του gfxpayload=keep (αν υπάρχει πρόβλημα δοκιμάστε αυτό)"
 
 #: genlocale:102 genlocale:103 genlocale:104
 msgid "Change root password"
@@ -129,9 +128,7 @@ msgstr "Αλλαγή του κωδικού του χρήστη root"
 
 #: genlocale:103 genlocale:104 genlocale:105
 msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr ""
-"Νέος κωδικός για το χρήστη root (επιλέξτε 'ask' αν θέλετε να ερωτηθείτε κατά"
-" την εκκίνηση): "
+msgstr "Νέος κωδικός για το χρήστη root (επιλέξτε 'ask' αν θέλετε να ερωτηθείτε κατά την εκκίνηση): "
 
 #: genlocale:104 genlocale:105 genlocale:106
 msgid "Set a proxy"
@@ -155,9 +152,7 @@ msgstr "Το Live σύστημα εκκινεί..."
 
 #: genlocale:110 genlocale:111 genlocale:112
 msgid "Save all settings to be autoloaded for future boots"
-msgstr ""
-"Αποθήκευση όλων των ρυθμίσεων, ώστε να φορτώνονται αυτόματα για μελλοντικές "
-"εκκινήσεις"
+msgstr "Αποθήκευση όλων των ρυθμίσεων, ώστε να φορτώνονται αυτόματα για μελλοντικές εκκινήσεις"
 
 #: genlocale:111 genlocale:112 genlocale:113
 msgid "Do you want to skip the language selection menu? [y/N] "
@@ -171,10 +166,7 @@ msgstr "Άκυρη ανταπόκριση"
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
-msgstr ""
-"Υπήρξε ένα σφάλμα κατά την αποθήκευση των ρυθμίσεων. Είναι τα αρχεία "
-"αποθηκευμένα σε ένα εγγράψιμο μέσο, όπως ένας δίσκος flash USB (π.χ. όχι σε "
-"CDROM); "
+msgstr "Υπήρξε ένα σφάλμα κατά την αποθήκευση των ρυθμίσεων. Είναι τα αρχεία αποθηκευμένα σε ένα εγγράψιμο μέσο, όπως ένας δίσκος flash USB (π.χ. όχι σε CDROM); "
 
 #: genlocale:114 genlocale:115 genlocale:117 genlocale:118
 msgid "y"
@@ -199,5 +191,3 @@ msgstr "Προσαρμοσμένες παράμετροι του πυρήνα Li
 #: genlocale:116 genlocale:117
 msgid "Enter custom linux kernel parameters: "
 msgstr "Πληκτρολογήστε τις προσαρμοσμένες παραμέτρους του πυρήνα Linux:"
-
-

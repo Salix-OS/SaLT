@@ -10,9 +10,9 @@ msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-15 23:16+0100\n"
-"PO-Revision-Date: 2011-11-27 15:46+0000\n"
+"PO-Revision-Date: 2012-02-14 13:07+0000\n"
 "Last-Translator: shador <futur.andy@googlemail.com>\n"
-"Language-Team: German (http://www.transifex.net/projects/p/salix/team/de/)\n"
+"Language-Team: German (http://www.transifex.net/projects/p/salix/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -120,9 +120,7 @@ msgstr "gfxpayload=keep aktivieren (Standard)"
 
 #: genlocale:101 genlocale:102 genlocale:103
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
-"gfxpayload=keep deaktivieren (versuchen Sie das, falls das Laden "
-"fehlschlägt)"
+msgstr "gfxpayload=keep deaktivieren (versuchen Sie das, falls das Laden fehlschlägt)"
 
 #: genlocale:102 genlocale:103 genlocale:104
 msgid "Change root password"
@@ -130,9 +128,7 @@ msgstr "Ändere root-Passwort"
 
 #: genlocale:103 genlocale:104 genlocale:105
 msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr ""
-"Neues root-Passwort (wählen Sie 'fragen' aus, um beim Starten gefragt zu "
-"werden): "
+msgstr "Neues root-Passwort (wählen Sie 'fragen' aus, um beim Starten gefragt zu werden): "
 
 #: genlocale:104 genlocale:105 genlocale:106
 msgid "Set a proxy"
@@ -156,9 +152,7 @@ msgstr "Das Live-System wird geladen..."
 
 #: genlocale:110 genlocale:111 genlocale:112
 msgid "Save all settings to be autoloaded for future boots"
-msgstr ""
-"Alle Einstellungen speichern, damit sie bei zukünftigen Startvorgängen "
-"automatisch geladen werden"
+msgstr "Alle Einstellungen speichern, damit sie bei zukünftigen Startvorgängen automatisch geladen werden"
 
 #: genlocale:111 genlocale:112 genlocale:113
 msgid "Do you want to skip the language selection menu? [y/N] "
@@ -172,9 +166,7 @@ msgstr "Ungültige Antwort"
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
-msgstr ""
-"Beim Speichern Ihrer Einstellung trat ein Fehler auf. Sind die Live-Dateien "
-"auf einem beschreibbaren Medium, wie z.B. einem USB-Stick (keine CD-ROM)?"
+msgstr "Beim Speichern Ihrer Einstellung trat ein Fehler auf. Sind die Live-Dateien auf einem beschreibbaren Medium, wie z.B. einem USB-Stick (keine CD-ROM)?"
 
 #: genlocale:114 genlocale:115 genlocale:117 genlocale:118
 msgid "y"
@@ -199,5 +191,3 @@ msgstr "Eigene Parameter für den Linux-Kernel"
 #: genlocale:116 genlocale:117
 msgid "Enter custom linux kernel parameters: "
 msgstr "Geben Sie Ihre eigenen Parameter für den Linux-Kernel ein: "
-
-

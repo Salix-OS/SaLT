@@ -4,7 +4,7 @@
 # This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
 # Licence: GPLv3+
-# Version: 0.1
+# Version: 0.1.1
 # Clean up script launched when coming back to the initrd of SaLT before halting or rebooting.
 
 PATH=:/usr/sbin:/usr/bin:/sbin:/bin

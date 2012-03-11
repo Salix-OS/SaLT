@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-15 23:16+0100\n"
-"PO-Revision-Date: 2011-11-22 14:51+0000\n"
+"PO-Revision-Date: 2012-02-14 13:07+0000\n"
 "Last-Translator: gambit73 <gambit73@gmail.com>\n"
-"Language-Team: Dutch (http://www.transifex.net/projects/p/salix/team/nl/)\n"
+"Language-Team: Dutch (http://www.transifex.net/projects/p/salix/language/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -119,8 +119,7 @@ msgstr "Schakel gfxpayload=keep in (default)"
 
 #: genlocale:101 genlocale:102 genlocale:103
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
-"Schakel gfxpayload=keep uit (als het niet wordt geladen, probeer deze optie)"
+msgstr "Schakel gfxpayload=keep uit (als het niet wordt geladen, probeer deze optie)"
 
 #: genlocale:102 genlocale:103 genlocale:104
 msgid "Change root password"
@@ -128,9 +127,7 @@ msgstr "Root wachtwoord wijzigen"
 
 #: genlocale:103 genlocale:104 genlocale:105
 msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr ""
-"Nieuw root wachtwoord (kies 'vragen' om tijdens het opstarten erom gevraagd "
-"te worden):"
+msgstr "Nieuw root wachtwoord (kies 'vragen' om tijdens het opstarten erom gevraagd te worden):"
 
 #: genlocale:104 genlocale:105 genlocale:106
 msgid "Set a proxy"
@@ -168,10 +165,7 @@ msgstr "Ongeldige invoer"
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
-msgstr ""
-"Er is een fout opgetreden bij het opslaan van uw instellingen. Staan de "
-"live-bestanden op een beschrijfbare media zoals een USB-stick (dus geen CD-"
-"ROM)?"
+msgstr "Er is een fout opgetreden bij het opslaan van uw instellingen. Staan de live-bestanden op een beschrijfbare media zoals een USB-stick (dus geen CD-ROM)?"
 
 #: genlocale:114 genlocale:115 genlocale:117 genlocale:118
 msgid "y"
@@ -196,5 +190,3 @@ msgstr "Aangepaste Linux kernel parameters"
 #: genlocale:116 genlocale:117
 msgid "Enter custom linux kernel parameters: "
 msgstr "Voer aangepaste Linux kernel parameters in:"
-
-

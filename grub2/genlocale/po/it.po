@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
+# Cyrille Pontvieux <jrd@enialis.net>, 2011.
 #   <kerd89@gmail.com>, 2011.
 #   <laplume@libero.it>, 2011.
 msgid ""
@@ -10,8 +11,8 @@ msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-11-15 23:16+0100\n"
-"PO-Revision-Date: 2011-11-26 15:47+0000\n"
-"Last-Translator: Kerd <kerd89@gmail.com>\n"
+"PO-Revision-Date: 2012-02-14 13:07+0000\n"
+"Last-Translator: Cyrille Pontvieux <jrd@enialis.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -128,8 +129,7 @@ msgstr "Modifica password di root"
 
 #: genlocale:103 genlocale:104 genlocale:105
 msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr ""
-"Nuova password di root (seleziona 'richiedi' per farla chiedere all'avvio): "
+msgstr "Nuova password di root (seleziona 'richiedi' per farla chiedere all'avvio): "
 
 #: genlocale:104 genlocale:105 genlocale:106
 msgid "Set a proxy"
@@ -137,7 +137,7 @@ msgstr "Imposta un proxy"
 
 #: genlocale:105 genlocale:106 genlocale:107
 msgid "New proxy (empty for no proxy): "
-msgstr "Nuovo proxy (lasciare vuoto se non usate un proxy):"
+msgstr "Nuovo proxy (lasciare vuoto se non usate un proxy): "
 
 #: genlocale:106 genlocale:107 genlocale:108
 msgid "Boot from an ISO"
@@ -153,8 +153,7 @@ msgstr "Il sistema Live si sta caricando..."
 
 #: genlocale:110 genlocale:111 genlocale:112
 msgid "Save all settings to be autoloaded for future boots"
-msgstr ""
-"Salva tutte le impostazioni da caricare automaticamente ai prossimi avvii"
+msgstr "Salva tutte le impostazioni da caricare automaticamente ai prossimi avvii"
 
 #: genlocale:111 genlocale:112 genlocale:113
 msgid "Do you want to skip the language selection menu? [y/N] "
@@ -168,10 +167,7 @@ msgstr "Risposta non valida"
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
-msgstr ""
-"S i è verificato un errore nel salvataggio delle impostazioni. I files live "
-"sono stati conservati su un dispositivo scrivibile come una chiavetta USB "
-"(i.e. non su un CDROM)?"
+msgstr "S i è verificato un errore nel salvataggio delle impostazioni. I files live sono stati conservati su un dispositivo scrivibile come una chiavetta USB (i.e. non su un CDROM)?"
 
 #: genlocale:114 genlocale:115 genlocale:117 genlocale:118
 msgid "y"
@@ -195,6 +191,4 @@ msgstr "Personalizza i parametri del kernel linux"
 
 #: genlocale:116 genlocale:117
 msgid "Enter custom linux kernel parameters: "
-msgstr "Inserisci i parametri personalizzati del kernel linux:"
-
-
+msgstr "Inserisci i parametri personalizzati del kernel linux: "
