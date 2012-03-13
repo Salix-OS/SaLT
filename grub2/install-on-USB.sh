@@ -1,7 +1,7 @@
 #!/bin/sh
 cd "$(dirname "$0")"
 
-VER=1.6
+VER=1.7
 AUTHOR='Pontvieux Cyrille - jrd@enialis.net'
 LICENCE='GPL v3+'
 SCRIPT=$(basename "$0")
