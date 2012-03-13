@@ -33,7 +33,7 @@ get_mnt_dir() {
   unset mntdir
   while [ "$PWD" != "/" ]; do
     for m in $mounts; do
-      if [ "$PWD" == "$m" ]; then
+      if [ "$PWD" = "$m" ]; then
         echo "$m"
         cd "$startdir"
         return
@@ -196,7 +196,11 @@ if [ $(id -ru) -ne 0 ]; then
   echo "Error : you must run this script as root" >&2
   exit 2
 fi
-MNTDIR=$(get_mnt_dir); [ $? -ne 0 ] && exit $?
+MNTDIR=$(get_mnt_dir)
+RES=$?
+if [ $RES -ne 0 ]; then 
+  exit $RES
+fi
 if [ ! -f "$MNTDIR/"*.live ]; then
   echo "Error: You need to put the .live file from the iso into the root of the usb key $MNTDIR"
   exit 2
@@ -205,8 +209,20 @@ BASEDIR=$(cd ..; echo $PWD | sed -e "s:$MNTDIR::" -e "s:^/::")
 if [ -n "$BASEDIR" ]; then
   BASEDIR="$BASEDIR/"
 fi
-DEVPART=$(get_dev_part "$MNTDIR"); [ $? -ne 0 ] && exit $?
-PARTNUM=$(get_partition_num "$DEVPART"); [ $? -ne 0 ] && exit $?
-DEVROOT=$(get_dev_root "$DEVPART" "$PARTNUM"); [ $? -ne 0 ] && exit $?
+DEVPART=$(get_dev_part "$MNTDIR")
+RES=$?
+if [ $RES -ne 0 ]; then 
+  exit $RES
+fi
+PARTNUM=$(get_partition_num "$DEVPART")
+RES=$?
+if [ $RES -ne 0 ]; then 
+  exit $RES
+fi
+DEVROOT=$(get_dev_root "$DEVPART" "$PARTNUM")
+RES=$?
+if [ $RES -ne 0 ]; then 
+  exit $RES
+fi
 install_syslinux "$MNTDIR" $DEVROOT $DEVPART $PARTNUM "$BASEDIR"
 exit 0
