@@ -44,10 +44,12 @@ if [ -n "$lang" ]; then
     . /etc/profile.d/lang.sh
   fi
   # Make firefox match OS locale
+  # Now included in Salix version, but keep it for other Slackware version or distro
   if [ -w /usr/lib$LIBSUFFIX/firefox/greprefs/all.js ]; then
     sed -i -e 's/pref("intl.locale.matchOS",                 false);/pref("intl.locale.matchOS",                 true);/g' /usr/lib$LIBSUFFIX/firefox/greprefs/all.js
   fi
   # Make thunderbird match OS locale
+  # Now included in Salix version, but keep it for other Slackware version or distro
   if [ -w /usr/lib$LIBSUFFIX/thunderbird/greprefs/all.js ]; then
     sed -i -e 's/pref("intl.locale.matchOS",                 false);/pref("intl.locale.matchOS",                 true);/g' /usr/lib$LIBSUFFIX/thunderbird/greprefs/all.js
   fi
@@ -218,7 +220,7 @@ EOF
     gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/http_proxy/port $pport
     gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --type string --set /system/ftp_proxy/port $pport
   fi
-  ffpreffile=$('ls' -1 /usr/lib$LIBSUFFIX/firefox-*/defaults/pref/all*.js)
+  ffpreffile=$('ls' -1 /usr/lib$LIBSUFFIX/firefox-*/defaults/pref/all*.js 2>/dev/null)
   if [ -n "$ffpreffile" ]; then
     cat <<EOF > $ffpreffile
 pref("network.proxy.type", 1);
@@ -239,7 +241,7 @@ else
     gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --unset /system/http_proxy/port
     gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --unset /system/ftp_proxy/port
   fi
-  ffpreffile=$('ls' -1 /usr/lib$LIBSUFFIX/firefox-*/defaults/pref/all*.js)
+  ffpreffile=$('ls' -1 /usr/lib$LIBSUFFIX/firefox-*/defaults/pref/all*.js 2>/dev/null)
   if [ -n "$ffpreffile" ]; then
     sed -i '/proxy/d' $ffpreffile
   fi
