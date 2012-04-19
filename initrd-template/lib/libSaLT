@@ -313,6 +313,7 @@ find_fs_type() {
         echo 'ext4'
       else
         echo 'ext2'
+      fi
     elif echo "$LINE"|grep -i -q 'XFS filesystem data'; then
       echo 'xfs'
     elif echo "$LINE"|grep -i -q 'ReiserFS'; then
