@@ -19,6 +19,7 @@ FILEURL=ftp://ftp.astron.com/pub/file/file-$FILEVER.tar.gz
 NTFS3GVER=2011.4.12
 NTFS3GURL=http://tuxera.com/opensource/ntfs-3g_ntfsprogs-$NTFS3GVER.tgz
 LSOFURL=ftp://ftp.fu-berlin.de/pub/unix/tools/lsof/lsof.tar.bz2
+TIRPCURL=http://nfsv4.bullopensource.org/tarballs/tirpc/libtirpc-0.1.8-1.tar.bz2
 KERNELDIR=$PWD/kernel
 
 KVER=$KERNELDIR/lib/modules/*
@@ -112,7 +113,24 @@ if [ -n "$DEBUG" ]; then
       tar -xf lsof_*_src.tar
       cd lsof_*_src
       ./Configure -n linux
-      sed -i 's/^CFGL=.*/\0 --static/' Makefile
+      # Determine glibc version
+      glibcversion=$(readlink /lib/ld-linux.so*|sed 's/ld-\(.*\)\.so/\1/')
+      if [ "$(echo -e "$glibcversion\n2.15"|sort -V|head -n1)" = "2.15" ]; then
+        wget $TIRPCURL
+        tar -xf libtirpc-*.tar.bz2
+        rm libtirpc-*.tar.bz2
+        mkdir tirpc
+        tirpcdir=$PWD/tirpc
+        cd libtirpc-*
+        ./configure --prefix=/usr && make && make install DESTDIR=$tirpcdir
+        rm -rf libtirpc-*
+        sed -i "
+          s:^CFGF=.*:\0 -I$tirpcdir/usr/include/tirpc -DHASNOTRPC -DHASNORPC_H:;
+          s:^CFGL=.*:\0 -L$tirpcdir/usr/lib -ltirpc --static:;
+          " Makefile
+      else
+        sed -i 's/^CFGL=.*/\0 --static/' Makefile
+      fi
       make all
     )
   fi
