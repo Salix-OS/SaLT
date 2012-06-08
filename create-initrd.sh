@@ -4,7 +4,7 @@
 # This file is part of SaLT.
 
 cd $(dirname "$0")
-if [ $UID -ne 0 ]; then
+if [ "$(id -ru)" -ne 0 ]; then
   echo 'Need to be root to run.' >&2
   exit 1
 fi
@@ -149,7 +149,10 @@ while read M; do
     fi
   fi
 done < modules
-cp -a $KERNELDIR/lib/modules/$KVER/modules.{alias,builtin,dep,symbols} $TREE/lib/modules/$KVER/
+cp -a $KERNELDIR/lib/modules/$KVER/modules.alias $TREE/lib/modules/$KVER/
+cp -a $KERNELDIR/lib/modules/$KVER/modules.builtin $TREE/lib/modules/$KVER/
+cp -a $KERNELDIR/lib/modules/$KVER/modules.dep $TREE/lib/modules/$KVER/
+cp -a $KERNELDIR/lib/modules/$KVER/modules.symbols $TREE/lib/modules/$KVER/
 # compress lib dir
 (
   cd $TREE

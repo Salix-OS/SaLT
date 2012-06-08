@@ -4,7 +4,7 @@
 # This file is part of SaLT.
 
 cd $(dirname "$0")
-if [ $UID -ne 0 ]; then
+if [ "$(id -ru)" -ne 0 ]; then
   echo 'Need to be root to run.' >&2
   exit 1
 fi
@@ -117,7 +117,7 @@ for l in $(ldd $SSHBIN | cut -d'>' -f2 | cut -d'(' -f1); do
   done
   cp -Pv "$l2" $TREE/lib/
 done
-for l in ${CIFSBINS[*]}; do
+for l in $CIFSBINS; do
   l2="$l"
   while [ -h "$l2" ]; do
     cp -Pv "$l2" $TREE/lib/
@@ -125,7 +125,7 @@ for l in ${CIFSBINS[*]}; do
   done
   cp -Pv "$l2" $TREE/lib/
 done
-for l in ${EXTRALIBS[*]}; do
+for l in $EXTRALIBS; do
   l2="$l"
   while [ -h "$l2" ]; do
     cp -Pv "$l2" $TREE/lib/

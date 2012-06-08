@@ -45,7 +45,7 @@ dialog() {
     "yesno")
       echoinfo "$MSG"
       echocolor $COLOR_BOLD $COLOR_CYAN "Yes [y] or No [n] ? "; read JUNK
-      if [ -n "$JUNK" ] && [ "$JUNK" = "y" -o "$JUNK" = "Y" ]; then
+      if [ -n "$JUNK" ] && ([ "$JUNK" = "y" ] || [ "$JUNK" = "Y" ]); then
         CMD="true"
       else
         CMD="false"
@@ -58,7 +58,8 @@ dialog() {
 # Configure the loopback device
 configure_loopback() {
   [ -r /etc/HOSTNAME ] || echo 'salixlive.salixos.org' > /etc/HOSTNAME
-  export HOSTNAME=$(cat /etc/HOSTNAME)
+  HOSTNAME=$(cat /etc/HOSTNAME)
+  export HOSTNAME
   /bin/hostname $(cat /etc/HOSTNAME|cut -d. -f1)
   /sbin/ifconfig lo 127.0.0.1
   /sbin/route add -net 127.0.0.0 netmask 255.0.0.0 lo
@@ -168,7 +169,7 @@ If you are satisfied, select "Yes" to continue with network configuration.'
   if [ -z "$ENET_MODE" ]; then
     ENET_MODE='dhcp'
   fi
-  if [ "$ENET_MODE" != "dhcp" -a "$ENET_MODE" != "static" ]; then
+  if [ "$ENET_MODE" != "dhcp" ] && [ "$ENET_MODE" != "static" ]; then
     echowarn "Ethernet mode should be 'dhcp' or 'static'. Value '$ENET_MODE' not recognized. Will use dhcp."
     ENET_MODE='dhcp'
   fi
@@ -256,7 +257,7 @@ mount_remote_endpoint() {
   fi
   unset REMOTE
   rm -f /tmp/distro_infos
-  if [ -z "$RPROTOCOL" -o -z "$RSERVER" -o -z "$RPATH" ]; then
+  if [ -z "$RPROTOCOL" ] || [ -z "$RSERVER" ] || [ -z "$RPATH" ]; then
     echoerror "Could not find how to fetch the iso data."
     echoerror "Please configure the 'remote' kernel cheatcode with:"
     echoerror "  'remote=protocol,remoteserver,rootpath'"

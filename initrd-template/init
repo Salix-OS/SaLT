@@ -162,7 +162,7 @@ else
 fi
 debuglog 'Early configure locale'
 lang=$(get_value_cmdline lang)
-if [ -n "$lang" -a -e /mnt/union/etc/profile.d ]; then
+if [ -n "$lang" ] && [ -e /mnt/union/etc/profile.d ]; then
   if [ -f /mnt/union/etc/profile.d/lang.sh ]; then
     grep -q -i '^ *export LANG=' /mnt/union/etc/profile.d/lang.sh
     if [ $? -eq 0 ]; then
@@ -208,7 +208,7 @@ else
     [ -d /mnt/union/lib64 ] && LIBDIR=/mnt/union/lib64
     rm -f /mnt/union/init-hooks.salt
     LD=$(ls -1 $LIBDIR/ld-[0-9]*)
-    if [ -f "$LD" -a ! -e "$LD.saltbak" ]; then
+    if [ -f "$LD" ] && [ ! -e "$LD.saltbak" ]; then
       cp $LD $LD.saltbak
       mv $LD /tmp/
       ( cd $LIBDIR; ln -s /mnt/salt/tmp/$(basename $LD) . )
@@ -223,7 +223,7 @@ EOF
     fi
     unset LD
     LIBC=$(ls -1 $LIBDIR/libc-[0-9]*)
-    if [ -f "$LIBC" -a ! -e "$LIBC.saltbak" ]; then
+    if [ -f "$LIBC" ] && [ ! -e "$LIBC.saltbak" ]; then
       cp $LIBC $LIBC.saltbak
       mv $LIBC /tmp/
       ( cd $LIBDIR; ln -s /mnt/salt/tmp/$(basename $LIBC) . )

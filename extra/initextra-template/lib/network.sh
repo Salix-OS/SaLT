@@ -34,8 +34,8 @@ while true; do
   else
     INPUT=''
   fi
-  if [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "L" \
-      -o "$(echo $INPUT|crunch|cut -d' ' -f1)" = "l" ]; then
+  if [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "L" ] \
+      || [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "l" ]; then
     echo 'Available network modules:'
     KVER=$(uname -r)
     for file in /lib/modules/$KVER/kernel/drivers/net/* /lib/modules/$KVER/kernel/arch/i386/kernel/* /lib/modules/$KVER/kernel/drivers/pnp/*; do
@@ -50,14 +50,14 @@ while true; do
     echo
     continue
   fi
-  if [ ! "$INPUT" = "q" -a ! "$INPUT" = "Q"  \
-      -a ! "$(echo $INPUT|crunch|cut -d' ' -f1)" = "P" \
-      -a ! "$(echo $INPUT|crunch|cut -d' ' -f1)" = "p" ]; then
+  if [ ! "$INPUT" = "q" ] && [ ! "$INPUT" = "Q" ] \
+      && [ ! "$(echo $INPUT|crunch|cut -d' ' -f1)" = "P" ] \
+      && [ ! "$(echo $INPUT|crunch|cut -d' ' -f1)" = "p" ]; then
     echoinfo 'Probing for PCI/EISA network cards:'
     for card in 3c59x acenic de4x5 dgrs eepro100 e1000 e1000e e100 epic100 hp100 ne2k-pci olympic pcnet32 rcpci 8139too 8139cp tulip via-rhine r8169 atl1e sktr yellowfin tg3 dl2k ns83820; do
       SKIP=""
-      if [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "S" \
-          -o "$(echo $INPUT|crunch|cut -d' ' -f1)" = "s" ]; then
+      if [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "S" ] \
+          || [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "s" ]; then
         for nogood in $(echo $INPUT|crunch|cut -d' ' -f2-) ; do
           if [ "$card" = "$nogood" ]; then
             SKIP="$card"
@@ -86,8 +86,8 @@ while true; do
       # tainted, no autoprobe: (arcnet) com90io com90xx
       for card in depca ibmtr 3c501 3c503 3c505 3c507 3c509 3c515 ac3200 acenic at1700 cosa cs89x0 de4x5 de600 de620 e2100 eepro eexpress es3210 eth16i ewrk3 fmv18x forcedeth hostess_sv11 hp-plus hp lne390 ne3210 ni5010 ni52 ni65 sb1000 sealevel smc-ultra sis900 smc-ultra32 smc9194 wd; do 
         SKIP=""
-        if [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "S" \
-            -o "$(echo $INPUT|crunch|cut -d' ' -f1)" = "s" ]; then
+        if [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "S" ] \
+            || [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "s" ]; then
           for nogood in $(echo $INPUT|crunch|cut -d' ' -f2-) ; do
             if [ "$card" = "$nogood" ]; then
               SKIP="$card"
@@ -118,8 +118,8 @@ while true; do
       echoerror "  modprobe ne io=0x360"
       shell
     fi
-  elif [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "P" \
-      -o "$(echo $INPUT|crunch|cut -d' ' -f1)" = "p" ]; then
+  elif [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "P" ] \
+      || [ "$(echo $INPUT|crunch|cut -d' ' -f1)" = "p" ]; then
     echoinfo 'Probing for a custom list of modules:'
     for card in $(echo $INPUT|crunch|cut -d' ' -f2-) ; do
       echon "  * Trying the $card module..."

@@ -1,11 +1,11 @@
 
-          ################################################
-          ##                                            ##
-          ##  Do NOT use UNETBOOTIN with Salix Live!!!  ##
-          ##                                            ##
-          ##  This won't work as you expect!            ##
-          ##                                            ##
-          ################################################
+          ##############################################
+          ##                                          ##
+          ##  Do NOT use UNETBOOTIN < 575 with SaLT!  ##
+          ##          (Version 576+ are ok)           ##
+          ##  This won't work as you expect!          ##
+          ##                                          ##
+          ##############################################
 
 
 You can find detailed and constantly updated instructions on the wiki:
@@ -16,7 +16,8 @@ http://www.salixos.org/wiki/index.php/How_to_install_Salix_Live_on_an_USB_key
 ###########################################
 
 It depends if you already have a Salix Live CD or simply an ISO image.
-In any case, Unetbootin is not supported and should not be used.
+Unetbootin is only supported from the version 576 and above. Check the
+version of your unetbootin before making reports.
 
 These mostly automatized methods to install the LiveCD to an USB only
 support sticks formatted as FAT (FAT16, FAT32, VFAT), as supported by
@@ -40,14 +41,37 @@ protect your data, we make no guarantees whatsoever.
 # From an ISO image #
 #####################
 
-1. You need to at least install parted and syslinux. Installation of
-   lilo is optional, but highly recommended.
+1. You need to at least install parted and syslinux.
 2. Open the ISO file using a software archiver (file-roller, xarchiver,
    7-zip, iso-master, ...)
 3. Extract all files and folders (boot, packages, salixlive and
    salix-<...>.live) to your USB root directory
 3. Go to the "boot" directory on the USB key.
-    o If you're on Unix (Linux, BSD, Max OS X), simply execute the file
+    o If you're on Unix (Linux, BSD, Mac OS X), simply execute the file
       called "install-on-USB.sh" (root privileges are required)
     o If you're on Windows, execute the file called
       "install-on-USB.cmd" instead.
+
+# From an ISO image (alternate method) #
+########################################
+
+The ISO image is in fact a ISO Hybrid image, so that it is also a valid
+disk image.
+So you can "dd" it to your device and this will boot with no problem.
+The only drawback is that you will LOOSE ALL YOUR DATA on the USB stick,
+and the remaining space can not be used easily.
+
+Here how to do it:
+On Linux, BSD:
+  1. Ensure that your USB key is unmounted.
+  2. Open a root terminal emulator in the folder you have your ISO.
+  3. Type "blkid" and search for your USB key partition.
+  4. Note the device of your USB key, this means if your partition is
+     /dev/sdb1 then your device is /dev/sdb.
+     BE CAREFUL, if you make a mistake you will ERASE ALL YOUR DATA.
+  5. Issue:
+     dd if=YOUR_LIVE_DISTRO.iso of=/dev/DEVICE bs=1M ; sync
+On Windows and Mac OS X:
+  Follow the instructions here: https://help.ubuntu.com/community/Installation/FromImgFiles
+  These are for another distro, but apply the same.
+

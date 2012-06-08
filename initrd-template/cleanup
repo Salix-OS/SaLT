@@ -31,7 +31,7 @@ RL=$(runlevel|cut -d' ' -f2)
 [ "$RL" = "unknown" ] && RL=$RUNLEVEL
 [ -z "$RL" ] && RL=$runlevel
 [ -z "$RL" ] && RL=0
-if [ "$RL" -ne 0 -a "$RL" -ne 6 ]; then
+if [ "$RL" -ne 0 ] && [ "$RL" -ne 6 ]; then
   echodebug "cleanup: not in runlevel 0 or 6, will exec: $orig $@"
   exec "$orig" "$@"
   exit 0
