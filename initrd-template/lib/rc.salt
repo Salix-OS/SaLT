@@ -4,7 +4,7 @@
 # This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
 # Licence: GPLv3+
-# Version: 0.2.0
+# Version: 0.2.1
 # Script to tweak the target Slackware distro
 
 [ -e /mnt/salt/lib/libSaLT ] || exit 1
