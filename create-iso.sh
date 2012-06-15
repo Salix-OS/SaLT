@@ -98,11 +98,11 @@ if [ $? -eq 0 ]; then
     echo "error in converting $IMAGE to the correct format" >&2
     exit 1
   fi
-  BOOTFILE=isolinux/isolinux.bin
+  BOOTFILE=boot/isolinux/isolinux.bin
   CATALOGFILE=boot/eltorito.cat
   tar xf syslinux-$SYSLINUX_VER.tar.bz2
-  mkdir -p $ISODIR/isolinux $ISODIR/boot
-  cat <<EOF > $ISODIR/isolinux/isolinux.cfg
+  mkdir -p $ISODIR/boot/isolinux
+  cat <<EOF > $ISODIR/boot/isolinux/isolinux.cfg
 DEFAULT grub2
 PROMPT 0
 NOESCAPE 1
@@ -110,10 +110,10 @@ TOTALTIMEOUT 1
 ONTIMEOUT grub2
 LABEL grub2
   SAY Chainloading to grub2...
-  LINUX boot/g2l.img
+  LINUX /boot/g2l.img
 
 EOF
-  cp syslinux-$SYSLINUX_VER/core/isolinux.bin $ISODIR/isolinux/
+  cp syslinux-$SYSLINUX_VER/core/isolinux.bin $ISODIR/$BOOTFILE
   cp syslinux-$SYSLINUX_VER/mbr/mbr.bin $ISODIR/boot/
   cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
   cp -v syslinux-$SYSLINUX_VER/utils/isohybrid.pl isohybrid
@@ -179,7 +179,7 @@ EOF
       biosdisk ext2 fat iso9660 ntfs reiserfs xfs part_msdos part_gpt \
       memdisk tar configfile loopback \
       normal extcmd regexp test read echo
-    # create a linux-kernel-like grub2 image, thus that can be booted by isolinux/syslinus/...
+    # create a linux-kernel-like grub2 image, thus that can be booted by isolinux/syslinux/...
     cat $GRUB_DIR/lnxboot.img $coreimg > boot/g2l.img
     if [ -e $GRUB_DIR/g2hdr.img ] && [ -e $GRUB_DIR/g2ldr.mbr ]; then
       # this image can only be directly loaded by Vista and later
