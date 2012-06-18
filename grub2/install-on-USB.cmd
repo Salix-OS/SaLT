@@ -42,7 +42,7 @@ goto start
     endlocal
     exit /b %errorlevel%
   )
-  set relimg=%BASEDIR%grub2-linux.img
+  set relimg=%BASEDIR%g2l.img
   echo DEFAULT grub2 > %DRIVE%\syslinux.cfg
   echo PROMPT 0 >> %DRIVE%\syslinux.cfg
   echo NOESCAPE 1 >> %DRIVE%\syslinux.cfg
