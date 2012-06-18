@@ -85,8 +85,8 @@ install_syslinux() {
   PARTNUM="$4"
   BASEDIR="$5"
   USELILO=true
-  img="$DIR/${BASEDIR}boot/grub2-linux.img"
-  relimg="${BASEDIR}boot/grub2-linux.img"
+  img="$DIR/${BASEDIR}boot/g2l.img"
+  relimg="${BASEDIR}boot/g2l.img"
   if ! [ -f "$img" ]; then
     echo "Error: Could not find the image file: $img"
     exit 2
