@@ -1,0 +1,12 @@
+busybox-*
+file-*
+lsof_*
+ntfs-3g-*
+mt86p
+.initrd-tree
+initrd.gz
+.iso
+*.iso
+kernel
+.initextra-tree
+initextra.xz
