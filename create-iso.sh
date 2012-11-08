@@ -202,7 +202,7 @@ EOF
   # copy the rest to the isodir
   cp -rv overlay/* $ISODIR/
   # ensure there is no versioning files in the ISO
-  find $ISODIR -type d \( -name '.cvs' -o -name '.svn' -o -name '.git' \) -prune -exec rm -rf '{}' +
+  find $ISODIR -type d \( -name '.cvs' -o -name '.gitkeep' -o -name '.git' \) -prune -exec rm -rf '{}' +
   # create iso using the bootfile for el torito and creating the catalog file.
   mkisofs -r -J -V "$VOLNAME" -b $BOOTFILE -c $CATALOGFILE -no-emul-boot -boot-load-size 4 -boot-info-table -o "$ISONAME" $ISODIR
   # remove temp iso dir.

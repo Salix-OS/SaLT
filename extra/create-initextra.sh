@@ -38,7 +38,7 @@ esac
 TREE=.initextra-tree
 rm -rf $TREE
 cp -a initextra-template $TREE
-find $TREE -name '.svn' -type d -prune -exec rm -rf '{}' +
+find $TREE -name '.gitkeep' -type d -prune -exec rm -rf '{}' +
 # adjust some rights
 chown -R root:root $TREE
 # get the previous initrd and copy the content to the template
