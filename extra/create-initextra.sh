@@ -12,7 +12,7 @@ COMP=$1
 [ -z "$COMP" ] && COMP=xz
 DEBUG=$2
 
-BBVER=1.18.5
+BBVER=1.20.2
 HTTPFSVER=0.1.4
 
 BBURL=http://busybox.net/downloads/busybox-$BBVER.tar.bz2

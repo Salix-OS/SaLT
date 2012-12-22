@@ -56,9 +56,14 @@ load_usb_modules
 infolog 'Starting PCMCIA CardBus support'
 load_pcmcia_modules
 
-[ -e /init_extra ] && sh /init_extra
+if [ -e /init_extra ]; then
+  debuglog "Starting /init_extra"
+  debugshell
+  sh /init_extra
+fi
 
 infolog "Finding $LIVE_NAME device..."
+debugshell
 get_ident_file
 get_ident_content
 get_fromiso
@@ -80,6 +85,7 @@ debugshell
 
 get_save_file_name
 infolog "Finding save file $SAVE_FILE_NAME..."
+debugshell
 SAVE_FILE=$(find_save_file $DISTRO_MP)
 if [ -z "$SAVE_FILE" ]; then
   warnlog '  Save file not found, using memory only'

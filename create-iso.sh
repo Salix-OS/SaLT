@@ -147,11 +147,11 @@ EOF
     mkdir -p boot/grub
     cp -ar "$grubdir"/build/* .
     # modify the config files
-    sed -i "s:\(set debug=\).*:\1$DEBUG:" boot/grub/grub.cfg
-    sed -i "s:initrd\.gz:initrd.$COMP:" boot/grub/boot.cfg
-    sed -i -e "s:\(ident_file=\).*:\1$IDENT_FILE:" \
-      -e "s:\(searched_ident_content=\).*:\1$IDENT_CONTENT:" \
-      -e "s:\(default_iso_name=\).*:\1$(basename $ISONAME):" boot/grub/memdisk_grub.cfg
+    sed -i "s,\(set debug=\).*,\1$DEBUG," boot/grub/grub.cfg
+    sed -i "s,initrd\.gz,initrd.$COMP," boot/grub/boot.cfg
+    sed -i -e "s,\(ident_file=\).*,\1$IDENT_FILE," \
+      -e "s,\(searched_ident_content=\).*,\1$IDENT_CONTENT," \
+      -e "s,\(default_iso_name=\).*,\1$(basename $ISONAME)," boot/grub/memdisk_grub.cfg
     # install locales
     mkdir -p boot/grub/locale/
     for i in /usr/share/locale/*; do

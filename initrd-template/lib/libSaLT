@@ -132,14 +132,24 @@ errorlog() {
 # Run an interactive shell if in debug, else do nothing
 debugshell() {
   if [ -n "$SALT_DEBUG" ]; then
-    echo
     echoinfo '  +-----------------------------+'
     echoinfo '  |       Debugging shell       |'
     echoinfo '  |   Hit Ctrl+D to continue    |'
     echoinfo '  +-----------------------------+'
-    echo
+    if [ -f /lib/libSaLT ]; then
+      d_lib=/lib/libSaLT
+      d_sec=$(stat -L -c %Y $d_lib)
+    elif [ -f /mnt/salt/lib/libSaLT ]; then
+      d_lib=/mnt/salt/lib/libSaLT
+      d_sec=$(stat -L -c %Y $d_lib)
+    else
+      d_sec=
+    fi
     setsid hush -c 'exec hush </dev/tty1 >/dev/tty1 2>&1'
-    echo
+    if [ -n "$d_sec" ] && [ $(stat -L -c %Y $d_lib) -gt $d_sec ]; then
+      echodebug "Reloading $d_lib..."
+      . $d_lib
+    fi
   fi
 }
 shell() {
@@ -163,10 +173,12 @@ fumble() {
   [ -n "$1" ] && echocolor $COLOR_BOLD $COLOR_WHITE "$@"
   echo
   echoerror "Something went wrong and we can't continue. This should never happen."
-  echoerror 'Please reboot your computer with Ctrl+Alt+Delete'
+  echoerror 'Your computer will reboot after exiting the shell.'
   echo
-  setsid hush -c 'exec hush </dev/tty1 >/dev/tty1 2>&1' || sh
-  exec reboot -f
+  ROOT=
+  [ -d /mnt/salt ] && ROOT=/mnt/salt
+  $ROOT/bin/setsid $ROOT/bin/hush -c "exec $ROOT/bin/hush <$ROOT/dev/tty1 >$ROOT/dev/tty1 2>&1" || $ROOT/bin/sh
+  exec $ROOT/sbin/reboot -f
 }
 
 # return succes (0) if the specified cheatcode is present on the Linux kernel command line
@@ -683,9 +695,32 @@ change_root_to() {
   mkdir -p "$OLD_ROOT"
   debuglog "remounting $NEW_ROOT readonly"
   mount -o remount,ro .
-  pivot_root . "$OLD_ROOT"
-  exec chroot . "$@" <./dev/console >./dev/console 2>&1
-  echoerror "Chroot to $PWD failed"
+  PIVOT_ROOT=
+  for p in sbin/pivot_root bin/pivot_root /sbin/pivot_root /bin/pivot_root; do
+    if [ -x "$p" ]; then
+      PIVOT_ROOT="$p"
+      break
+    fi
+  done
+  CHROOT=
+  for p in sbin/chroot bin/chroot /sbin/chroot /bin/chroot; do
+    if [ -x "$p" ]; then
+      if echo "$p" | grep -q '^/'; then
+        CHROOT="$OLD_ROOT$p"
+      else
+        CHROOT="$p"
+      fi
+      break
+    fi
+  done
+  if [ -n "$PIVOT_ROOT" ] && [ -n "$CHROOT" ]; then
+    echodebug "$PIVOT_ROOT" . "$OLD_ROOT"
+    "$PIVOT_ROOT" . "$OLD_ROOT"
+    echodebug exec "$CHROOT" . "$@"
+    exec "$CHROOT" . "$@" <./dev/console >./dev/console 2>&1
+  else
+    echoerror "Chroot to $PWD failed, cannot continue."
+  fi
 }
 # chroot in the distro
 # $@ = command line to run. $1 must be a valid executable in the new root.
