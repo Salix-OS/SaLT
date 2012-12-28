@@ -11,8 +11,8 @@ VOLNAME='SaLT'
 ISONAME='salt.iso'
 # MemTest86+ version
 MEMTEST_VER=4.20
-# Syslinux+ version
-SYSLINUX_VER=4.05
+# Syslinux version
+SYSLINUX_VER=4.06
 # Compression used for the initrd, default to gz
 [ -z "$COMP" ] && COMP='gz'
 while [ -n "$1" ]; do
@@ -68,7 +68,7 @@ fi
 ./create-initrd.sh $COMP $DEBUG
 if [ $? -eq 0 ]; then
   [ ! -e mt86p ] && wget "http://www.memtest.org/download/$MEMTEST_VER/memtest86+-$MEMTEST_VER.bin.gz" -O - | zcat > mt86p
-  [ ! -e syslinux-$SYSLINUX_VER.tar.bz2 ] && wget http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VER.tar.bz2
+  [ ! -e syslinux-$SYSLINUX_VER.tar.xz ] && wget http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VER.tar.xz
   ISODIR=$(mktemp -d)
   mkdir -p $ISODIR/$ROOT_DIR/persistence
   echo "ident_content=$IDENT_CONTENT" > $ISODIR/$IDENT_FILE
@@ -100,7 +100,7 @@ if [ $? -eq 0 ]; then
   fi
   BOOTFILE=boot/isolinux/isolinux.bin
   CATALOGFILE=boot/eltorito.cat
-  tar xf syslinux-$SYSLINUX_VER.tar.bz2
+  tar xf syslinux-$SYSLINUX_VER.tar.xz
   mkdir -p $ISODIR/boot/isolinux
   cat <<EOF > $ISODIR/boot/isolinux/isolinux.cfg
 DEFAULT grub2
@@ -208,6 +208,5 @@ EOF
   # remove temp iso dir.
   rm -rf $ISODIR
   # modify the ISO to the IsoHybrid format.
-  ./isohybrid "$ISONAME"
-  # remove isohybrid
+  #./isohybrid "$ISONAME"
 fi

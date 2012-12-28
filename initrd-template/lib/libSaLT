@@ -684,10 +684,13 @@ install_hookers() {
 # The current directory should be positionned as the new root.
 # $1 = new root
 # $2 = directory in the new root for referencing the old root
-# $3+ = command line to run. $1 must be a valid executable in the new root.
+# $3 = from_initrd or to_initrd, helping selecting the right tools
+# $4+ = command line to run. $1 must be a valid executable in the new root.
 change_root_to() {
   NEW_ROOT="$1"
   OLD_ROOT="$2"
+  TYPE="$3"
+  shift
   shift
   shift
   debuglog "change_root_to: newroot=$NEW_ROOT oldroot=$OLD_ROOT args=$@"
@@ -695,38 +698,31 @@ change_root_to() {
   mkdir -p "$OLD_ROOT"
   debuglog "remounting $NEW_ROOT readonly"
   mount -o remount,ro .
-  PIVOT_ROOT=
-  for p in sbin/pivot_root bin/pivot_root /sbin/pivot_root /bin/pivot_root; do
-    if [ -x "$p" ]; then
-      PIVOT_ROOT="$p"
-      break
-    fi
-  done
-  CHROOT=
-  for p in sbin/chroot bin/chroot /sbin/chroot /bin/chroot; do
-    if [ -x "$p" ]; then
-      if echo "$p" | grep -q '^/'; then
-        CHROOT="$OLD_ROOT$p"
-      else
-        CHROOT="$p"
-      fi
-      break
-    fi
-  done
-  if [ -n "$PIVOT_ROOT" ] && [ -n "$CHROOT" ]; then
+  if [ "$TYPE" = "from_initrd" ]; then
+    PIVOT_ROOT="/sbin/pivot_root"
+    CHROOT="$OLD_ROOT/sbin/chroot"
+  else
+    PIVOT_ROOT="$NEW_ROOT/sbin/pivot_root"
+    CHROOT="/sbin/chroot"
+  fi
+  if [ -e "$PIVOT_ROOT" ]; then
     echodebug "$PIVOT_ROOT" . "$OLD_ROOT"
     "$PIVOT_ROOT" . "$OLD_ROOT"
     echodebug exec "$CHROOT" . "$@"
+    if [ -n "$SALT_DEBUG" ]; then
+      echodebug "Press enter to boot".
+      read junk
+    fi
     exec "$CHROOT" . "$@" <./dev/console >./dev/console 2>&1
   else
-    echoerror "Chroot to $PWD failed, cannot continue."
+    echoerror "Chroot to $PWD failed ($PIVOT_ROOT cannot be found), cannot continue."
   fi
 }
 # chroot in the distro
 # $@ = command line to run. $1 must be a valid executable in the new root.
 change_root_to_distro() {
   if mountpoint -q /mnt/union; then
-    change_root_to /mnt/union mnt/salt "$@"
+    change_root_to /mnt/union mnt/salt from_initrd "$@"
   else
     echoerror '/mnt/union not mounted'
   fi
@@ -735,7 +731,7 @@ change_root_to_distro() {
 # $@ = command line to run. $1 must be a valid executable in the new root.
 change_root_to_initrd() {
   if [ -e /mnt/salt/tmp/distro_infos ]; then
-    change_root_to /mnt/salt mnt/union "$@"
+    change_root_to /mnt/salt mnt/union to_initrd "$@"
   else
     echoerror '/mnt/salt/tmp/distro_infos file cannot be found'
   fi
