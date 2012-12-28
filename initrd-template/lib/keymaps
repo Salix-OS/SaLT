@@ -30,7 +30,7 @@ cz-us-qwertz|cz_qwerty||
 cz|cz||
 de-latin1-nodeadkeys|de||
 de-latin1|de||
-de_CH-latin1|de_CH||
+de_CH-latin1|ch|de|
 de|de||
 dk-latin1|dk||
 dk|dk||
@@ -97,8 +97,8 @@ se-fi-lat6|se_FI||
 se-ir209|se_SE||
 se-lat6|se_SE||
 sg-latin1-lk450|sg||
-sg-latin1|de_CH||
-sg|de_CH||
+sg-latin1|ch|de|
+sg|ch|de|
 sk-prog-qwerty|sk_qwerty||
 sk-prog-qwertz|sk_qwerty||
 sk-prog-qwertz|sk||
