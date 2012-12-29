@@ -61,14 +61,14 @@ while [ -n "$1" ]; do
       ;;
   esac
 done
+[ ! -e mt86p ] && wget "http://www.memtest.org/download/$MEMTEST_VER/memtest86+-$MEMTEST_VER.bin.gz" -O - | zcat > mt86p
+[ ! -e syslinux-$SYSLINUX_VER.tar.xz ] && wget "http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VER.tar.xz"
 if [ -n "$KERNEL" ]; then
   mkdir -p kernel
   ( cd kernel; tar xf "$KERNEL" )
 fi
 ./create-initrd.sh $COMP $DEBUG
 if [ $? -eq 0 ]; then
-  [ ! -e mt86p ] && wget "http://www.memtest.org/download/$MEMTEST_VER/memtest86+-$MEMTEST_VER.bin.gz" -O - | zcat > mt86p
-  [ ! -e syslinux-$SYSLINUX_VER.tar.xz ] && wget http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VER.tar.xz
   ISODIR=$(mktemp -d)
   mkdir -p $ISODIR/$ROOT_DIR/persistence
   echo "ident_content=$IDENT_CONTENT" > $ISODIR/$IDENT_FILE
@@ -116,8 +116,7 @@ EOF
   cp syslinux-$SYSLINUX_VER/core/isolinux.bin $ISODIR/$BOOTFILE
   cp syslinux-$SYSLINUX_VER/mbr/mbr.bin $ISODIR/boot/
   cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
-  cp -v syslinux-$SYSLINUX_VER/utils/isohybrid.pl isohybrid
-  chmod +x isohybrid
+  #cp -v syslinux-$SYSLINUX_VER/utils/isohybrid.pl isohybrid && chmod +x isohybrid
   rm -rf syslinux-$SYSLINUX_VER
   cp kernel/boot/vmlinuz-* $ISODIR/boot/vmlinuz
   cp initrd.$COMP $ISODIR/boot/initrd.$COMP
@@ -202,7 +201,7 @@ EOF
   # copy the rest to the isodir
   cp -rv overlay/* $ISODIR/
   # ensure there is no versioning files in the ISO
-  find $ISODIR -type d \( -name '.cvs' -o -name '.gitkeep' -o -name '.git' \) -prune -exec rm -rf '{}' +
+  find $ISODIR -type d \( -name '.cvs' -o -name '.svn' -o -name '.git' -o -name '.gitkeep' -o -name '.gitignore' \) -prune -exec rm -rf '{}' +
   # create iso using the bootfile for el torito and creating the catalog file.
   mkisofs -r -J -V "$VOLNAME" -b $BOOTFILE -c $CATALOGFILE -no-emul-boot -boot-load-size 4 -boot-info-table -o "$ISONAME" $ISODIR
   # remove temp iso dir.
