@@ -1,10 +1,10 @@
 # vim: syn=sh et sw=2 st=2 ts=2 tw=0:
-
-source ${cfgprefix}/include.cfg
+source $cfgprefix/include.cfg
 initmenu
-
+set default=$kbnum
 # next config file to load
 function nextconfig {
   loadkeymap
-  configfile ${cfgprefix}/boot.cfg
+  configfile $cfgprefix/boot.cfg
 }
+

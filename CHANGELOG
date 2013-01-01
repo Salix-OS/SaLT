@@ -4,6 +4,7 @@ Version -next
   - Add extra debugging shell in init.
   - libSaLT is reloaded after exiting a debug shell if it has been modified.
   - Chrooting does not need a chroot (nor pivot_root) binary on the target system anymore.
+  - Time zone menus and time zone is set in the target distro.
 Version 0.2.0 (2012-06-09)
   - create-iso.sh: use isolinux+grub2 systematically, and use the isohybrid format.
 Version 0.1.2 (2012-04-13)

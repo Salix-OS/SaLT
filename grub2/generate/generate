@@ -1,15 +1,16 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Use this script to generate the translations and the language and
-keyboard selection menu.
+Use this script to generate the translations, the language,
+the keyboard selection menu and the timezone menus.
 It should be called like this:
-./genlocale <localecfgdir> <cfgdir> <kbdir> <volumename>
+./generate <localecfgdir> <cfgdir> <kbdir> <tzdir> <volumename>
 
 Usually such values should be fine:
 localecfgdir = <someprefix>/boot/grub/locale
 cfgdir = <someprefix>/boot/grub
 kbdir = <someprefix>/boot/grub/keymaps
+tzdir = <someprefix>/boot/grub/timezone
 volumename = SalixLive
 
 """
@@ -17,8 +18,9 @@ volumename = SalixLive
 import sys, os
 import locale
 import gettext
+import glob
 
-projectname = "genlocale"
+projectname = "generate"
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 cwd = os.getcwd()
 localedir = os.path.join(cwd, "locale")  # where tranlsations are stored
@@ -28,12 +30,16 @@ if sys.argv[1] != 'dumpkbs':
   localecfgdir = sys.argv[1];  # where to store the <locale>.cfg files
   cfgdir = sys.argv[2];  # where to store all other .cfg files
   kbdir = sys.argv[3]; # where to store grub keymaps
-  volumename = sys.argv[4]; # volume name to use
+  tzdir = sys.argv[4]; # where to store time zones
+  volumename = sys.argv[5]; # volume name to use
 
   kbtpl = os.path.join(cwd, 'keyboard.cfg.tpl')
   langtpl = os.path.join(cwd, 'lang.cfg.tpl')
+  zonetpl = os.path.join(cwd, 'zone.cfg.tpl')
+  tztpl = os.path.join(cwd, 'tz.cfg.tpl')
   kbcfg = os.path.join(cfgdir, 'keyboard.cfg')
   langcfg = os.path.join(cfgdir, 'lang.cfg')
+  timezonecfg = os.path.join(cfgdir, 'timezone.cfg')
 
 # Initialize gettext
 gettext.bindtextdomain(projectname, localedir)
@@ -84,6 +90,7 @@ def strings():
     ("Lmemtest", _("Memory Test")),
     ("Lchangelang", _("Change language")),
     ("Lchangekb", _("Change keyboard layout")),
+    ("Lchangetz", _("Change time zone")),
     ("Lcheatcode", _("Change boot options")),
     ("Lrunlevel3", _("Boot to runlevel '3' (text mode)")),
     ("Lrunlevel4", _("Boot to runlevel '4' (graphical login) (default)")),
@@ -140,6 +147,20 @@ menuentry "%s"%s {
 }
 """
 
+zonemenuentry = """
+menuentry "%s" {
+  set timezone="%s"
+  nextconfig
+}
+"""
+
+timezonemenuentry = """
+menuentry "%s" {
+  set timezone="${timezone}/%s"
+  nextconfig
+}
+"""
+
 # which field to display as name
 displayname = 'nativename'
 
@@ -148,6 +169,8 @@ langsortkey = displayname
 
 # put here the locale of the lang to set as default
 defaultlang = 'en_US'
+
+defaulttz = 'UTC'
 
 ##################################
 ##       EDIT ABOVE HERE        ##
@@ -174,6 +197,14 @@ def getkbs():
       tempkbs.append(kb)
   tempkbs = sorted(set(tempkbs)) # ensure we have no duplicates
   return dict(enumerate(tempkbs))
+
+# returns a sorted list of all available time zones (by zone)
+def gettimezones():
+  zones = sorted(map(os.path.basename, filter(lambda f: os.path.isdir(f), glob.glob('/usr/share/zoneinfo/[A-Z]*'))))
+  tz = []
+  for z in zones:
+    tz.append((z, sorted(map(os.path.basename, glob.glob('/usr/share/zoneinfo/' + z + '/*')))))
+  return tz
 
 # This is the inverse dictionary for a given dict
 # i.e. 'de' -> 0 instead of 0 -> 'de'
@@ -233,6 +264,23 @@ def genlangcfg(tpl, cfg, langs, invkbs, deflangnum, invlanglocale):
         kbnum = invkbs[kb]  # look the position up
         fcfg.write(langmenuentry % (name, hotkey, loc, lang, num, kb, kbnum))
 
+def genzones(tpl, cfg, timezones):
+  with open(tpl, 'r') as ftpl:
+    with open(cfg, 'w') as fcfg:
+      fcfg.write(ftpl.read())
+      fcfg.write('\n')
+      for tz in timezones:
+        zone = tz[0]
+        fcfg.write(zonemenuentry % (zone, zone))
+
+def gentimezone(tpl, tzdir, zone, cities):
+  with open(tpl, 'r') as ftpl:
+    with open(tzdir + '/' + zone + '.cfg', 'w') as fcfg:
+      fcfg.write(ftpl.read())
+      fcfg.write('\n')
+      for city in cities:
+        fcfg.write(timezonemenuentry % (city, city))
+
 def main():
   if sys.argv[1] == 'dumpkbs':
     for k, kb in getkbs().iteritems():
@@ -251,6 +299,7 @@ def main():
   langs = getlangavail()
   invlanglocale = inversedict(dict(enumerate([lang['locale'] for lang in langs])))
   deflangnum = invlanglocale[defaultlang]
+  timezones = gettimezones()
 
   # now let's create our locale files, etc for each locale
   for lang in langs:
@@ -258,6 +307,9 @@ def main():
 
   genkbcfg(kbtpl, kbcfg, kbs)
   genlangcfg(langtpl, langcfg, langs, invkbs, deflangnum, invlanglocale)
+  genzones(zonetpl, timezonecfg, timezones)
+  for tz in timezones:
+    gentimezone(tztpl, tzdir, tz[0], tz[1])
   
   for k, v in kbs.iteritems():
     os.chdir(kbdir)

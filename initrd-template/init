@@ -131,20 +131,23 @@ infolog 'Tweaking the target distro'
 debuglog 'Installing hookers in /mnt/union...'
 install_hookers /mnt/union
 debugshell
+timezone=$(get_value_cmdline ttimezone)
 [ -e /mnt/union/etc ] || mkdir -p /mnt/union/etc
 debuglog 'Disabling root filesystem check'
 touch /mnt/union/etc/fastboot
 rm -f /mnt/union/etc/forcefsck
-debuglog 'Fixing a bug in /etc/rc.d/rc.S Slackware for hardware clock'
-[ -e /mnt/union/etc/hardwareclock ] || touch /mnt/union/etc/hardwareclock
-debuglog 'Fixing a bug when /etc/fstab is missing sometimes'
-[ -e /mnt/union/etc/fstab ] || touch /mnt/union/etc/fstab
-debuglog 'Fixing a bug when /proc and /sys will sometimes not be mounted in chroot'
+debuglog 'Setting /etc/hardwareclock'
+[ -e /mnt/union/etc/hardwareclock ] || echo "$timezone" > /mnt/union/etc/hardwareclock
+debuglog 'Informing that / is already mounted in the /mnt/union'
+echo 'salt / aufs ro 0 0' > /mnt/union/etc/mtab
+debuglog 'Setting /etc/fstab'
+[ -e /mnt/union/etc/fstab ] || cp /mnt/union/etc/mtab /mnt/union/etc/fstab
+debuglog 'Ensure /proc and /sys are mounted'
 [ -d /mnt/union/proc ] || mkdir -p /mnt/union/proc
 mount -n -t proc none /mnt/union/proc
 [ -d /mnt/union/sys ] || mkdir -p /mnt/union/sys
 mount -n -t sysfs none /mnt/union/sys
-debuglog 'Fixing a bug when / is trying to be fsck'
+debuglog 'Disabling fs check of /'
 if [ ! -x /mnt/union/sbin/fsck.aufs ]; then
   [ -d /mnt/union/sbin ] || mkdir -p /mnt/union/sbin
   cat <<EOF > /mnt/union/sbin/fsck.aufs
@@ -190,8 +193,12 @@ if [ -n "$lang" ] && [ -e /mnt/union/etc/profile.d ]; then
     sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" /mnt/union/etc/kde/kdm/kdmrc
   fi
 fi
-debuglog 'Informing that / is already mounted in the /mnt/union'
-echo 'salt / aufs ro 0 0' > /mnt/union/etc/mtab
+debuglog 'Early configure timezone'
+(
+  cd /mnt/union
+  cp usr/share/zoneinfo/$timezone etc/localtime
+  ln -s /usr/share/zoneinfo/$timezone etc/localtime-copied-from
+)
 
 [ -z "$SALT_DEBUG" ] && clear
 echoinfo "*** Passing execution process to $LIVE_NAME ***\n"

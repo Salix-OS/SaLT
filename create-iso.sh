@@ -127,10 +127,10 @@ EOF
   mv .bg.png "$grubdir/build/boot/grub/bg.png"
   # generate grub config
   (
-    cd "$grubdir/genlocale"
+    cd "$grubdir/generate"
     # compile mo files, create locale dir containg translations
     make install
-    ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$VOLNAME"
+    ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezones" "$VOLNAME"
   )
   # add grub2 menu
   (

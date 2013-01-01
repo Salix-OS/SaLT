@@ -302,7 +302,7 @@ find_mountable_devices() {
   if [ -e /tmp/devices ]; then
     cut -d: -f1 /tmp/devices
   else
-    blkid|grep -v '^/dev/ram'|cut -d: -f1|sort -r|file -s -f -|tee /tmp/devices|cut -d: -f1
+    blkid|grep -v '^/dev/ram'|cut -d: -f1|sort -r|file -s -f -|grep -v 'Linux.*swap file'|tee /tmp/devices|cut -d: -f1
   fi
 }
 

@@ -4,6 +4,9 @@ if [ $? -ne 0 ]; then
   echo ""
   echo "WARNING: qemu not installed!"
   echo ""
+  QEMU=0
+else
+  QEMU=1
 fi
 cd $(dirname $0)
 startdir=$PWD
@@ -16,10 +19,10 @@ CATALOGFILE=boot/grub.cat
 cp bg.png "$grubdir/build/boot/grub/bg.png"
 # generate grub config
 (
-  cd "$grubdir/genlocale"
+  cd "$grubdir/generate"
   # compile mo files, create locale dir containg translations
   make install VOLUMENAME="GRUB2 Test"
-  ./genlocale "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "GRUB2 Test"
+  ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone" "GRUB2 Test"
 )
 # add grub2 menu
 (
@@ -60,7 +63,9 @@ rm -rf boot/dos boot/isolinux boot/pxelinux.cfg boot/syslinux boot/bootinst.* bo
 echo "Creating ISO..."
 cd $startdir
 mkisofs -r -J -V "grub2_menu" -b $BOOTFILE -c $CATALOGFILE -no-emul-boot -boot-load-size 4 -boot-info-table -o "grub2menu.iso" $ISODIR
-rm -rf $ISODIR
-qemu -cdrom grub2menu.iso
-read R
-rm grub2menu.iso
+if [ $QEMU -eq 1 ]; then
+  rm -rf $ISODIR
+  qemu -cdrom grub2menu.iso
+  read R
+  rm grub2menu.iso
+fi

@@ -1,4 +1,4 @@
-PACKAGE = genlocale
+PACKAGE = generate
 POFILES = $(wildcard po/*.po)
 MOFILES = $(POFILES:.po=.mo)
 POTFILE = po/$(PACKAGE).pot
@@ -12,7 +12,7 @@ help:
 	@echo "  clean        remove all .mo and .po~ files"
 	@echo "  uninstall    remove what has been installed in ${LOCALEDIR}/"
 	@echo "  clean-all    remove all generated and installed files"
-	@echo "  udatetrans   update ${POTFILE} from ${PACKAGE} and generage/update .po files"
+	@echo "  udatetrans   update ${POTFILE} from ${PACKAGE} and generate/update .po files"
 
 all: build
 
@@ -28,8 +28,7 @@ install: all
 installmo:
 	for j in $(MOFILES); do \
 		install -d -m 755 \
-			$(LOCALEDIR)/`basename $$j|sed "s/.mo//"`/LC_MESSAGES \
-			2> /dev/null; \
+			$(LOCALEDIR)/`basename $$j|sed "s/.mo//"`/LC_MESSAGES 2> /dev/null; \
 		install -m 644 $$j \
 			$(LOCALEDIR)/`basename $$j|sed "s/.mo//"`/LC_MESSAGES/$(PACKAGE).mo; \
 	done
