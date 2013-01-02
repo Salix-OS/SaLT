@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Dimitris Tzemos <djemos@slackel.gr>, 2011.
 #   <vlahavas@gmail.com>, 2011.
@@ -9,185 +9,183 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-15 23:16+0100\n"
+"POT-Creation-Date: 2013-01-01 23:17+0100\n"
 "PO-Revision-Date: 2012-02-14 13:07+0000\n"
 "Last-Translator: Dimitris Tzemos <djemos@slackel.gr>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: el\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
-#: genlocale:83
+#: generate:89
 msgid "Start _DISTRONAME_"
 msgstr "Εκκίνηση _DISTRONAME_"
 
-#: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
-#: genlocale:84
+#: generate:90
 msgid "Memory Test"
 msgstr "Έλεγχος μνήμης"
 
-#: genlocale:54 genlocale:65 genlocale:75 genlocale:83 genlocale:84
-#: genlocale:85
+#: generate:91
 msgid "Change language"
 msgstr "Αλλαγή γλώσσας"
 
-#: genlocale:55 genlocale:66 genlocale:76 genlocale:84 genlocale:85
-#: genlocale:86
+#: generate:92
 msgid "Change keyboard layout"
 msgstr "Αλλαγή διάταξης πληκτρολογίου"
 
-#: genlocale:56 genlocale:67 genlocale:77 genlocale:85 genlocale:86
-#: genlocale:87
+#: generate:93
+msgid "Change time zone"
+msgstr ""
+
+#: generate:94
 msgid "Change boot options"
 msgstr "Αλλαγή επιλογών εκκίνησης"
 
-#: genlocale:57 genlocale:68 genlocale:78 genlocale:86 genlocale:87
-#: genlocale:88
+#: generate:95
 msgid "Boot to runlevel '3' (text mode)"
 msgstr "Έναρξη σε runlevel '3' (τερματικό)"
 
-#: genlocale:58 genlocale:69 genlocale:79 genlocale:87 genlocale:88
-#: genlocale:89
+#: generate:96
 msgid "Boot to runlevel '4' (graphical login) (default)"
 msgstr "Έναρξη σε runlevel '4' (γραφικό περιβάλλον) (εξ ορισμού)"
 
-#: genlocale:59 genlocale:70 genlocale:80 genlocale:88 genlocale:89
-#: genlocale:90
+#: generate:97
 msgid "Enable 'Copy everything to RAM'"
 msgstr "Ενεργοποίηση αντιγραφής όλων στη μνήμη RAM"
 
-#: genlocale:60 genlocale:71 genlocale:81 genlocale:89 genlocale:90
-#: genlocale:91
+#: generate:98
 msgid "Disable 'Copy everything to RAM' (default)"
 msgstr "Απενεργοποίηση αντιγραφής όλων στη μνήμη RAM (εξ ορισμού)"
 
-#: genlocale:61 genlocale:72 genlocale:82 genlocale:90 genlocale:91
-#: genlocale:92
+#: generate:99
 msgid "Enable numlock on boot"
 msgstr "Ενεργοποίηση του numlock κατά την έναρξη"
 
-#: genlocale:62 genlocale:73 genlocale:83 genlocale:91 genlocale:92
-#: genlocale:93
+#: generate:100
 msgid "Disable numlock on boot (default)"
 msgstr "Απενεργοποίηση του numlock κατά την έναρξη (εξ ορισμού)"
 
-#: genlocale:63 genlocale:74 genlocale:84 genlocale:94 genlocale:95
-#: genlocale:96
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Ενεργοποίηση του synaptics fdi (αναξιόπιστο μερικές φορές)"
-
-#: genlocale:64 genlocale:75 genlocale:85 genlocale:95 genlocale:96
-#: genlocale:97
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Απενεργοποίηση του synaptics fdi (αξιόπιστο) (εξ ορισμού)"
-
-#: genlocale:65 genlocale:76 genlocale:86 genlocale:109 genlocale:110
-#: genlocale:111
-msgid "Return to boot menu"
-msgstr "Επιστροφή στο μενού εκκίνησης"
-
-#: genlocale:92 genlocale:93 genlocale:94
+#: generate:101
 msgid "Enable Ibus"
 msgstr "Ενεργοποίηση του IBus"
 
-#: genlocale:93 genlocale:94 genlocale:95
+#: generate:102
 msgid "Disable Ibus (default)"
 msgstr "Απενεργοποίηση του IBus (εξ ορισμού)"
 
-#: genlocale:96 genlocale:97 genlocale:98
+#: generate:103
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr "Ενεργοποίηση του synaptics fdi (αναξιόπιστο μερικές φορές)"
+
+#: generate:104
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr "Απενεργοποίηση του synaptics fdi (αξιόπιστο) (εξ ορισμού)"
+
+#: generate:105
 msgid "No sound on boot"
 msgstr "Χωρίς ήχο κατά την εκκίνηση"
 
-#: genlocale:97 genlocale:98 genlocale:99
+#: generate:106
 msgid "Enable sound on boot (default)"
 msgstr "Ενεργοποίηση του ήχου κατά την εκκίνηση (εξ ορισμού)"
 
-#: genlocale:98 genlocale:99 genlocale:100
+#: generate:107
 msgid "Enable autologin on boot (default)"
 msgstr "Αυτόματη είσοδος κατά την εκκίνηση (εξ ορισμού)"
 
-#: genlocale:99 genlocale:100 genlocale:101
+#: generate:108
 msgid "Disable autologin on boot"
 msgstr "Χωρίς αυτόματη είσοδο κατά την εκκίνηση"
 
-#: genlocale:100 genlocale:101 genlocale:102
+#: generate:109
 msgid "Enable gfxpayload=keep (default)"
 msgstr "Ενεργοποίηση του gfxpayload=keep (εξ ορισμού)"
 
-#: genlocale:101 genlocale:102 genlocale:103
+#: generate:110
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "Απενεργοποίηση του gfxpayload=keep (αν υπάρχει πρόβλημα δοκιμάστε αυτό)"
+msgstr ""
+"Απενεργοποίηση του gfxpayload=keep (αν υπάρχει πρόβλημα δοκιμάστε αυτό)"
 
-#: genlocale:102 genlocale:103 genlocale:104
+#: generate:111
 msgid "Change root password"
 msgstr "Αλλαγή του κωδικού του χρήστη root"
 
-#: genlocale:103 genlocale:104 genlocale:105
-msgid "New root password (choose 'ask' to be asked at boot): "
-msgstr "Νέος κωδικός για το χρήστη root (επιλέξτε 'ask' αν θέλετε να ερωτηθείτε κατά την εκκίνηση): "
+#: generate:112
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr ""
+"Νέος κωδικός για το χρήστη root (επιλέξτε 'ask' αν θέλετε να ερωτηθείτε κατά "
+"την εκκίνηση):"
 
-#: genlocale:104 genlocale:105 genlocale:106
+#: generate:113
 msgid "Set a proxy"
 msgstr "Ορισμός proxy"
 
-#: genlocale:105 genlocale:106 genlocale:107
-msgid "New proxy (empty for no proxy): "
-msgstr "Νέος proxy (κενό αν δεν επιθυμείτε proxy): "
+#: generate:114
+msgid "New proxy (empty for no proxy):"
+msgstr "Νέος proxy (κενό αν δεν επιθυμείτε proxy):"
 
-#: genlocale:106 genlocale:107 genlocale:108
+#: generate:115
 msgid "Boot from an ISO"
 msgstr "Εκκίνηση από ένα αρχείο ISO"
 
-#: genlocale:107 genlocale:108 genlocale:109
-msgid "Path to the ISO to boot from: "
-msgstr "Τοποθεσία του ISO προς εκκίνηση: "
+#: generate:116
+msgid "Path to the ISO to boot from:"
+msgstr "Τοποθεσία του ISO προς εκκίνηση:"
 
-#: genlocale:108 genlocale:109 genlocale:110
+#: generate:117
 msgid "Live system is loading..."
 msgstr "Το Live σύστημα εκκινεί..."
 
-#: genlocale:110 genlocale:111 genlocale:112
+#: generate:118
+msgid "Return to boot menu"
+msgstr "Επιστροφή στο μενού εκκίνησης"
+
+#: generate:119
 msgid "Save all settings to be autoloaded for future boots"
-msgstr "Αποθήκευση όλων των ρυθμίσεων, ώστε να φορτώνονται αυτόματα για μελλοντικές εκκινήσεις"
+msgstr ""
+"Αποθήκευση όλων των ρυθμίσεων, ώστε να φορτώνονται αυτόματα για μελλοντικές "
+"εκκινήσεις"
 
-#: genlocale:111 genlocale:112 genlocale:113
-msgid "Do you want to skip the language selection menu? [y/N] "
-msgstr "Θέλετε να προσπεράσετε το μενού επιλογής γλώσσας; [ν/Ο] "
+#: generate:120
+msgid "Do you want to skip the language selection menu? [y/N]"
+msgstr "Θέλετε να προσπεράσετε το μενού επιλογής γλώσσας; [ν/Ο]"
 
-#: genlocale:112 genlocale:113 genlocale:114
+#: generate:121
 msgid "Invalid response"
 msgstr "Άκυρη ανταπόκριση"
 
-#: genlocale:113 genlocale:114 genlocale:115
+#: generate:122
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
-msgstr "Υπήρξε ένα σφάλμα κατά την αποθήκευση των ρυθμίσεων. Είναι τα αρχεία αποθηκευμένα σε ένα εγγράψιμο μέσο, όπως ένας δίσκος flash USB (π.χ. όχι σε CDROM); "
+msgstr ""
+"Υπήρξε ένα σφάλμα κατά την αποθήκευση των ρυθμίσεων. Είναι τα αρχεία "
+"αποθηκευμένα σε ένα εγγράψιμο μέσο, όπως ένας δίσκος flash USB (π.χ. όχι σε "
+"CDROM); "
 
-#: genlocale:114 genlocale:115 genlocale:117 genlocale:118
-msgid "y"
-msgstr "ν"
-
-#: genlocale:115 genlocale:116 genlocale:118 genlocale:119
-msgid "Y"
-msgstr "Ν"
-
-#: genlocale:116 genlocale:117 genlocale:119 genlocale:120
-msgid "n"
-msgstr "ο"
-
-#: genlocale:117 genlocale:118 genlocale:120 genlocale:121
-msgid "N"
-msgstr "Ο"
-
-#: genlocale:115 genlocale:116
+#: generate:123
 msgid "Custom linux kernel parameters"
 msgstr "Προσαρμοσμένες παράμετροι του πυρήνα Linux"
 
-#: genlocale:116 genlocale:117
-msgid "Enter custom linux kernel parameters: "
+#: generate:124
+msgid "Enter custom linux kernel parameters:"
 msgstr "Πληκτρολογήστε τις προσαρμοσμένες παραμέτρους του πυρήνα Linux:"
+
+#: generate:125
+msgid "y"
+msgstr "ν"
+
+#: generate:126
+msgid "Y"
+msgstr "N"
+
+#: generate:127
+msgid "n"
+msgstr "ο"
+
+#: generate:128
+msgid "N"
+msgstr "Ο"

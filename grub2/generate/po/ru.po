@@ -1,193 +1,191 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
+# goriy  <wolfr2@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-11-15 23:16+0100\n"
-"PO-Revision-Date: 2010-11-30 04:11+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-01-01 23:17+0100\n"
+"PO-Revision-Date: 2012-04-06 17:18+0000\n"
+"Last-Translator: Gregory none <wolfr2@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: genlocale:52 genlocale:63 genlocale:73 genlocale:81 genlocale:82
-#: genlocale:83
+#: generate:89
 msgid "Start _DISTRONAME_"
-msgstr ""
+msgstr "Запустить _DISTRONAME_"
 
-#: genlocale:53 genlocale:64 genlocale:74 genlocale:82 genlocale:83
-#: genlocale:84
+#: generate:90
 msgid "Memory Test"
-msgstr ""
+msgstr "Тест памяти"
 
-#: genlocale:54 genlocale:65 genlocale:75 genlocale:83 genlocale:84
-#: genlocale:85
+#: generate:91
 msgid "Change language"
-msgstr ""
+msgstr "Сменить язык"
 
-#: genlocale:55 genlocale:66 genlocale:76 genlocale:84 genlocale:85
-#: genlocale:86
+#: generate:92
 msgid "Change keyboard layout"
+msgstr "Сменить раскладку клавиатуры"
+
+#: generate:93
+msgid "Change time zone"
 msgstr ""
 
-#: genlocale:56 genlocale:67 genlocale:77 genlocale:85 genlocale:86
-#: genlocale:87
+#: generate:94
 msgid "Change boot options"
-msgstr ""
+msgstr "Сменить опции загрузки"
 
-#: genlocale:57 genlocale:68 genlocale:78 genlocale:86 genlocale:87
-#: genlocale:88
+#: generate:95
 msgid "Boot to runlevel '3' (text mode)"
 msgstr ""
+"Использовать уровень запуска (runlevel) '3' при загрузке (текстовый режим)"
 
-#: genlocale:58 genlocale:69 genlocale:79 genlocale:87 genlocale:88
-#: genlocale:89
+#: generate:96
 msgid "Boot to runlevel '4' (graphical login) (default)"
 msgstr ""
+"Использовать уровень запуска (runlevel) '4' при загрузке (графический вход в "
+"систему) (по умолчанию)"
 
-#: genlocale:59 genlocale:70 genlocale:80 genlocale:88 genlocale:89
-#: genlocale:90
+#: generate:97
 msgid "Enable 'Copy everything to RAM'"
-msgstr ""
+msgstr "Разрешить 'Копировать все в ОЗУ'"
 
-#: genlocale:60 genlocale:71 genlocale:81 genlocale:89 genlocale:90
-#: genlocale:91
+#: generate:98
 msgid "Disable 'Copy everything to RAM' (default)"
-msgstr ""
+msgstr "Запретить 'Копировать все в ОЗУ' (по умолчанию)"
 
-#: genlocale:61 genlocale:72 genlocale:82 genlocale:90 genlocale:91
-#: genlocale:92
+#: generate:99
 msgid "Enable numlock on boot"
-msgstr ""
+msgstr "Включить numlock при загрузке"
 
-#: genlocale:62 genlocale:73 genlocale:83 genlocale:91 genlocale:92
-#: genlocale:93
+#: generate:100
 msgid "Disable numlock on boot (default)"
-msgstr ""
+msgstr "Отключить numlock при загрузке (по умолчанию)"
 
-#: genlocale:63 genlocale:74 genlocale:84 genlocale:94 genlocale:95
-#: genlocale:96
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr ""
-
-#: genlocale:64 genlocale:75 genlocale:85 genlocale:95 genlocale:96
-#: genlocale:97
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr ""
-
-#: genlocale:65 genlocale:76 genlocale:86 genlocale:109 genlocale:110
-#: genlocale:111
-msgid "Return to boot menu"
-msgstr ""
-
-#: genlocale:92 genlocale:93 genlocale:94
+#: generate:101
 msgid "Enable Ibus"
-msgstr ""
+msgstr "Разрешить Ibus"
 
-#: genlocale:93 genlocale:94 genlocale:95
+#: generate:102
 msgid "Disable Ibus (default)"
-msgstr ""
+msgstr "Запретить Ibus (по умолчанию)"
 
-#: genlocale:96 genlocale:97 genlocale:98
+#: generate:103
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr "Включить synaptics fdi (иногда ненадежно)"
+
+#: generate:104
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr "Отключить synaptics fdi (надежно) (по умолчанию)"
+
+#: generate:105
 msgid "No sound on boot"
-msgstr ""
+msgstr "Отключить звук при загрузке"
 
-#: genlocale:97 genlocale:98 genlocale:99
+#: generate:106
 msgid "Enable sound on boot (default)"
-msgstr ""
+msgstr "Включить звук при загрузке (по умолчанию)"
 
-#: genlocale:98 genlocale:99 genlocale:100
+#: generate:107
 msgid "Enable autologin on boot (default)"
-msgstr ""
+msgstr "Включить автоматический вход в систему (по умолчанию)"
 
-#: genlocale:99 genlocale:100 genlocale:101
+#: generate:108
 msgid "Disable autologin on boot"
-msgstr ""
+msgstr "Отключить автоматический вход в систему"
 
-#: genlocale:100 genlocale:101 genlocale:102
+#: generate:109
 msgid "Enable gfxpayload=keep (default)"
-msgstr ""
+msgstr "Использовать gfxpayload=keep (по умолчанию)"
 
-#: genlocale:101 genlocale:102 genlocale:103
+#: generate:110
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
 msgstr ""
+"Не использовать gfxpayload=keep (попробуйте эту опцию если не загружается)"
 
-#: genlocale:102 genlocale:103 genlocale:104
+#: generate:111
 msgid "Change root password"
-msgstr ""
+msgstr "Сменить пароль пользователя root"
 
-#: genlocale:103 genlocale:104 genlocale:105
-msgid "New root password (choose 'ask' to be asked at boot): "
+#: generate:112
+msgid "New root password (choose 'ask' to be asked at boot):"
 msgstr ""
+"Новый пароль пользователя root (выберите 'ask' для запроса при загрузке):"
 
-#: genlocale:104 genlocale:105 genlocale:106
+#: generate:113
 msgid "Set a proxy"
-msgstr ""
+msgstr "Задать параметры прокси-сервера"
 
-#: genlocale:105 genlocale:106 genlocale:107
-msgid "New proxy (empty for no proxy): "
+#: generate:114
+msgid "New proxy (empty for no proxy):"
 msgstr ""
+"Новый прокси-сервер (оставьте пустым если прокси-сервер не используется):"
 
-#: genlocale:106 genlocale:107 genlocale:108
+#: generate:115
 msgid "Boot from an ISO"
-msgstr ""
+msgstr "Загрузка с ISO-образа"
 
-#: genlocale:107 genlocale:108 genlocale:109
-msgid "Path to the ISO to boot from: "
-msgstr ""
+#: generate:116
+msgid "Path to the ISO to boot from:"
+msgstr "Путь до загрузочного ISO-образа:"
 
-#: genlocale:108 genlocale:109 genlocale:110
+#: generate:117
 msgid "Live system is loading..."
-msgstr ""
+msgstr "Live система загружается..."
 
-#: genlocale:110 genlocale:111 genlocale:112
+#: generate:118
+msgid "Return to boot menu"
+msgstr "Вернуться в меню загрузки"
+
+#: generate:119
 msgid "Save all settings to be autoloaded for future boots"
-msgstr ""
+msgstr "Сохранить все настройки для их использования при следующих загрузках"
 
-#: genlocale:111 genlocale:112 genlocale:113
-msgid "Do you want to skip the language selection menu? [y/N] "
-msgstr ""
+#: generate:120
+msgid "Do you want to skip the language selection menu? [y/N]"
+msgstr "Хотите пропустить меню выбора языка? [y/N]"
 
-#: genlocale:112 genlocale:113 genlocale:114
+#: generate:121
 msgid "Invalid response"
-msgstr ""
+msgstr "Некорректный ответ"
 
-#: genlocale:113 genlocale:114 genlocale:115
+#: generate:122
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
+"Произошла ошибка при сохранении ваших настроек. Файлы точно расположены на "
+"носителе доступном для записи вроде USB флеш-диска (то есть НЕ на CDROM)?"
 
-#: genlocale:114 genlocale:115 genlocale:117 genlocale:118
-msgid "y"
-msgstr ""
-
-#: genlocale:115 genlocale:116 genlocale:118 genlocale:119
-msgid "Y"
-msgstr ""
-
-#: genlocale:116 genlocale:117 genlocale:119 genlocale:120
-msgid "n"
-msgstr ""
-
-#: genlocale:117 genlocale:118 genlocale:120 genlocale:121
-msgid "N"
-msgstr ""
-
-#: genlocale:115 genlocale:116
+#: generate:123
 msgid "Custom linux kernel parameters"
-msgstr ""
+msgstr "Прочие параметры ядра linux"
 
-#: genlocale:116 genlocale:117
-msgid "Enter custom linux kernel parameters: "
-msgstr ""
+#: generate:124
+msgid "Enter custom linux kernel parameters:"
+msgstr "Введите прочие параметры ядра linux:"
 
+#: generate:125
+msgid "y"
+msgstr "y"
 
+#: generate:126
+msgid "Y"
+msgstr "Y"
+
+#: generate:127
+msgid "n"
+msgstr "n"
+
+#: generate:128
+msgid "N"
+msgstr "N"

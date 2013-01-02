@@ -52,7 +52,7 @@ updatetrans:
 		--add-comments=\# \
 		-o $(POTFILE) \
 		$(PACKAGE)
-	for i in $(POTPLFILES); do \
+	for i in $(POFILES); do \
 		msgmerge -NU $$i $(POTFILE); \
 	done
 

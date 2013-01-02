@@ -3,36 +3,37 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Translators:
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2011-2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-01-01 23:17+0100\n"
-"PO-Revision-Date: 2012-04-20 13:52+0000\n"
-"Last-Translator: Jiří Šůla <jiri.sula@gmail.com>\n"
+"PO-Revision-Date: 2012-11-10 13:57+0000\n"
+"Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: cs\n"
+"Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. # Please leave _DISTRONAME_ as it is, it's a placeholder.
 #: generate:89
 msgid "Start _DISTRONAME_"
-msgstr "Spustit _DISTRONAME_"
+msgstr "Iniciar _DISTRONAME_"
 
 #: generate:90
 msgid "Memory Test"
-msgstr "Paměťový test"
+msgstr "Teste de Memória"
 
 #: generate:91
 msgid "Change language"
-msgstr "Změnit jazyk"
+msgstr "Alterar o idioma"
 
 #: generate:92
 msgid "Change keyboard layout"
-msgstr "Změnit rozložení klávesnice"
+msgstr "Alterar a disposição do teclado"
 
 #: generate:93
 msgid "Change time zone"
@@ -40,141 +41,141 @@ msgstr ""
 
 #: generate:94
 msgid "Change boot options"
-msgstr "Změnit nastavení bootování"
+msgstr "Alterar as opções de inicialização"
 
 #: generate:95
 msgid "Boot to runlevel '3' (text mode)"
-msgstr "Bootovat do režimu 3 (textový mód)"
+msgstr "Arranque para runlevel '3' (modo de texto)"
 
 #: generate:96
 msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Bootovat do režimu 4 (grafické přihlášení) (základní)"
+msgstr "Arranque para runlevel '4' (login gráfico) (padrão)"
 
 #: generate:97
 msgid "Enable 'Copy everything to RAM'"
-msgstr "Zapnout 'kopírovat vše do RAM'"
+msgstr "Habilitar 'Copiar tudo para a RAM'"
 
 #: generate:98
 msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Vypnout 'kopírovat vše do RAM' (základní)"
+msgstr "Inabilitar 'Copiar tudo para a RAM' (padrão)"
 
 #: generate:99
 msgid "Enable numlock on boot"
-msgstr "Zapnout numerickou klávesnici při bootování"
+msgstr "Habilitar numlock no arranque"
 
 #: generate:100
 msgid "Disable numlock on boot (default)"
-msgstr "Vypnout numerickou klávesnici při bootování (základní)"
+msgstr "Inabilitar numlock no arranque (padrão)"
 
 #: generate:101
 msgid "Enable Ibus"
-msgstr "Povolit Ibus"
+msgstr "Habilitar Ibus"
 
 #: generate:102
 msgid "Disable Ibus (default)"
-msgstr "Zakázat Ibus (defaultně)"
+msgstr "Inabilitar Ibus (padrão)"
 
 #: generate:103
 msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Zapnout synaptics fdi (občas nespolehlivé)"
+msgstr "Habilitar synaptics fdi (às vezes não confiáveis)"
 
 #: generate:104
 msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Vypnout synaptics fdi (spolehlivé) (základní)"
+msgstr "Inabilitar synaptics fdi (confiável) (padrão)"
 
 #: generate:105
 msgid "No sound on boot"
-msgstr "Při bootování bez zvuku"
+msgstr "Não há som no arranque"
 
 #: generate:106
 msgid "Enable sound on boot (default)"
-msgstr "Povolit zvuk při bootování (defaultně)"
+msgstr "Habilitar o som no arranque (padrão)"
 
 #: generate:107
 msgid "Enable autologin on boot (default)"
-msgstr "Povolit autologin při bootování (defaultně)"
+msgstr "Habilitar autologin no arranque (padrão)"
 
 #: generate:108
 msgid "Disable autologin on boot"
-msgstr "Zakázat autologin při bootování"
+msgstr "Inabilitar autologin no arranque"
 
 #: generate:109
 msgid "Enable gfxpayload=keep (default)"
-msgstr "Povolit gfxpayload=keep (defaultně)"
+msgstr "Habilitar gfxpayload=manter (padrão)"
 
 #: generate:110
 msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "Nepovolit gfxpayload=keep (pokud se nenahraje, použijte tento)"
+msgstr "Inabilitar gfxpayload=manter (se ele não carregar tente isto)"
 
 #: generate:111
 msgid "Change root password"
-msgstr "Změnit root heslo"
+msgstr "Alterar senha do root"
 
 #: generate:112
 msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr "Nové heslo root (vyberte 'ask' pro zeptání se při bootování):"
+msgstr "Nova senha root (escolha a opção 'ask' a ser feita no arranque):"
 
 #: generate:113
 msgid "Set a proxy"
-msgstr "Nastavit proxy"
+msgstr "Definir um proxy"
 
 #: generate:114
 msgid "New proxy (empty for no proxy):"
-msgstr "Nová proxy (prázdná hodnota pro žádnou)"
+msgstr "Novo proxy (vazio para nenhum proxy):"
 
 #: generate:115
 msgid "Boot from an ISO"
-msgstr "Bootovat z ISO obrazu"
+msgstr "Arranque a partir de uma ISO"
 
 #: generate:116
 msgid "Path to the ISO to boot from:"
-msgstr "Cesta k ISO, ze kterého se má bootovat:"
+msgstr "Caminho para o ISO para arrancar a partir:"
 
 #: generate:117
 msgid "Live system is loading..."
-msgstr "Live systém se nahrává..."
+msgstr "Sistema live está a carregar ..."
 
 #: generate:118
 msgid "Return to boot menu"
-msgstr "Návrat do boot menu"
+msgstr "Voltar ao menu de arranque"
 
 #: generate:119
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
-"Uložte všechna nastavení, aby se automaticky nahrála při dalších spouštěních"
+"Salvar todas as configurações para ser carregados automaticamente para "
+"inicializações futuras"
 
 #: generate:120
 msgid "Do you want to skip the language selection menu? [y/N]"
-msgstr "Přejete si přeskošit menu výběru jazyků? [a/N]"
+msgstr "Você quer saltar o menu de seleção de idioma? [y/N]"
 
 #: generate:121
 msgid "Invalid response"
-msgstr "Špatná odpověď"
+msgstr "Resposta inválida"
 
 #: generate:122
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
-"Vyskytla se chyba při ukládání vašeho nastavení. Jsou live soubory umístěny "
-"na médiu, na které se dá zapisovat, například na USB disku (například ne "
-"CDROM)?"
+"Ocorreu um erro ao salvar as suas configurações. Estão os ficheiros live "
+"localizados numa media gravável como uma pendrive (i.e. não um CDROM)?"
 
 #: generate:123
 msgid "Custom linux kernel parameters"
-msgstr "Vlastní linux kernel parametry"
+msgstr "Personalizar parâmetros no núcleo linux"
 
 #: generate:124
 msgid "Enter custom linux kernel parameters:"
-msgstr "Zadejte vlastní linux kernel parametry:"
+msgstr "Introduza parâmetros personalizáveis no núcleo linux:"
 
 #: generate:125
 msgid "y"
-msgstr "a"
+msgstr "s"
 
 #: generate:126
 msgid "Y"
-msgstr "A"
+msgstr "S"
 
 #: generate:127
 msgid "n"

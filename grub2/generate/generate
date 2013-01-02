@@ -1,20 +1,5 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Use this script to generate the translations, the language,
-the keyboard selection menu and the timezone menus.
-It should be called like this:
-./generate <localecfgdir> <cfgdir> <kbdir> <tzdir> <volumename>
-
-Usually such values should be fine:
-localecfgdir = <someprefix>/boot/grub/locale
-cfgdir = <someprefix>/boot/grub
-kbdir = <someprefix>/boot/grub/keymaps
-tzdir = <someprefix>/boot/grub/timezone
-volumename = SalixLive
-
-"""
-
 import sys, os
 import locale
 import gettext
@@ -24,22 +9,6 @@ projectname = "generate"
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 cwd = os.getcwd()
 localedir = os.path.join(cwd, "locale")  # where tranlsations are stored
-
-if sys.argv[1] != 'dumpkbs':
-  # Here we "parse" commandline arguments
-  localecfgdir = sys.argv[1];  # where to store the <locale>.cfg files
-  cfgdir = sys.argv[2];  # where to store all other .cfg files
-  kbdir = sys.argv[3]; # where to store grub keymaps
-  tzdir = sys.argv[4]; # where to store time zones
-  volumename = sys.argv[5]; # volume name to use
-
-  kbtpl = os.path.join(cwd, 'keyboard.cfg.tpl')
-  langtpl = os.path.join(cwd, 'lang.cfg.tpl')
-  zonetpl = os.path.join(cwd, 'zone.cfg.tpl')
-  tztpl = os.path.join(cwd, 'tz.cfg.tpl')
-  kbcfg = os.path.join(cfgdir, 'keyboard.cfg')
-  langcfg = os.path.join(cfgdir, 'lang.cfg')
-  timezonecfg = os.path.join(cfgdir, 'timezone.cfg')
 
 # Initialize gettext
 gettext.bindtextdomain(projectname, localedir)
@@ -55,7 +24,8 @@ _ = gettext.gettext
 # this list defines the available languages, which should be used
 # to generate the menu
 langavailable = [
-    # locale, name, nativename, keyboard layout
+    # locale, name, nativename, Console keyboard layout
+    ['ar_SA.utf8', 'Arabic', 'العربية', ['us']], # seems to be the most neutral arabic locale, us keyboard seems to be a good compromise
     ['cs_CZ.utf8', 'Czech', 'Česky', ['cz']],
     ['da_DK.utf8', 'Danish', 'Dansk', ['dk']],
     ['de_DE.utf8', 'German', 'Deutsch', ['de']],
@@ -109,19 +79,19 @@ def strings():
     ("Lengfxpayload", _("Enable gfxpayload=keep (default)")),
     ("Ldisgfxpayload", _("Disable gfxpayload=keep (if it doesn't load try this)")),
     ("Lpassword", _("Change root password")),
-    ("Lpasswordask", _("New root password (choose 'ask' to be asked at boot): ")),
+    ("Lpasswordask", _("New root password (choose 'ask' to be asked at boot):")),
     ("Lproxy", _("Set a proxy")),
-    ("Lproxyask", _("New proxy (empty for no proxy): ")),
+    ("Lproxyask", _("New proxy (empty for no proxy):")),
     ("Lfromiso", _("Boot from an ISO")),
-    ("Lfromisoask", _("Path to the ISO to boot from: ")),
+    ("Lfromisoask", _("Path to the ISO to boot from:")),
     ("Lliveloading", _("Live system is loading...")),
     ("Lback", _("Return to boot menu")),
     ("Lsavesettings", _("Save all settings to be autoloaded for future boots")),
-    ("Lskiplang", _("Do you want to skip the language selection menu? [y/N] ")),
+    ("Lskiplang", _("Do you want to skip the language selection menu? [y/N]")),
     ("Linvalrep", _("Invalid response")),
     ("Lsaveenverr", _("There was an error saving your settings. Are the live files located on a writeable media like an USB key (i.e. not a CDROM)?")),
     ("Lcustomparam", _("Custom linux kernel parameters")),
-    ("Lcustomparamask", _("Enter custom linux kernel parameters: ")),
+    ("Lcustomparamask", _("Enter custom linux kernel parameters:")),
     ("Lyes", _("y")),
     ("LYES", _("Y")),
     ("Lno", _("n")),
@@ -178,7 +148,7 @@ defaulttz = 'UTC'
 ##################################
 
 
-langdict = [ 'locale', 'name', 'nativename', 'kb' ]
+langdict = [ 'locale', 'name', 'nativename', 'kb']
 
 # returns a sorted list of dictionaries describing the available langs
 # If nativename is empty it changes it to equal name.
@@ -214,7 +184,6 @@ def inversedict(map):
 
 # Generates the <locale>.cfg files containing the translations.
 def genlocalecfg(targetdir, locale):
-  os.environ['LANGUAGE'] = locale # force use of another locale
   localefile = os.path.join(targetdir, locale + '.cfg')
   with open(localefile, 'w') as f:
     for string in strings():
@@ -282,11 +251,6 @@ def gentimezone(tpl, tzdir, zone, cities):
         fcfg.write(timezonemenuentry % (city, city))
 
 def main():
-  if sys.argv[1] == 'dumpkbs':
-    for k, kb in getkbs().iteritems():
-      print kb
-    sys.exit()
-  
   for dir in [localecfgdir, cfgdir, kbdir]:
     if not os.path.isdir(dir):
       os.makedirs(dir)
@@ -311,10 +275,71 @@ def main():
   for tz in timezones:
     gentimezone(tztpl, tzdir, tz[0], tz[1])
   
-  for k, v in kbs.iteritems():
+  kmaps = [line.strip() for line in open(keympas_path, 'r')]
+  for k, kb in kbs.iteritems():
     os.chdir(kbdir)
-    os.system('grub-kbdcomp ' + v)
-    if os.path.isfile(v + '.gkb') and os.stat(v + '.gkb').st_size == 0:
-      os.remove(v + '.gkb')
+    for kmap in kmaps:
+      if len(kmap) > 0 and kmap[0] != '#' and kmap.split('|')[0] == kb:
+        xkb = kmap.split('|')[1].split(',')[0]
+        xkb_opts = xkb + " " + kmap.split('|')[2].split(',')[0]
+        break
+    if xkb == None:
+      xkb = kb
+      xkb_ops = xkb
+    print 'grub-kbdcomp ' + xkb_opts
+    os.system('grub-kbdcomp ' + xkb_opts)
+    if os.path.isfile(xkb + '.gkb') and os.stat(xkb + '.gkb').st_size == 0:
+      os.remove(xkb + '.gkb')
+    if os.path.isfile(xkb + '.gkb') and kb != xkb:
+      os.rename(xkb + '.gkb', kb + '.gkb')
 
-main()
+def usage():
+  print """
+Use this script to generate the translations, the language,
+the keyboard selection menu and the timezone menus.
+It should be called like this:
+  generate dumpkbs
+    OR
+  generate <localecfgdir> <cfgdir> <kbdir> <keymaps_path> <tzdir> <volumename>
+
+Usually such values should be fine:
+localecfgdir = <someprefix>/boot/grub/locale
+cfgdir = <someprefix>/boot/grub
+kbdir = <someprefix>/boot/grub/keymaps
+keympas_path = <someprefix>/keymaps
+  text file in the format:
+    keymap|XkbLayout|XkbVariant|XkbOptions
+tzdir = <someprefix>/boot/grub/timezone
+volumename = SalixLive
+
+"""
+
+
+if len(sys.argv) == 1:
+  usage()
+  sys.exit(1)
+
+if sys.argv[1] == 'dumpkbs':
+  for k, kb in getkbs().iteritems():
+    print kb
+  sys.exit()
+elif len(sys.argv) < 7:
+  usage()
+  sys.exit(1)
+else:
+  # Here we "parse" commandline arguments
+  localecfgdir = sys.argv[1]  # where to store the <locale>.cfg files
+  cfgdir = sys.argv[2]  # where to store all other .cfg files
+  kbdir = sys.argv[3] # where to store grub keymaps
+  keympas_path = sys.argv[4] # where there is the matching for console keymap to X keymap
+  tzdir = sys.argv[5] # where to store time zones
+  volumename = sys.argv[6] # volume name to use
+
+  kbtpl = os.path.join(cwd, 'keyboard.cfg.tpl')
+  langtpl = os.path.join(cwd, 'lang.cfg.tpl')
+  zonetpl = os.path.join(cwd, 'zone.cfg.tpl')
+  tztpl = os.path.join(cwd, 'tz.cfg.tpl')
+  kbcfg = os.path.join(cfgdir, 'keyboard.cfg')
+  langcfg = os.path.join(cfgdir, 'lang.cfg')
+  timezonecfg = os.path.join(cfgdir, 'timezone.cfg')
+  main()
