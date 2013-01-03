@@ -130,7 +130,8 @@ EOF
     cd "$grubdir/generate"
     # compile mo files, create locale dir containg translations
     make install
-    ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezones" "$VOLNAME"
+    mkdir -p "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
+    ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone" "$VOLNAME"
   )
   # add grub2 menu
   (
