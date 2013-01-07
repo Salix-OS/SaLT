@@ -10,7 +10,8 @@
 [ "$$" -ne 1 ] && exit 1;
 args="$@"
 
-echo -e -n '\n\e[1;36mSaLT v0.1 initializing... '
+SALT_VER=$(cat /salt-version)
+echo -e -n "\n\e[1;36mSaLT v$SALT_VER initializing... "
 PATH=:/usr/sbin:/usr/bin:/sbin:/bin
 export PATH
 
@@ -37,12 +38,27 @@ mount -t tmpfs none /tmp
 # load the SaLT library
 . /lib/libSaLT
 if [ $(mount | grep ' on / ' | wc -l) -eq 1 ]; then
-  echo -e "\e[1;31mError\e[0m"
+  echoerror 'Error'
   fumble "You cannot use initramfs with SaLT, only initrd is supported."
 else
-  echo -e "\e[1;32mDone\e[0m"
+  echoinfo 'Done'
 fi
-[ -z "$SALT_DEBUG" ] && clear
+if [ -z "$SALT_DEBUG" ]; then
+  salt="S a L T   -   v. $SALT_VER"
+  line=''
+  spcs=''
+  for i in $(seq 1 $(expr length "$salt")); do
+    line="${line}="
+    spcs="${empt} "
+  done
+  clear
+  echocolornl $COLOR_BOLD $COLOR_CYAN "+=$line=+"
+  echocolornl $COLOR_BOLD $COLOR_CYAN "| $spcs |"
+  echocolornl $COLOR_BOLD $COLOR_CYAN "| $salt |"
+  echocolornl $COLOR_BOLD $COLOR_CYAN "| $spcs |"
+  echocolornl $COLOR_BOLD $COLOR_CYAN "+=$line=+"
+  unset salt line spcs
+fi
 echoinfo "*** Starting Live initialization ***"
 
 cd /

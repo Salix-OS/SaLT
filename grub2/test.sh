@@ -1,4 +1,5 @@
 #!/bin/bash
+# vim: set et sw=2 st=2 tw=0:
 qemu --version >/dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo ""
@@ -55,7 +56,12 @@ rm "$grubdir/keymaps"
     fi
   done
   echo "Creating grub image core.img"
-  grub-mkimage -p /boot/grub -o /tmp/core.img -O i386-pc biosdisk iso9660
+  if grub-mkimage -V | grep -q '1\.9.'; then
+    grub_path=/boot/grub/i386-pc
+  else
+    grub_path=/boot/grub
+  fi
+  grub-mkimage -p $grub_path -o /tmp/core.img -O i386-pc biosdisk iso9660
   echo "Prepending cdboot.img to it"
   cat $GRUB_DIR/cdboot.img /tmp/core.img > $BOOTFILE
   rm /tmp/core.img
