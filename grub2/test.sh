@@ -1,6 +1,6 @@
 #!/bin/bash
 # vim: set et sw=2 st=2 tw=0:
-qemu --version >/dev/null 2>&1
+qemu-system-i386 -version >/dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo ""
   echo "WARNING: qemu not installed!"
@@ -17,16 +17,21 @@ rm -rf "$ISODIR"
 mkdir -p "$ISODIR"
 BOOTFILE=boot/eltorito.img
 CATALOGFILE=boot/grub.cat
+export DISTRONAME="GRUB2 Test"
 cp bg.png "$grubdir/build/boot/grub/bg.png"
 cp ../initrd-template/lib/keymaps "$grubdir/"
 # generate grub config
 (
   cd "$grubdir/generate"
-  echo "Compile mo files"
-  make install
   echo "Create locale + timezone dirs containg translations"
+  rm -rf "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
   mkdir -p "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
-  ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone" "GRUB2 Test"
+  ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone"
+  echo "Compile mo files"
+  make clean all DISTRONAME="$DISTRONAME"
+  for i in po/*.mo; do
+    gzip -9 -vc "$i" > "$grubdir/build/boot/grub/locale/$(basename "$i").gz"
+  done
 )
 rm "$grubdir/keymaps"
 # add grub2 menu
@@ -42,12 +47,9 @@ rm "$grubdir/keymaps"
   GRUB_DIR=$libdir/$PACKAGE_TARNAME/i386-pc
   mkdir -p boot/grub
   cp -arv "$grubdir"/build/* .
-  sed -i "s:\(set debug=\).*:\1=debug:" boot/grub/grub.cfg
-  mkdir -p boot/grub/locale/
-  for i in /usr/share/locale/*; do
-    if [ -f "$i/LC_MESSAGES/grub.mo" ]; then
-      cp -fv "$i/LC_MESSAGES/grub.mo" "boot/grub/locale/${i##*/}.mo"
-    fi
+  sed -i "s:\(set salt_debug=\).*:\1=salt_debug:" boot/grub/grub.cfg
+  for cfg in boot.cfg simpleboot.cfg; do
+    sed -i "s:_DISTRONAME_:$DISTRONAME:" boot/grub/$cfg
   done
   mkdir -p boot/grub/i386-pc/
   for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do
@@ -75,7 +77,7 @@ cd "$startdir"
 mkisofs -r -J -V "grub2_menu" -b $BOOTFILE -c $CATALOGFILE -no-emul-boot -boot-load-size 4 -boot-info-table -o "grub2menu.iso" "$ISODIR"
 if [ $QEMU -eq 1 ]; then
   echo "Launching qemu..."
-  qemu -cdrom grub2menu.iso -boot order=d
+  qemu-system-i386 -cdrom grub2menu.iso -boot order=d
   echo "Press a key to terminate..."
   read R
   rm -rf "$ISODIR"

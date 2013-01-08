@@ -125,13 +125,19 @@ EOF
   [ -e $grubdir ] && rm -rf $grubdir
   cp -r grub2 $grubdir
   mv .bg.png "$grubdir/build/boot/grub/bg.png"
+  cp initrd-template/lib/keymaps "$grubdir/"
   # generate grub config
   (
     cd "$grubdir/generate"
-    # compile mo files, create locale dir containg translations
-    make install
+    echo "Create locale + timezone dirs containg translations"
+    rm -rf "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
     mkdir -p "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
-    ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone" "$VOLNAME"
+    ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone"
+    echo "Compile mo files"
+    make clean all DISTRONAME="$VOLNAME"
+    for i in po/*.mo; do
+      gzip -9 -vc "$i" > "$grubdir/build/boot/grub/locale/$(basename "$i").gz"
+    done
   )
   # add grub2 menu
   (
@@ -147,18 +153,14 @@ EOF
     mkdir -p boot/grub
     cp -ar "$grubdir"/build/* .
     # modify the config files
-    sed -i "s,\(set debug=\).*,\1$DEBUG," boot/grub/grub.cfg
+    sed -i "s:\(set salt_debug=\).*:\1=salt_debug:" boot/grub/grub.cfg
+    for cfg in boot.cfg simpleboot.cfg; do
+      sed -i "s:_DISTRONAME_:$VOLNAME:" boot/grub/$cfg
+    done
     sed -i "s,initrd\.gz,initrd.$COMP," boot/grub/boot.cfg
     sed -i -e "s,\(ident_file=\).*,\1$IDENT_FILE," \
       -e "s,\(searched_ident_content=\).*,\1$IDENT_CONTENT," \
       -e "s,\(default_iso_name=\).*,\1$(basename $ISONAME)," boot/grub/memdisk_grub.cfg
-    # install locales
-    mkdir -p boot/grub/locale/
-    for i in /usr/share/locale/*; do
-      if [ -f "$i/LC_MESSAGES/grub.mo" ]; then
-        cp -f "$i/LC_MESSAGES/grub.mo" "boot/grub/locale/${i##*/}.mo"
-      fi
-    done
     # copy modules and other grub files
     mkdir -p boot/grub/i386-pc/
     for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do
@@ -173,10 +175,15 @@ EOF
     cp boot/grub/memdisk_grub.cfg $memdisktmp/boot/grub/grub.cfg
     tar -C $memdisktmp -cf $memdisktmp/memdisk.tar boot
     # create the core grub2 image file.
-    # zfs causes slow disk access with 1.99, so was not included
+    if grub-mkimage -V | grep -q '1\.9.'; then
+      # zfs causes slow disk access with 1.99, so was not included
+      zfs=
+    else
+      zfs=zfs
+    fi
     coreimg=$(mktemp)
     grub-mkimage -p /boot/grub -o $coreimg -O i386-pc -m $memdisktmp/memdisk.tar \
-      biosdisk ext2 fat iso9660 ntfs reiserfs xfs part_msdos part_gpt \
+      biosdisk ext2 fat iso9660 ntfs reiserfs xfs $zfs part_msdos part_gpt \
       memdisk tar configfile loopback \
       normal extcmd regexp test read echo
     # create a linux-kernel-like grub2 image, thus that can be booted by isolinux/syslinux/...

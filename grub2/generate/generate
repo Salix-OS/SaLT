@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
-import sys, os, subprocess
+import sys, os
+from subprocess import *
 import locale
 import gettext
 import glob
@@ -24,31 +25,35 @@ _ = gettext.gettext
 # this list defines the available languages, which should be used
 # to generate the menu
 langavailable = [
-    # locale, name, nativename, Console keyboard layout
-    ['ar_SA.utf8', 'Arabic', 'العربية', ['us']], # seems to be the most neutral arabic locale, us keyboard seems to be a good compromise
-    ['cs_CZ.utf8', 'Czech', 'Česky', ['cz']],
-    ['da_DK.utf8', 'Danish', 'Dansk', ['dk']],
-    ['de_DE.utf8', 'German', 'Deutsch', ['de']],
-    ['en_US',      'English (US)', None, ['us']],
-    ['en_GB.utf8', 'English (GB)', None, ['uk']],
-    ['es_ES.utf8', 'Spanish (Castilian)', 'Español (Castellano)', ['es']],
-    ['es_AR.utf8', 'Spanish (Argentinian)', 'Español (Argentina)', ['es']],
-    ['fr_FR.utf8', 'French', 'Français', ['fr-latin9']],
-    ['el_GR.utf8', 'Greek', 'Ελληνικά', ['gr']],
-    ['he.utf8',    'Hebrew', 'עִבְרִית', ['il']],
-    ['it_IT.utf8', 'Italian', 'Italiano', ['it']],
-    ['ja_JP.utf8', 'Japanese', '日本語', ['jp106']],
-    ['lt_LT.utf8', 'Lithuanian', 'Lietuviy', ['lt']],
-    ['hu_HU.utf8', 'Hungarian', 'Magyar', ['hu']],
-    ['nl_NL.utf8', 'Dutch', 'Nederlands', ['nl']],
-    ['pl_PL.utf8', 'Polish', 'Polski', ['pl']],
-    ['pt_PT.utf8', 'Portuguese (European)', 'Português (Europeu)', ['pt-latin1']],
-    ['pt_BR.utf8', 'Portuguese (Brazilian)', 'Português (Brasileiro)', ['br-abnt2']],
-    ['ru_RU.utf8', 'Russian', 'Русский', ['ru_win']],
-    ['sv_SE.utf8', 'Swedish', 'Svenska', ['sv-latin1']],
-    ['tr_TR.utf8', 'Turkish', 'Türkçe', ['trq']],
-    ['uk_UA.utf8', 'Ukrainian', 'Українська', ['ua']],
-    ]
+    # seems to be the most neutral arabic locale, us keyboard seems to be a good compromise
+    # locale: the real locale on a Linux system.
+    # polang: the name of the XX.po as translated by Transifex.
+    # g2lang: the name of the /usr/share/locale/XX/LC_MESSAGES/grub.mo for already translated grub2 messages (grub2 does not follow the regular Linux locale scheme :-/ ). It could be none if there is no grub2 translation for it yet.
+    # locale,      polang,  g2lang,      name,                      nativename,              Console keyboard layout
+    ['ar_SA.utf8', 'ar',    'en@arabic', 'Arabic',                  'العربية',               ['us']],
+    ['cs_CZ.utf8', 'cs',    None,        'Czech',                   'Česky',                 ['cz']],
+    ['da_DK.utf8', 'da',    'da',        'Danish',                  'Dansk',                 ['dk']],
+    ['de_DE.utf8', 'de',    'de',        'German',                  'Deutsch',               ['de']],
+    ['en_US',      'en',    None,        'English (US)',            None,                    ['us']],
+    ['en_GB.utf8', 'en',    None,        'English (GB)',            None,                    ['uk']],
+    ['es_ES.utf8', 'es',    None,        'Spanish (Castilian)',    'Español (Castellano)',   ['es']],
+    ['es_AR.utf8', 'es_AR', None,        'Spanish (Argentinian)',  'Español (Argentina)',    ['es']],
+    ['fr_FR.utf8', 'fr',    'fr',        'French',                 'Français',               ['fr-latin9']],
+    ['el_GR.utf8', 'el',    'en@greek',  'Greek',                  'Ελληνικά',               ['gr']],
+    ['he.utf8',    'he',    'en@hebrew', 'Hebrew',                 'עִבְרִית',                  ['il']],
+    ['hu_HU.utf8', 'hu',    'hu',        'Hungarian',              'Magyar',                 ['hu']],
+    ['it_IT.utf8', 'it',    'it',        'Italian',                'Italiano',               ['it']],
+    ['ja_JP.utf8', 'ja',    'ja',        'Japanese',               '日本語',                 ['jp106']],
+    ['lt_LT.utf8', 'lt',    None,        'Lithuanian',             'Lietuviy',               ['lt']],
+    ['nl_NL.utf8', 'nl',    'nl',        'Dutch',                  'Nederlands',             ['nl']],
+    ['pl_PL.utf8', 'pl',    'pl',        'Polish',                 'Polski',                 ['pl']],
+    ['pt_BR.utf8', 'pt_BR', None,        'Portuguese (Brazilian)', 'Português (Brasileiro)', ['br-abnt2']],
+    ['pt_PT.utf8', 'pt_PT', None,        'Portuguese (European)',  'Português (Europeu)',    ['pt-latin1']],
+    ['ru_RU.utf8', 'ru',    'ru',        'Russian',                'Русский',                ['ru_win']],
+    ['sv_SE.utf8', 'sv',    'sv',        'Swedish',                'Svenska',                ['sv-latin1']],
+    ['tr_TR.utf8', 'tr',    None,        'Turkish',                'Türkçe',                 ['trq']],
+    ['uk_UA.utf8', 'uk',    'uk',        'Ukrainian',              'Українська',             ['ua']],
+  ]
 
 # We need to ensure gettext is called on those strings at call time and
 # not earlier. Otherwise we couldn't iterate over the needed/available
@@ -56,7 +61,7 @@ langavailable = [
 def strings():
   return  [
     ## Please leave _DISTRONAME_ as it is, it's a placeholder.
-    ("Lstart", _("Start _DISTRONAME_").replace("_DISTRONAME_", volumename)),
+    ("Lstart", _("Start _DISTRONAME_")),
     ("Lmemtest", _("Memory Test")),
     ("Lchangelang", _("Change language")),
     ("Lchangekb", _("Change keyboard layout")),
@@ -100,33 +105,33 @@ def strings():
 
 kbmenuentry = """
 menuentry "%s"%s {
-  set kb="%s"
-  set kbnum="%d"
+  set salt_kb="%s"
+  set salt_kbnum="%d"
   nextconfig
 }
 """
 
 langmenuentry = """
 menuentry "%s"%s {
-  set locale="%s"
+  set salt_langnum="%s"
+  set salt_locale="%s"
   set lang="%s"
-  set langnum="%s"
-  set kb="%s"
-  set kbnum="%d"
+  set salt_kb="%s"
+  set salt_kbnum="%d"
   nextconfig
 }
 """
 
 zonemenuentry = """
 menuentry "%s" {
-  set timezone="%s"
+  set salt_timezone="%s"
   nextconfig
 }
 """
 
 timezonemenuentry = """
 menuentry "%s" {
-  set timezone="${timezone}/%s"
+  set salt_timezone="${timezone}/%s"
   nextconfig
 }
 """
@@ -137,18 +142,15 @@ displayname = 'nativename'
 # the sort order used by getlangavail, i.e. by the language menu
 langsortkey = displayname
 
-# put here the locale of the lang to set as default
-defaultlang = 'en_US'
-
+# put here some defaults
+defaultlocale = 'en_US'
 defaulttz = 'UTC'
 
 ##################################
 ##       EDIT ABOVE HERE        ##
 ##################################
-##################################
 
-
-langdict = [ 'locale', 'name', 'nativename', 'kb']
+langdict = [ 'locale', 'polang', 'g2lang', 'name', 'nativename', 'kb']
 
 # returns a sorted list of dictionaries describing the available langs
 # If nativename is empty it changes it to equal name.
@@ -182,17 +184,6 @@ def gettimezones():
 def inversedict(map):
   return dict((v, k) for k, v in map.iteritems())
 
-# Generates the <locale>.cfg files containing the translations.
-def genlocalecfg(targetdir, locale):
-  localefile = os.path.join(targetdir, locale + '.cfg')
-  # force use of another locale
-  os.environ['LANGUAGE'] = locale
-  with open(localefile, 'w') as f:
-    for string in strings():
-      f.write("set " + string[0] + "=\"" + string[1] +"\"\n")
-  f.close()
-  del os.environ['LANGUAGE']
-
 # Generates the file cfg using tpl as header and kbmenuentry as
 # template for each keyboard layout in kbs.
 def genkbcfg(tpl, cfg, kbs):
@@ -209,17 +200,17 @@ def genkbcfg(tpl, cfg, kbs):
           hotkey = ' --hotkey ' + hotkey
         fcfg.write(kbmenuentry % (v, hotkey, v, k))
 
-def genlangcfg(tpl, cfg, langs, invkbs, deflangnum, invlanglocale):
+def genlangcfg(tpl, cfg, langs, invkbs, invlanglocale):
   with open(tpl, 'r') as ftpl:
     with open(cfg, 'w') as fcfg:
       fcfg.write(ftpl.read())
       fcfg.write('\n')
-      fcfg.write('if [ "x${langnum}" = "x" ]; then\n')
-      fcfg.write('  set locale=%s\n' % defaultlang)
-      fcfg.write('  set lang=%s\n' % str.replace(defaultlang, '.utf8', ''))
-      fcfg.write('  set langnum=%d\n' % deflangnum)
+      fcfg.write('if [ -z "${salt_langnum}" ]; then\n')
+      fcfg.write('  set salt_langnum=%d\n' % invlanglocale[defaultlocale])
+      fcfg.write('  set salt_locale=%s\n' % defaultlocale)
+      fcfg.write('  set lang=%s\n' % langs[invlanglocale[defaultlocale]]['polang'])
       fcfg.write('fi\n')
-      fcfg.write('set default=${langnum}\n')
+      fcfg.write('set default=${salt_langnum}\n')
       lasthotkey = ''
       for l in langs:
         name = l['nativename']
@@ -230,11 +221,11 @@ def genlangcfg(tpl, cfg, langs, invkbs, deflangnum, invlanglocale):
           lasthotkey = hotkey
           hotkey = ' --hotkey ' + hotkey
         loc = l['locale']
-        lang = str.replace(loc, '.utf8', '')
         num = invlanglocale[loc]
+        lang = l['polang']
         kb = l['kb'][0]  # first element is the default
         kbnum = invkbs[kb]  # look the position up
-        fcfg.write(langmenuentry % (name, hotkey, loc, lang, num, kb, kbnum))
+        fcfg.write(langmenuentry % (name, hotkey, num, loc, lang, kb, kbnum))
 
 def genzones(tpl, cfg, timezones):
   with open(tpl, 'r') as ftpl:
@@ -265,15 +256,10 @@ def main():
   invkbs = inversedict(getkbs())
   langs = getlangavail()
   invlanglocale = inversedict(dict(enumerate([lang['locale'] for lang in langs])))
-  deflangnum = invlanglocale[defaultlang]
   timezones = gettimezones()
 
-  # now let's create our locale files, etc for each locale
-  for lang in langs:
-    genlocalecfg(localecfgdir, lang['locale'])
-
   genkbcfg(kbtpl, kbcfg, kbs)
-  genlangcfg(langtpl, langcfg, langs, invkbs, deflangnum, invlanglocale)
+  genlangcfg(langtpl, langcfg, langs, invkbs, invlanglocale)
   genzones(zonetpl, timezonecfg, timezones)
   for tz in timezones:
     gentimezone(tztpl, tzdir, tz[0], tz[1])
@@ -288,9 +274,9 @@ def main():
         break
     if xkb == None:
       xkb = kb
-      xkb_ops = xkb
-    if subprocess.check_output('grub-mklayout -V|grep -q "1\.9." && echo "old"', shell=True) == "":
-      xkb_ops = '-o ' + xkb + '.gkb ' + xkb_ops
+      xkb_opts = xkb
+    if Popen('grub-mklayout -V|grep -q "1\.9." && echo "old"', shell=True, stdout=PIPE).communicate()[0] == "":
+      xkb_opts = '-o ' + xkb + '.gkb ' + xkb_opts
     print 'grub-kbdcomp ' + xkb_opts
     os.system('grub-kbdcomp ' + xkb_opts)
     if os.path.isfile(xkb + '.gkb') and os.stat(xkb + '.gkb').st_size == 0:
@@ -305,7 +291,9 @@ the keyboard selection menu and the timezone menus.
 It should be called like this:
   generate dumpkbs
     OR
-  generate <localecfgdir> <cfgdir> <kbdir> <keymaps_path> <tzdir> <volumename>
+  generate findg2lang <polang>
+    OR
+  generate <localecfgdir> <cfgdir> <kbdir> <keymaps_path> <tzdir>
 
 Usually such values should be fine:
 localecfgdir = <someprefix>/boot/grub/locale
@@ -315,7 +303,6 @@ keympas_path = <someprefix>/keymaps
   text file in the format:
     keymap|XkbLayout|XkbVariant|XkbOptions
 tzdir = <someprefix>/boot/grub/timezone
-volumename = SalixLive
 
 """
 
@@ -328,7 +315,20 @@ if sys.argv[1] == 'dumpkbs':
   for k, kb in getkbs().iteritems():
     print kb
   sys.exit()
-elif len(sys.argv) < 7:
+elif len(sys.argv) == 3 and sys.argv[1] == 'findg2lang':
+  polang = sys.argv[2]
+  found = False
+  for lang in getlangavail():
+    if lang['polang'] == polang:
+      found = True
+      if lang['g2lang'] != None:
+        print lang['g2lang']
+      break
+  if found:
+    sys.exit(0)
+  else:
+    sys.exit(1)
+elif len(sys.argv) < 6:
   usage()
   sys.exit(1)
 else:
@@ -338,7 +338,6 @@ else:
   kbdir = sys.argv[3] # where to store grub keymaps
   keympas_path = sys.argv[4] # where there is the matching for console keymap to X keymap
   tzdir = sys.argv[5] # where to store time zones
-  volumename = sys.argv[6] # volume name to use
 
   kbtpl = os.path.join(cwd, 'keyboard.cfg.tpl')
   langtpl = os.path.join(cwd, 'lang.cfg.tpl')

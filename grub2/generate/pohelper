@@ -1,0 +1,11 @@
+#!/bin/sh
+DISTRONAME="$1"
+PO="$2"
+MO=$(echo "$PO" | sed 's/\.po$/.mo/')
+g2lang=$(./generate findg2lang $(basename "$PO" .po))
+if [ -n "$g2lang" ]; then
+  sed "s,_DISTRONAME_,$DISTRONAME," "$PO"
+  msgunfmt /usr/share/locale/$g2lang/LC_MESSAGES/grub.mo | sed -n '/msgid "[^"]/,$p'
+else
+  sed "s,_DISTRONAME_,$DISTRONAME," "$PO"
+fi | msgfmt --no-hash - -o "$MO"
