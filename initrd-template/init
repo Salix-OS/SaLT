@@ -44,19 +44,22 @@ else
   echoinfo 'Done'
 fi
 if [ -z "$SALT_DEBUG" ]; then
-  salt="S a L T   -   v. $SALT_VER"
+  salt="   S a L T   -   v$SALT_VER   "
   line=''
   spcs=''
   for i in $(seq 1 $(expr length "$salt")); do
-    line="${line}="
-    spcs="${empt} "
+    line="${line}━"
+    spcs="${spcs} "
   done
   clear
-  echocolornl $COLOR_BOLD $COLOR_CYAN "+=$line=+"
-  echocolornl $COLOR_BOLD $COLOR_CYAN "| $spcs |"
-  echocolornl $COLOR_BOLD $COLOR_CYAN "| $salt |"
-  echocolornl $COLOR_BOLD $COLOR_CYAN "| $spcs |"
-  echocolornl $COLOR_BOLD $COLOR_CYAN "+=$line=+"
+  echocolornl $COLOR_BOLD $COLOR_BLUE "  ┏━$line━┓"
+  echocolornl $COLOR_BOLD $COLOR_BLUE "  ┃ $spcs ┃"
+  echocolor   $COLOR_BOLD $COLOR_BLUE "  ┃"
+  echocolor   $COLOR_BOLD $COLOR_CYAN    " $salt "
+  echocolornl $COLOR_BOLD $COLOR_BLUE           "┃ "
+  echocolornl $COLOR_BOLD $COLOR_BLUE "  ┃ $spcs ┃"
+  echocolornl $COLOR_BOLD $COLOR_BLUE "  ┗━$line━┛"
+  echo
   unset salt line spcs
 fi
 echoinfo "*** Starting Live initialization ***"
@@ -143,78 +146,12 @@ if is_on_cmdline 'memonly'; then
   umount $DISTRO_MP 2>/dev/null && rmdir $DISTRO_MP 2>/dev/null
 fi
 
-infolog 'Tweaking the target distro'
-debuglog 'Installing hookers in /mnt/union...'
-install_hookers /mnt/union
+debuglog 'Installing hooks in /mnt/union...'
+install_hooks /mnt/union
 debugshell
-timezone=$(get_value_cmdline ttimezone)
-[ -e /mnt/union/etc ] || mkdir -p /mnt/union/etc
-debuglog 'Disabling root filesystem check'
-touch /mnt/union/etc/fastboot
-rm -f /mnt/union/etc/forcefsck
-debuglog 'Setting /etc/hardwareclock'
-[ -e /mnt/union/etc/hardwareclock ] || echo "$timezone" > /mnt/union/etc/hardwareclock
-debuglog 'Informing that / is already mounted in the /mnt/union'
-echo 'salt / aufs ro 0 0' > /mnt/union/etc/mtab
-debuglog 'Setting /etc/fstab'
-[ -e /mnt/union/etc/fstab ] || cp /mnt/union/etc/mtab /mnt/union/etc/fstab
-debuglog 'Ensure /proc and /sys are mounted'
-[ -d /mnt/union/proc ] || mkdir -p /mnt/union/proc
-mount -n -t proc none /mnt/union/proc
-[ -d /mnt/union/sys ] || mkdir -p /mnt/union/sys
-mount -n -t sysfs none /mnt/union/sys
-debuglog 'Disabling fs check of /'
-if [ ! -x /mnt/union/sbin/fsck.aufs ]; then
-  [ -d /mnt/union/sbin ] || mkdir -p /mnt/union/sbin
-  cat <<EOF > /mnt/union/sbin/fsck.aufs
-#!/bin/sh
-# This is for having no error at boot when using fsck -C -a / on a aufs root mount point.
-EOF
-  chmod +x /mnt/union/sbin/fsck.aufs
-fi
-debuglog 'Making rc.salt running at boot'
-if [ -e /mnt/union/etc/rc.d/rc.M ]; then
-  if [ -w /mnt/union/etc/rc.d/rc.M ]; then
-    if ! grep -q 'rc\.salt' /mnt/union/etc/rc.d/rc.M; then
-      echo -e "\n\n#SaLT\n[ -x /mnt/salt/lib/rc.salt ] && . /mnt/salt/lib/rc.salt" >> /mnt/union/etc/rc.d/rc.M
-      chmod u+x /lib/rc.salt
-    fi
-  else
-    errorlog "/etc/rc.d/rc.M does not seem to be writable in the distro: cheatcodes will not work."
-  fi
-else
-  errorlog "/etc/rc.d/rc.M does not seem to exist in the distro: cheatcodes will not work."
-fi
-debuglog 'Early configure locale'
-lang=$(get_value_cmdline lang)
-if [ -n "$lang" ] && [ -e /mnt/union/etc/profile.d ]; then
-  if [ -f /mnt/union/etc/profile.d/lang.sh ]; then
-    grep -q -i '^ *export LANG=' /mnt/union/etc/profile.d/lang.sh
-    if [ $? -eq 0 ]; then
-      sed -i "s/^ *\(export LANG=\).*$/\1$lang/" /mnt/union/etc/profile.d/lang.sh
-    else
-      echo "export LANG=$lang" >> /mnt/union/etc/profile.d/lang.sh
-    fi
-  fi
-  if [ -f /mnt/union/etc/profile.d/lang.csh ]; then
-    grep -q -i '^ *setenv LANG ' /mnt/union/etc/profile.d/lang.csh
-    if [ $? -eq 0 ]; then
-      sed -i "s/^ *\(setenv LANG \).*$/\1$lang/" /mnt/union/etc/profile.d/lang.csh
-    else
-      echo "setenv LANG $lang" >> /mnt/union/etc/profile.d/lang.csh
-    fi
-  fi
-  if [ -f /mnt/union/etc/kde/kdm/kdmrc ]; then
-    locale_noutf8=$(echo $lang | sed 's/\.utf8//')
-    sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" /mnt/union/etc/kde/kdm/kdmrc
-  fi
-fi
-debuglog 'Early configure timezone'
-(
-  cd /mnt/union
-  cp usr/share/zoneinfo/$timezone etc/localtime
-  ln -s /usr/share/zoneinfo/$timezone etc/localtime-copied-from
-)
+infolog 'Tweaking the target distro'
+make_tweaks /mnt/union
+debugshell
 
 [ -z "$SALT_DEBUG" ] && clear
 echoinfo "*** Passing execution process to $LIVE_NAME ***\n"

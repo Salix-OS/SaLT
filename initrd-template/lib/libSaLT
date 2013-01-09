@@ -17,7 +17,7 @@ else
 fi
 
 # debug mode is done using kernel command line or by putting something in the file /SALT_DEBUG
-SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -w -i debug && echo 1 || cat /SALT_DEBUG /mnt/salt/SALT_DEBUG 2>/dev/null)
+SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -w -i salt_debug && echo 1 || cat /SALT_DEBUG /mnt/salt/SALT_DEBUG 2>/dev/null)
 export SALT_DEBUG
 SAVE_FILE_NAME=${ROOT_DIR}.save
 export SAVE_FILE_NAME
@@ -132,10 +132,10 @@ errorlog() {
 # Run an interactive shell if in debug, else do nothing
 debugshell() {
   if [ -n "$SALT_DEBUG" ]; then
-    echoinfo '  +-----------------------------+'
-    echoinfo '  |       Debugging shell       |'
-    echoinfo '  |   Hit Ctrl+D to continue    |'
-    echoinfo '  +-----------------------------+'
+    echoinfo '  ┌─────────────────────────────┐'
+    echoinfo '  │       Debugging shell       │'
+    echoinfo '  │   Hit Ctrl+D to continue    │'
+    echoinfo '  └─────────────────────────────┘'
     if [ -f /lib/libSaLT ]; then
       d_lib=/lib/libSaLT
       d_sec=$(stat -L -c %Y $d_lib)
@@ -154,10 +154,10 @@ debugshell() {
 }
 shell() {
   echo
-  echoinfo '  +------------------------+'
-  echoinfo '  |         Shell          |'
-  echoinfo '  | Hit Ctrl+D to continue |'
-  echoinfo '  +------------------------+'
+  echoinfo '  ┌────────────────────────┐'
+  echoinfo '  │         Shell          │'
+  echoinfo '  │ Hit Ctrl+D to continue │'
+  echoinfo '  └────────────────────────┘'
   echo
   setsid hush -c 'exec hush </dev/tty1 >/dev/tty1 2>&1'
   echo
@@ -166,9 +166,9 @@ shell() {
 # $@ = optional message
 fumble() {
   echo
-  echoerror '  +-----------------------------+'
-  echoerror '  |         Fatal Error         |'
-  echoerror '  +-----------------------------+'
+  echoerror '  ┌─────────────────────────────┐'
+  echoerror '  │         Fatal Error         │'
+  echoerror '  └─────────────────────────────┘'
   echo
   [ -n "$1" ] && echocolor $COLOR_BOLD $COLOR_WHITE "$@"
   echo
@@ -552,6 +552,7 @@ create_union() {
 # The union is destroy from /mnt/union.
 destroy_union() {
   if [ -e /mnt/union ]; then
+    sync
     if mountpoint -q /mnt/union; then
       umount -r -d /mnt/union 2>/dev/null
       if mountpoint -q /mnt/union; then
@@ -661,9 +662,9 @@ unload_module() {
   fi
 }
 
-# Install hookers for cleanup.
+# Install hooks for cleanup.
 # $1 = mount point
-install_hookers() {
+install_hooks() {
   MP="$1"
   if [ ! -e "$MP/hooks.salt" ]; then
     mkdir -p "$MP/hooks"
@@ -677,6 +678,98 @@ install_hookers() {
         fi
       done
     done
+  fi
+}
+
+# Uninstall hooks during cleanup.
+# $1 = mount point
+uninstall_hooks() {
+  MP="$1"
+  # remove any $MP/dev/initctl file
+  rm -f $MP/dev/initctl
+  # remove symlinks to $MP/salt/tmp when init is dynamically linked.
+  if [ -e $MP/init-hooks.salt ]; then
+    sh $MP/init-hooks.salt
+    rm -f $MP/init-hooks.salt
+  fi
+}
+
+# Tweaks for Slackware.
+# $1 = mount point
+make_tweaks() {
+  MP="$1"
+  [ -e $MP/etc ] || mkdir -p $MP/etc
+  debuglog 'Disabling root filesystem check'
+  touch $MP/etc/fastboot
+  rm -f $MP/etc/forcefsck
+  timezone=$(get_value_cmdline timezone)
+  if [ ! -e $MP/etc/hardwareclock ] && [ -n "$timezone" ]; then
+    debuglog 'Setting /etc/hardwareclock'
+    echo "$timezone" > $MP/etc/hardwareclock
+  fi
+  debuglog 'Informing that / is already mounted in the $MP'
+  echo 'salt / aufs ro 0 0' > $MP/etc/mtab
+  debuglog 'Setting /etc/fstab'
+  [ -e $MP/etc/fstab ] || cp $MP/etc/mtab $MP/etc/fstab
+  debuglog 'Ensure /proc and /sys are mounted'
+  [ -d $MP/proc ] || mkdir -p $MP/proc
+  mount -n -t proc none $MP/proc
+  [ -d $MP/sys ] || mkdir -p $MP/sys
+  mount -n -t sysfs none $MP/sys
+  debuglog 'Disabling fs check of /'
+  if [ ! -x $MP/sbin/fsck.aufs ]; then
+    [ -d $MP/sbin ] || mkdir -p $MP/sbin
+    cat <<EOF > $MP/sbin/fsck.aufs
+#!/bin/sh
+# This is for having no error at boot when using fsck -C -a / on a aufs root mount point.
+EOF
+    chmod +x $MP/sbin/fsck.aufs
+  fi
+  debuglog 'Making rc.salt running at boot'
+  if [ -e $MP/etc/rc.d/rc.M ]; then
+    if [ -w $MP/etc/rc.d/rc.M ]; then
+      if ! grep -q 'rc\.salt' $MP/etc/rc.d/rc.M; then
+        echo -e "\n\n#SaLT\n[ -x /mnt/salt/lib/rc.salt ] && . /mnt/salt/lib/rc.salt" >> $MP/etc/rc.d/rc.M
+        chmod u+x /lib/rc.salt
+      fi
+    else
+      errorlog "/etc/rc.d/rc.M does not seem to be writable in the distro: cheatcodes will not work."
+    fi
+  else
+    errorlog "/etc/rc.d/rc.M does not seem to exist in the distro: cheatcodes will not work."
+  fi
+  lang=$(get_value_cmdline lang)
+  if [ -n "$lang" ] && [ -e $MP/etc/profile.d ]; then
+    debuglog "Early configure locale to $lang"
+    if [ -f $MP/etc/profile.d/lang.sh ]; then
+      grep -q -i '^ *export LANG=' $MP/etc/profile.d/lang.sh
+      if [ $? -eq 0 ]; then
+        sed -i "s/^ *\(export LANG=\).*$/\1$lang/" $MP/etc/profile.d/lang.sh
+      else
+        echo "export LANG=$lang" >> $MP/etc/profile.d/lang.sh
+      fi
+    fi
+    if [ -f $MP/etc/profile.d/lang.csh ]; then
+      grep -q -i '^ *setenv LANG ' $MP/etc/profile.d/lang.csh
+      if [ $? -eq 0 ]; then
+        sed -i "s/^ *\(setenv LANG \).*$/\1$lang/" $MP/etc/profile.d/lang.csh
+      else
+        echo "setenv LANG $lang" >> $MP/etc/profile.d/lang.csh
+      fi
+    fi
+    if [ -f $MP/etc/kde/kdm/kdmrc ]; then
+      locale_noutf8=$(echo $lang | sed 's/\.utf8//')
+      sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" $MP/etc/kde/kdm/kdmrc
+    fi
+  fi
+  if [ -n "$timezone" ] && [ -e $MP/usr/share/zoneinfo/$timezone ]; then
+    debuglog "Early configure timezone to $timezone"
+    (
+      cd $MP
+      cp usr/share/zoneinfo/$timezone etc/localtime
+      [ -e etc/localtime-copied-from ] && rm etc/localtime-copied-from
+      ln -s /usr/share/zoneinfo/$timezone etc/localtime-copied-from
+    )
   fi
 }
 

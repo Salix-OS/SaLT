@@ -131,7 +131,7 @@ menuentry "%s" {
 
 timezonemenuentry = """
 menuentry "%s" {
-  set salt_timezone="${timezone}/%s"
+  set salt_timezone="${salt_timezone}/%s"
   nextconfig
 }
 """
