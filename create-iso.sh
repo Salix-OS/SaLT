@@ -47,7 +47,7 @@ while [ -n "$1" ]; do
     '-d')
       shift
       [ "$1" = "0" ] && DEBUG=
-      [ "$1" = "1" ] && DEBUG=debug
+      [ "$1" = "1" ] && DEBUG=salt_debug
       shift
       ;;
     '-v')
@@ -165,7 +165,7 @@ EOF
     mkdir -p boot/grub
     cp -ar "$grubdir"/build/* .
     # modify the config files
-    sed -i "s:\(set salt_debug=\).*:\1=salt_debug:" boot/grub/grub.cfg
+    sed -i "s:\(set salt_debug\)=.*:\1=$DEBUG:" boot/grub/grub.cfg
     for cfg in boot.cfg simpleboot.cfg; do
       sed -i "s:_DISTRONAME_:$VOLNAME:" boot/grub/$cfg
     done
