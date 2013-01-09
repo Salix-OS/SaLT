@@ -71,6 +71,7 @@ done
 [ -e syslinux-$SYSLINUX_VER.tar.xz ] || wget "$SYSLINUX_URL"
 [ -e Elevate.zip ] || wget "$ELEVATE_URL"
 if [ -n "$KERNEL" ]; then
+  [ -e kernel ] && rm -rf kernel
   mkdir -p kernel
   ( cd kernel; tar xf "$KERNEL" )
 fi
@@ -120,10 +121,10 @@ LABEL grub2
   LINUX /boot/g2l.img
 
 EOF
-  cp syslinux-$SYSLINUX_VER/core/isolinux.bin $ISODIR/$BOOTFILE
-  cp syslinux-$SYSLINUX_VER/mbr/mbr.bin $ISODIR/boot/
+  cp -v syslinux-$SYSLINUX_VER/core/isolinux.bin $ISODIR/$BOOTFILE
+  cp -v syslinux-$SYSLINUX_VER/mbr/mbr.bin $ISODIR/boot/
+  cp -v syslinux-$SYSLINUX_VER/mbr/isohdpfx.bin .
   cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
-  #cp -v syslinux-$SYSLINUX_VER/utils/isohybrid.pl isohybrid && chmod +x isohybrid
   rm -rf syslinux-$SYSLINUX_VER
   mkdir elevate
   ( cd elevate && unzip ../Elevate.zip )
@@ -222,9 +223,22 @@ EOF
   # ensure there is no versioning files in the ISO
   find $ISODIR -type d \( -name '.cvs' -o -name '.svn' -o -name '.git' -o -name '.gitkeep' -o -name '.gitignore' \) -prune -exec rm -rf '{}' +
   # create iso using the bootfile for el torito and creating the catalog file.
-  mkisofs -r -J -V "$VOLNAME" -b $BOOTFILE -c $CATALOGFILE -no-emul-boot -boot-load-size 4 -boot-info-table -o "$ISONAME" $ISODIR
+  xorriso -as mkisofs \
+    -r \
+    -J \
+    -V "$VOLNAME" \
+    -A "$VOLNAME" \
+    -p "SaLT v$(cat version)" \
+    -publisher "SaLT v$(cat version)" \
+    -b $BOOTFILE \
+    -c $CATALOGFILE \
+    -isohybrid-mbr isohdpfx.bin \
+    -partition_offset 16 \
+    -no-emul-boot \
+    -boot-load-size 4 \
+    -boot-info-table \
+    -o "$ISONAME" \
+    $ISODIR
   # remove temp iso dir.
-  rm -rf $ISODIR
-  # modify the ISO to the IsoHybrid format.
-  #./isohybrid "$ISONAME"
+  rm -rf $ISODIR isohybrid.mbr
 fi
