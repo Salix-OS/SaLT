@@ -37,11 +37,14 @@ goto start
     endlocal
     exit /b 1
   )
-  syslinux.exe -m -a %DRIVE%
+  syslinux.exe -i -m -a %DRIVE%
+  if ERRORLEVEL 0 goto syslinuxok
+  syslinux.exe -i -m -a -s -f %DRIVE%
   if ERRORLEVEL 1 (
     endlocal
     exit /b %errorlevel%
   )
+:syslinuxok
   set relimg=%BASEDIR%g2l.img
   echo DEFAULT grub2 > %DRIVE%\syslinux.cfg
   echo PROMPT 0 >> %DRIVE%\syslinux.cfg
@@ -57,12 +60,20 @@ goto start
 :start
   if _%1 == _/v goto version
   if _%1 == _/? goto usage
+  WhoAmI /Groups > nul
+  if ERRORLEVEL 1 goto prevista
+  WhoAmI /Groups | Find "S-1-16-12288" > nul
+  if ERRORLEVEL 0 goto elevated
+  elevate.exe %0 %1 %2 %3 %4 %5 %6 %7 %8 %9
+  goto :EOF
+:prevista
+:elevated
   set DRIVE=%~d0
   set BASEDIR=%~p0
   set BASEDIR=%BASEDIR:\=/%
   echo Installing syslinux...
   call :install_syslinux "%DRIVE%" "%BASEDIR%"
   if ERRORLEVEL 1 goto end
-  echo syslinux+GRUB2 installed successfully!
+  echo syslinux+GRUB2 installed successfully in %DRIVE%
 :end
   pause

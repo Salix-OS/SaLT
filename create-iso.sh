@@ -11,8 +11,14 @@ VOLNAME='SaLT'
 ISONAME='salt.iso'
 # MemTest86+ version
 MEMTEST_VER=4.20
+MEMTEST_URL="http://www.memtest.org/download/$MEMTEST_VER/memtest86+-$MEMTEST_VER.bin.gz"
 # Syslinux version
 SYSLINUX_VER=4.06
+SYSLINUX_URL="http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VER.tar.xz"
+# Elevate.exe is a tool similar to sudo/gksudo for windows vista+ (but without password).
+# Home page: http://jpassing.com/2007/12/08/launch-elevated-processes-from-the-command-line/
+# Licence: MIT
+ELEVATE_URL="int3.de/download/Elevate.zip"
 # Compression used for the initrd, default to gz
 [ -z "$COMP" ] && COMP='gz'
 while [ -n "$1" ]; do
@@ -61,8 +67,9 @@ while [ -n "$1" ]; do
       ;;
   esac
 done
-[ ! -e mt86p ] && wget "http://www.memtest.org/download/$MEMTEST_VER/memtest86+-$MEMTEST_VER.bin.gz" -O - | zcat > mt86p
-[ ! -e syslinux-$SYSLINUX_VER.tar.xz ] && wget "http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSLINUX_VER.tar.xz"
+[ -e mt86p ] || wget "$MEMTEST_URL" -O - | zcat > mt86p
+[ -e syslinux-$SYSLINUX_VER.tar.xz ] || wget "$SYSLINUX_URL"
+[ -e Elevate.zip ] || wget "$ELEVATE_URL"
 if [ -n "$KERNEL" ]; then
   mkdir -p kernel
   ( cd kernel; tar xf "$KERNEL" )
@@ -118,6 +125,10 @@ EOF
   cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
   #cp -v syslinux-$SYSLINUX_VER/utils/isohybrid.pl isohybrid && chmod +x isohybrid
   rm -rf syslinux-$SYSLINUX_VER
+  mkdir elevate
+  ( cd elevate && unzip ../Elevate.zip )
+  cp -v elevate/bin/x86/Release/Elevate.exe $ISODIR/boot/elevate.exe
+  rm -rf elevate
   cp kernel/boot/vmlinuz-* $ISODIR/boot/vmlinuz
   cp initrd.$COMP $ISODIR/boot/initrd.$COMP
   cp mt86p $ISODIR/boot/mt86p
