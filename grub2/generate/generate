@@ -275,8 +275,7 @@ def main():
     if xkb == None:
       xkb = kb
       xkb_opts = xkb
-    if Popen('grub-mklayout -V|grep -q "1\.9." && echo "old"', shell=True, stdout=PIPE).communicate()[0] == "":
-      xkb_opts = '-o ' + xkb + '.gkb ' + xkb_opts
+    xkb_opts = '-o ' + xkb + '.gkb ' + xkb_opts
     print 'grub-kbdcomp ' + xkb_opts
     os.system('grub-kbdcomp ' + xkb_opts)
     if os.path.isfile(xkb + '.gkb') and os.stat(xkb + '.gkb').st_size == 0:

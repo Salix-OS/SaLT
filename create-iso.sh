@@ -130,9 +130,9 @@ EOF
   ( cd elevate && unzip ../Elevate.zip )
   cp -v elevate/bin/x86/Release/Elevate.exe $ISODIR/boot/elevate.exe
   rm -rf elevate
-  cp kernel/boot/vmlinuz-* $ISODIR/boot/vmlinuz
-  cp initrd.$COMP $ISODIR/boot/initrd.$COMP
-  cp mt86p $ISODIR/boot/mt86p
+  cp -v kernel/boot/vmlinuz-* $ISODIR/boot/vmlinuz
+  cp -v initrd.$COMP $ISODIR/boot/initrd.$COMP
+  cp -v mt86p $ISODIR/boot/mt86p
   grubdir="$PWD/.grub2"
   [ -e $grubdir ] && rm -rf $grubdir
   cp -r grub2 $grubdir
@@ -187,15 +187,9 @@ EOF
     cp boot/grub/memdisk_grub.cfg $memdisktmp/boot/grub/grub.cfg
     tar -C $memdisktmp -cf $memdisktmp/memdisk.tar boot
     # create the core grub2 image file.
-    if grub-mkimage -V | grep -q '1\.9.'; then
-      # zfs causes slow disk access with 1.99, so was not included
-      zfs=
-    else
-      zfs=zfs
-    fi
     coreimg=$(mktemp)
     grub-mkimage -p /boot/grub -o $coreimg -O i386-pc -m $memdisktmp/memdisk.tar \
-      biosdisk ext2 fat iso9660 ntfs reiserfs xfs $zfs part_msdos part_gpt \
+      biosdisk btrfs ext2 fat iso9660 ntfs reiserfs udf xfs zfs part_msdos part_gpt \
       memdisk tar configfile loopback \
       normal extcmd regexp test read echo
     # create a linux-kernel-like grub2 image, thus that can be booted by isolinux/syslinux/...
@@ -240,5 +234,5 @@ EOF
     -o "$ISONAME" \
     $ISODIR
   # remove temp iso dir.
-  rm -rf $ISODIR isohybrid.mbr
+  rm -rf $ISODIR
 fi

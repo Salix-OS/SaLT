@@ -58,12 +58,7 @@ rm "$grubdir/keymaps"
     fi
   done
   echo "Creating grub image core.img"
-  if grub-mkimage -V | grep -q '1\.9.'; then
-    grub_path=/boot/grub/i386-pc
-  else
-    grub_path=/boot/grub
-  fi
-  grub-mkimage -p $grub_path -o /tmp/core.img -O i386-pc biosdisk iso9660
+  grub-mkimage -p /boot/grub -o /tmp/core.img -O i386-pc biosdisk iso9660
   echo "Prepending cdboot.img to it"
   cat $GRUB_DIR/cdboot.img /tmp/core.img > $BOOTFILE
   rm /tmp/core.img
