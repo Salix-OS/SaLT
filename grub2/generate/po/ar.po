@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-01 23:17+0100\n"
+"POT-Creation-Date: 2013-01-10 00:19+0100\n"
 "PO-Revision-Date: 2012-05-25 21:17+0000\n"
 "Last-Translator: mohammad alhargan <malham1@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,140 +19,63 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: generate:89
-msgid "Start _DISTRONAME_"
-msgstr "بدء تشغيل _DISTRONAME_"
+#, sh-format
+msgid "y"
+msgstr "ن"
 
-#: generate:90
-msgid "Memory Test"
-msgstr "اختبار الذاكرة"
+#, sh-format
+msgid "Y"
+msgstr "ن"
 
-#: generate:91
-msgid "Change language"
-msgstr "تغيير اللغة"
+#, sh-format
+msgid "n"
+msgstr "ﻻ"
 
-#: generate:92
+#, sh-format
+msgid "N"
+msgstr "ﻻ"
+
+#, sh-format
 msgid "Change keyboard layout"
 msgstr "تغيير تخطيط لوحة المفاتيح"
 
-#: generate:93
-msgid "Change time zone"
-msgstr ""
+#, sh-format
+msgid "Start _DISTRONAME_"
+msgstr "بدء تشغيل _DISTRONAME_"
 
-#: generate:94
-msgid "Change boot options"
-msgstr "تغيير خيارات الإقلاع"
-
-#: generate:95
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "الإقلاع في مستوى تشغيل '3' (وضع النص)"
-
-#: generate:96
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "الإقلاع في مستوى تشغيل '4' (دخول رسومي) (افتراضي)"
-
-#: generate:97
-msgid "Enable 'Copy everything to RAM'"
-msgstr "تمكين 'نسخ كل شيء إلى ذاكرة الوصول العشوائي'"
-
-#: generate:98
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "تعطيل 'نسخ كل شيء إلى ذاكرة الوصول العشوائي' (الافتراضي)"
-
-#: generate:99
-msgid "Enable numlock on boot"
-msgstr "تمكين numlock عند الإقلاع"
-
-#: generate:100
-msgid "Disable numlock on boot (default)"
-msgstr "تعطيل numlock عند الإقلاع (افتراضي)"
-
-#: generate:101
-msgid "Enable Ibus"
-msgstr "تمكين Ibus"
-
-#: generate:102
-msgid "Disable Ibus (default)"
-msgstr "تعطيل Ibus (افتراضي)"
-
-#: generate:103
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "تمكين synaptics fdiر (في بعض الأحيان غير موثوقة)"
-
-#: generate:104
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "تعطيل synaptics fdi (افتراضي) (موثوقة)"
-
-#: generate:105
-msgid "No sound on boot"
-msgstr "بدون صوت عند الإقلاع"
-
-#: generate:106
-msgid "Enable sound on boot (default)"
-msgstr "تمكين الصوت عند الإقلاع (افتراضي)"
-
-#: generate:107
-msgid "Enable autologin on boot (default)"
-msgstr "تمكين الدخول التلقائي عند الإقلاع (افتراضي)"
-
-#: generate:108
-msgid "Disable autologin on boot"
-msgstr "تعطيل الدخول التلقائي عند الإقلاع"
-
-#: generate:109
-msgid "Enable gfxpayload=keep (default)"
-msgstr "تمكين gfxpayload=keep (افتراضي)"
-
-#: generate:110
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "تعطيل gfxpayload=keep (إذا لم يتم تحميله حاول هذا)"
-
-#: generate:111
-msgid "Change root password"
-msgstr "تغيير كلمة مرور الجذر"
-
-#: generate:112
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr "كلمة المرور الجديدة للجذر (اختر 'ask' للمطالبة بها عند الإقلاع):"
-
-#: generate:113
-msgid "Set a proxy"
-msgstr "تعيين وكيل"
-
-#: generate:114
-msgid "New proxy (empty for no proxy):"
-msgstr "الوكيل الجديد (فارغة بدون وكيل):"
-
-#: generate:115
-msgid "Boot from an ISO"
-msgstr "الإقلاع من ISO"
-
-#: generate:116
-msgid "Path to the ISO to boot from:"
-msgstr "المسار إلى ISO للإقلاع منه:"
-
-#: generate:117
+#, sh-format
 msgid "Live system is loading..."
 msgstr "يتم تحميل النظام الحي..."
 
-#: generate:118
-msgid "Return to boot menu"
-msgstr "العودة إلى قائمة الإقلاع"
+#, sh-format
+msgid "Change boot options"
+msgstr "تغيير خيارات الإقلاع"
 
-#: generate:119
+#, sh-format
+msgid "Memory Test"
+msgstr "اختبار الذاكرة"
+
+#, sh-format
+msgid "Change language"
+msgstr "تغيير اللغة"
+
+#, sh-format
+msgid "Change time zone"
+msgstr ""
+
+#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "حفظ كافة الإعدادات لتكون مُحملة تلقائياً عند الإقلاع في المستقبل"
 
-#: generate:120
+#, sh-format
 msgid "Do you want to skip the language selection menu? [y/N]"
 msgstr "هل تريد تخطي قائمة اختيار اللغة؟ [ن/ﻻ]"
 
-#: generate:121
+#, sh-format
 msgid "Invalid response"
 msgstr "استجابة غير صالحة"
 
-#: generate:122
+#, sh-format
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -160,26 +83,102 @@ msgstr ""
 "حدث خطأ أثناء حفظ الإعدادات. هل الملفات الحية الموجودة على وسائط قابل "
 "للكتابة مثل على سواقة USB (أي ليست CDROM)؟"
 
-#: generate:123
+#, sh-format
+msgid "Return to boot menu"
+msgstr "العودة إلى قائمة الإقلاع"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "الإقلاع في مستوى تشغيل '3' (وضع النص)"
+
+#, sh-format
+msgid "Boot to runlevel '4' (graphical login) (default)"
+msgstr "الإقلاع في مستوى تشغيل '4' (دخول رسومي) (افتراضي)"
+
+#, sh-format
+msgid "Enable 'Copy everything to RAM'"
+msgstr "تمكين 'نسخ كل شيء إلى ذاكرة الوصول العشوائي'"
+
+#, sh-format
+msgid "Disable 'Copy everything to RAM' (default)"
+msgstr "تعطيل 'نسخ كل شيء إلى ذاكرة الوصول العشوائي' (الافتراضي)"
+
+#, sh-format
+msgid "Enable numlock on boot"
+msgstr "تمكين numlock عند الإقلاع"
+
+#, sh-format
+msgid "Disable numlock on boot (default)"
+msgstr "تعطيل numlock عند الإقلاع (افتراضي)"
+
+#, sh-format
+msgid "Enable Ibus"
+msgstr "تمكين Ibus"
+
+#, sh-format
+msgid "Disable Ibus (default)"
+msgstr "تعطيل Ibus (افتراضي)"
+
+#, sh-format
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr "تمكين synaptics fdiر (في بعض الأحيان غير موثوقة)"
+
+#, sh-format
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr "تعطيل synaptics fdi (افتراضي) (موثوقة)"
+
+#, sh-format
+msgid "No sound on boot"
+msgstr "بدون صوت عند الإقلاع"
+
+#, sh-format
+msgid "Enable sound on boot (default)"
+msgstr "تمكين الصوت عند الإقلاع (افتراضي)"
+
+#, sh-format
+msgid "Enable autologin on boot (default)"
+msgstr "تمكين الدخول التلقائي عند الإقلاع (افتراضي)"
+
+#, sh-format
+msgid "Disable autologin on boot"
+msgstr "تعطيل الدخول التلقائي عند الإقلاع"
+
+#, sh-format
+msgid "Enable gfxpayload=keep (default)"
+msgstr "تمكين gfxpayload=keep (افتراضي)"
+
+#, sh-format
+msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+msgstr "تعطيل gfxpayload=keep (إذا لم يتم تحميله حاول هذا)"
+
+#, sh-format
+msgid "Change root password"
+msgstr "تغيير كلمة مرور الجذر"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr "كلمة المرور الجديدة للجذر (اختر 'ask' للمطالبة بها عند الإقلاع):"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "تعيين وكيل"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "الوكيل الجديد (فارغة بدون وكيل):"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "الإقلاع من ISO"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "المسار إلى ISO للإقلاع منه:"
+
+#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "تخصيص معلمات نواة لينكس"
 
-#: generate:124
+#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "قم بإدخال معلمات النواة لينكس المخصصة:"
-
-#: generate:125
-msgid "y"
-msgstr "ن"
-
-#: generate:126
-msgid "Y"
-msgstr "ن"
-
-#: generate:127
-msgid "n"
-msgstr "ﻻ"
-
-#: generate:128
-msgid "N"
-msgstr "ﻻ"

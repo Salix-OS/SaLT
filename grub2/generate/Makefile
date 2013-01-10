@@ -1,4 +1,5 @@
-PACKAGE = generate
+PACKAGE = salt
+SRCFILES = $(wildcard ../build/boot/grub/*.cfg)
 POFILES = $(wildcard po/*.po)
 MOFILES = $(POFILES:.po=.mo)
 POTFILE = po/$(PACKAGE).pot
@@ -7,11 +8,11 @@ DISTRONAME = SalixLive
 help:
 	@echo "Help:"
 	@echo "  build        build the .mo files"
-	@echo "  all          build"
 	@echo "  clean        remove all .mo and .po~ files"
-	@echo "  updatetrans  update ${POTFILE} from ${PACKAGE} and generate/update .po files"
+	@echo "  updatepot    update ${POTFILE} from *.cfg and generate/update po/*.po files"
+	@echo "  all          updatepot + build"
 
-all: build
+all: updatepot build
 
 build: $(MOFILES)
 
@@ -23,16 +24,20 @@ clean:
 	@rm -f $(MOFILES)
 	@rm -f $(POFILES:.po=.po~)
 
-updatetrans:
-	@touch $(POTFILE)
-	xgettext --from-code=utf-8 \
+updatepot:
+	@[ -e $(POTFILE) ] || touch $(POTFILE)
+	@sed -n '/^\([^#].*\)\?gettext\(var\)\? / { s/.*gettext\(var \+[^ ]\+\)\? \+\("[^"]\+"\)/eval_gettext \2/; p }' $(SRCFILES) | xgettext \
+		--from-code=utf-8 \
+		-L Shell \
+		--no-location \
+		--no-wrap \
+		--omit-header \
+		-d $(PACKAGE) \
 		-j \
-		-L Python \
-		--add-comments=\# \
 		-o $(POTFILE) \
-		$(PACKAGE)
+		-
 	@for i in $(POFILES); do \
 		msgmerge -NU $$i $(POTFILE); \
 	done
 
-.PHONY: help all build clean updatetrans
+.PHONY: help all build clean createpot updatepot

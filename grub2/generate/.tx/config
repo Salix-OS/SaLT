@@ -3,6 +3,6 @@ host = https://www.transifex.com
 
 [salix.live-bootmenu]
 file_filter = po/<lang>.po
-source_file = po/generate.pot
+source_file = po/salt.pot
 source_lang = en
 

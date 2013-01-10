@@ -52,13 +52,13 @@ if [ -z "$SALT_DEBUG" ]; then
     spcs="${spcs} "
   done
   clear
-  echocolornl $COLOR_BOLD $COLOR_BLUE "  ┏━$line━┓"
-  echocolornl $COLOR_BOLD $COLOR_BLUE "  ┃ $spcs ┃"
-  echocolor   $COLOR_BOLD $COLOR_BLUE "  ┃"
+  echocolornl $COLOR_BOLD $COLOR_BLUE "  ┌─$line─┐"
+  echocolornl $COLOR_BOLD $COLOR_BLUE "  │ $spcs │"
+  echocolor   $COLOR_BOLD $COLOR_BLUE "  │"
   echocolor   $COLOR_BOLD $COLOR_CYAN    " $salt "
-  echocolornl $COLOR_BOLD $COLOR_BLUE           "┃ "
-  echocolornl $COLOR_BOLD $COLOR_BLUE "  ┃ $spcs ┃"
-  echocolornl $COLOR_BOLD $COLOR_BLUE "  ┗━$line━┛"
+  echocolornl $COLOR_BOLD $COLOR_BLUE           "│ "
+  echocolornl $COLOR_BOLD $COLOR_BLUE "  │ $spcs │"
+  echocolornl $COLOR_BOLD $COLOR_BLUE "  └─$line─┘"
   echo
   unset salt line spcs
 fi

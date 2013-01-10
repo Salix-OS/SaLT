@@ -1,14 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Salix Live Technology grub2 boot menu translations.
+# Copyright (C) 2013 SaLT - jrd@enialis.net
+# This file is distributed under the same license as the SaLT package.
+# Cyrille Pontvieux <jrd@enialis.net>, 2013.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: salt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-01 23:17+0100\n"
+"POT-Creation-Date: 2013-01-10 00:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,169 +17,162 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: generate:89
-msgid "Start _DISTRONAME_"
-msgstr ""
-
-#: generate:90
-msgid "Memory Test"
-msgstr ""
-
-#: generate:91
-msgid "Change language"
-msgstr ""
-
-#: generate:92
-msgid "Change keyboard layout"
-msgstr ""
-
-#: generate:93
-msgid "Change time zone"
-msgstr ""
-
-#: generate:94
-msgid "Change boot options"
-msgstr ""
-
-#: generate:95
-msgid "Boot to runlevel '3' (text mode)"
-msgstr ""
-
-#: generate:96
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr ""
-
-#: generate:97
-msgid "Enable 'Copy everything to RAM'"
-msgstr ""
-
-#: generate:98
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr ""
-
-#: generate:99
-msgid "Enable numlock on boot"
-msgstr ""
-
-#: generate:100
-msgid "Disable numlock on boot (default)"
-msgstr ""
-
-#: generate:101
-msgid "Enable Ibus"
-msgstr ""
-
-#: generate:102
-msgid "Disable Ibus (default)"
-msgstr ""
-
-#: generate:103
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr ""
-
-#: generate:104
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr ""
-
-#: generate:105
-msgid "No sound on boot"
-msgstr ""
-
-#: generate:106
-msgid "Enable sound on boot (default)"
-msgstr ""
-
-#: generate:107
-msgid "Enable autologin on boot (default)"
-msgstr ""
-
-#: generate:108
-msgid "Disable autologin on boot"
-msgstr ""
-
-#: generate:109
-msgid "Enable gfxpayload=keep (default)"
-msgstr ""
-
-#: generate:110
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
-
-#: generate:111
-msgid "Change root password"
-msgstr ""
-
-#: generate:112
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr ""
-
-#: generate:113
-msgid "Set a proxy"
-msgstr ""
-
-#: generate:114
-msgid "New proxy (empty for no proxy):"
-msgstr ""
-
-#: generate:115
-msgid "Boot from an ISO"
-msgstr ""
-
-#: generate:116
-msgid "Path to the ISO to boot from:"
-msgstr ""
-
-#: generate:117
-msgid "Live system is loading..."
-msgstr ""
-
-#: generate:118
-msgid "Return to boot menu"
-msgstr ""
-
-#: generate:119
-msgid "Save all settings to be autoloaded for future boots"
-msgstr ""
-
-#: generate:120
-msgid "Do you want to skip the language selection menu? [y/N] "
-msgstr ""
-
-#: generate:121
-msgid "Invalid response"
-msgstr ""
-
-#: generate:122
-msgid ""
-"There was an error saving your settings. Are the live files located on a "
-"writeable media like an USB key (i.e. not a CDROM)?"
-msgstr ""
-
-#: generate:123
-msgid "Custom linux kernel parameters"
-msgstr ""
-
-#: generate:124
-msgid "Enter custom linux kernel parameters:"
-msgstr ""
-
-#: generate:125
+#, sh-format
 msgid "y"
 msgstr ""
 
-#: generate:126
+#, sh-format
 msgid "Y"
 msgstr ""
 
-#: generate:127
+#, sh-format
 msgid "n"
 msgstr ""
 
-#: generate:128
+#, sh-format
 msgid "N"
 msgstr ""
 
-#: generate:120
+#, sh-format
+msgid "Change keyboard layout"
+msgstr ""
+
+#, sh-format
+msgid "Start _DISTRONAME_"
+msgstr ""
+
+#, sh-format
+msgid "Live system is loading..."
+msgstr ""
+
+#, sh-format
+msgid "Change boot options"
+msgstr ""
+
+#, sh-format
+msgid "Memory Test"
+msgstr ""
+
+#, sh-format
+msgid "Change language"
+msgstr ""
+
+#, sh-format
+msgid "Change time zone"
+msgstr ""
+
+#, sh-format
+msgid "Save all settings to be autoloaded for future boots"
+msgstr ""
+
+#, sh-format
 msgid "Do you want to skip the language selection menu? [y/N]"
+msgstr ""
+
+#, sh-format
+msgid "Invalid response"
+msgstr ""
+
+#, sh-format
+msgid "There was an error saving your settings. Are the live files located on a writeable media like an USB key (i.e. not a CDROM)?"
+msgstr ""
+
+#, sh-format
+msgid "Return to boot menu"
+msgstr ""
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr ""
+
+#, sh-format
+msgid "Boot to runlevel '4' (graphical login) (default)"
+msgstr ""
+
+#, sh-format
+msgid "Enable 'Copy everything to RAM'"
+msgstr ""
+
+#, sh-format
+msgid "Disable 'Copy everything to RAM' (default)"
+msgstr ""
+
+#, sh-format
+msgid "Enable numlock on boot"
+msgstr ""
+
+#, sh-format
+msgid "Disable numlock on boot (default)"
+msgstr ""
+
+#, sh-format
+msgid "Enable Ibus"
+msgstr ""
+
+#, sh-format
+msgid "Disable Ibus (default)"
+msgstr ""
+
+#, sh-format
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr ""
+
+#, sh-format
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr ""
+
+#, sh-format
+msgid "No sound on boot"
+msgstr ""
+
+#, sh-format
+msgid "Enable sound on boot (default)"
+msgstr ""
+
+#, sh-format
+msgid "Enable autologin on boot (default)"
+msgstr ""
+
+#, sh-format
+msgid "Disable autologin on boot"
+msgstr ""
+
+#, sh-format
+msgid "Enable gfxpayload=keep (default)"
+msgstr ""
+
+#, sh-format
+msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+msgstr ""
+
+#, sh-format
+msgid "Change root password"
+msgstr ""
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr ""
+
+#, sh-format
+msgid "Set a proxy"
+msgstr ""
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr ""
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr ""
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr ""
+
+#, sh-format
+msgid "Custom linux kernel parameters"
+msgstr ""
+
+#, sh-format
+msgid "Enter custom linux kernel parameters:"
 msgstr ""

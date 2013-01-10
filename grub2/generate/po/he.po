@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-01 23:17+0100\n"
+"POT-Creation-Date: 2013-01-10 00:19+0100\n"
 "PO-Revision-Date: 2012-02-14 13:07+0000\n"
 "Last-Translator: Cyrille Pontvieux <jrd@enialis.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,165 +17,164 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: generate:89
-msgid "Start _DISTRONAME_"
+#, sh-format
+msgid "y"
 msgstr ""
 
-#: generate:90
-msgid "Memory Test"
-msgstr "Memory Test"
+#, sh-format
+msgid "Y"
+msgstr ""
 
-#: generate:91
-msgid "Change language"
-msgstr "Change language"
+#, sh-format
+msgid "n"
+msgstr ""
 
-#: generate:92
+#, sh-format
+msgid "N"
+msgstr ""
+
+#, sh-format
 msgid "Change keyboard layout"
 msgstr "שינוי מערך המקלדת"
 
-#: generate:93
-msgid "Change time zone"
+#, sh-format
+msgid "Start _DISTRONAME_"
 msgstr ""
 
-#: generate:94
-msgid "Change boot options"
-msgstr "שינוי אפשרויות אתחול"
-
-#: generate:95
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "אתחול אל runlevel '3' (מצב טקסט)"
-
-#: generate:96
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "אתחול אל runlevel '4' (התחברות גרפית) (ברירת מחדל)"
-
-#: generate:97
-msgid "Enable 'Copy everything to RAM'"
-msgstr "לאפשר 'העתקת הכל אל RAM'"
-
-#: generate:98
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "לנטרל 'העתקת הכל אל RAM' (ברירת מחדל)"
-
-#: generate:99
-msgid "Enable numlock on boot"
-msgstr "לאפשר את numlock בזמן אתחול"
-
-#: generate:100
-msgid "Disable numlock on boot (default)"
-msgstr "לנטרל את numlock בזמן אתחול (ברירת מחדל)"
-
-#: generate:101
-msgid "Enable Ibus"
-msgstr ""
-
-#: generate:102
-msgid "Disable Ibus (default)"
-msgstr ""
-
-#: generate:103
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "לאפשר את synaptics fdi (לעיתים לא קריא)"
-
-#: generate:104
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "לנטרל את synaptics fdi (קריא) (ברירת מחדל)"
-
-#: generate:105
-msgid "No sound on boot"
-msgstr ""
-
-#: generate:106
-msgid "Enable sound on boot (default)"
-msgstr ""
-
-#: generate:107
-msgid "Enable autologin on boot (default)"
-msgstr ""
-
-#: generate:108
-msgid "Disable autologin on boot"
-msgstr ""
-
-#: generate:109
-msgid "Enable gfxpayload=keep (default)"
-msgstr ""
-
-#: generate:110
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
-
-#: generate:111
-msgid "Change root password"
-msgstr ""
-
-#: generate:112
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr ""
-
-#: generate:113
-msgid "Set a proxy"
-msgstr ""
-
-#: generate:114
-msgid "New proxy (empty for no proxy):"
-msgstr ""
-
-#: generate:115
-msgid "Boot from an ISO"
-msgstr ""
-
-#: generate:116
-msgid "Path to the ISO to boot from:"
-msgstr ""
-
-#: generate:117
+#, sh-format
 msgid "Live system is loading..."
 msgstr ""
 
-#: generate:118
-msgid "Return to boot menu"
-msgstr "חזרה אל תפריט האתחול"
+#, sh-format
+msgid "Change boot options"
+msgstr "שינוי אפשרויות אתחול"
 
-#: generate:119
+#, sh-format
+msgid "Memory Test"
+msgstr "Memory Test"
+
+#, sh-format
+msgid "Change language"
+msgstr "Change language"
+
+#, sh-format
+msgid "Change time zone"
+msgstr ""
+
+#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
 
-#: generate:120
+#, sh-format
 msgid "Do you want to skip the language selection menu? [y/N]"
 msgstr ""
 
-#: generate:121
+#, sh-format
 msgid "Invalid response"
 msgstr ""
 
-#: generate:122
+#, sh-format
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
 
-#: generate:123
+#, sh-format
+msgid "Return to boot menu"
+msgstr "חזרה אל תפריט האתחול"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "אתחול אל runlevel '3' (מצב טקסט)"
+
+#, sh-format
+msgid "Boot to runlevel '4' (graphical login) (default)"
+msgstr "אתחול אל runlevel '4' (התחברות גרפית) (ברירת מחדל)"
+
+#, sh-format
+msgid "Enable 'Copy everything to RAM'"
+msgstr "לאפשר 'העתקת הכל אל RAM'"
+
+#, sh-format
+msgid "Disable 'Copy everything to RAM' (default)"
+msgstr "לנטרל 'העתקת הכל אל RAM' (ברירת מחדל)"
+
+#, sh-format
+msgid "Enable numlock on boot"
+msgstr "לאפשר את numlock בזמן אתחול"
+
+#, sh-format
+msgid "Disable numlock on boot (default)"
+msgstr "לנטרל את numlock בזמן אתחול (ברירת מחדל)"
+
+#, sh-format
+msgid "Enable Ibus"
+msgstr ""
+
+#, sh-format
+msgid "Disable Ibus (default)"
+msgstr ""
+
+#, sh-format
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr "לאפשר את synaptics fdi (לעיתים לא קריא)"
+
+#, sh-format
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr "לנטרל את synaptics fdi (קריא) (ברירת מחדל)"
+
+#, sh-format
+msgid "No sound on boot"
+msgstr ""
+
+#, sh-format
+msgid "Enable sound on boot (default)"
+msgstr ""
+
+#, sh-format
+msgid "Enable autologin on boot (default)"
+msgstr ""
+
+#, sh-format
+msgid "Disable autologin on boot"
+msgstr ""
+
+#, sh-format
+msgid "Enable gfxpayload=keep (default)"
+msgstr ""
+
+#, sh-format
+msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+msgstr ""
+
+#, sh-format
+msgid "Change root password"
+msgstr ""
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr ""
+
+#, sh-format
+msgid "Set a proxy"
+msgstr ""
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr ""
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr ""
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr ""
+
+#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr ""
 
-#: generate:124
+#, sh-format
 msgid "Enter custom linux kernel parameters:"
-msgstr ""
-
-#: generate:125
-msgid "y"
-msgstr ""
-
-#: generate:126
-msgid "Y"
-msgstr ""
-
-#: generate:127
-msgid "n"
-msgstr ""
-
-#: generate:128
-msgid "N"
 msgstr ""

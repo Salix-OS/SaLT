@@ -25,10 +25,10 @@ cp ../initrd-template/lib/keymaps "$grubdir/"
   cd "$grubdir/generate"
   echo "Create locale + timezone dirs containg translations"
   rm -rf "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
-  mkdir -p "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
-  ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone"
+  ./generate "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone"
   echo "Compile mo files"
   make clean all DISTRONAME="$DISTRONAME"
+  mkdir -p "$grubdir/build/boot/grub/locale"
   for i in po/*.mo; do
     gzip -9 -vc "$i" > "$grubdir/build/boot/grub/locale/$(basename "$i").gz"
   done
@@ -75,8 +75,6 @@ if [ $QEMU -eq 1 ]; then
   qemu-system-i386 -cdrom grub2menu.iso -boot order=d
   echo "Press a key to terminate..."
   read R
-  rm -rf "$ISODIR"
-  rm grub2menu.iso
-else
-  rm -rf "$ISODIR"
+  rm -rf grub2menu.iso
 fi
+rm -rf "$ISODIR" "$grubdir/build/boot/grub/"{locale,timezone,keymaps,lang.cfg,keyboard.cfg,timezone.cfg,bg.png}

@@ -143,10 +143,10 @@ EOF
     cd "$grubdir/generate"
     echo "Create locale + timezone dirs containg translations"
     rm -rf "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
-    mkdir -p "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
-    ./generate "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone"
+    ./generate "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone"
     echo "Compile mo files"
     make clean all DISTRONAME="$VOLNAME"
+    mkdir -p "$grubdir/build/boot/grub/locale"
     for i in po/*.mo; do
       gzip -9 -vc "$i" > "$grubdir/build/boot/grub/locale/$(basename "$i").gz"
     done

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-01 23:17+0100\n"
+"POT-Creation-Date: 2013-01-10 00:19+0100\n"
 "PO-Revision-Date: 2013-01-01 21:13+0000\n"
 "Last-Translator: Cyrille Pontvieux <jrd@enialis.net>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/salix/language/"
@@ -20,140 +20,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: generate:89
-msgid "Start _DISTRONAME_"
-msgstr "Démarrer _DISTRONAME_"
+#, sh-format
+msgid "y"
+msgstr "o"
 
-#: generate:90
-msgid "Memory Test"
-msgstr "Tester la mémoire (RAM)"
+#, sh-format
+msgid "Y"
+msgstr "O"
 
-#: generate:91
-msgid "Change language"
-msgstr "Changer la langue"
+#, sh-format
+msgid "n"
+msgstr "n"
 
-#: generate:92
+#, sh-format
+msgid "N"
+msgstr "N"
+
+#, sh-format
 msgid "Change keyboard layout"
 msgstr "Changer la disposition du clavier"
 
-#: generate:93
-msgid "Change time zone"
-msgstr "Changer le fuseau horaire"
+#, sh-format
+msgid "Start _DISTRONAME_"
+msgstr "Démarrer _DISTRONAME_"
 
-#: generate:94
-msgid "Change boot options"
-msgstr "Changer les options de démarrage"
-
-#: generate:95
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "Démarrer en runlevel '3' (mode texte)"
-
-#: generate:96
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Démarrer en runlevel '4' (mode graphique) (défaut)"
-
-#: generate:97
-msgid "Enable 'Copy everything to RAM'"
-msgstr "Activer la 'Copie intégrale vers la RAM'"
-
-#: generate:98
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Désactiver la 'Copie intégrale vers la RAM' (défaut)"
-
-#: generate:99
-msgid "Enable numlock on boot"
-msgstr "Activer le verrou numérique au démarrage"
-
-#: generate:100
-msgid "Disable numlock on boot (default)"
-msgstr "Désactiver le verrou numérique au démarrage (défaut)"
-
-#: generate:101
-msgid "Enable Ibus"
-msgstr "Activer Ibus"
-
-#: generate:102
-msgid "Disable Ibus (default)"
-msgstr "Désactiver Ibus (par défaut)"
-
-#: generate:103
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Activer le pavé tactile Synaptic (parfois non fiable)"
-
-#: generate:104
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Désactiver le pavé tactile Synaptic (fiable) (défaut)"
-
-#: generate:105
-msgid "No sound on boot"
-msgstr "Pas de son au démarrage"
-
-#: generate:106
-msgid "Enable sound on boot (default)"
-msgstr "Activer le son au démarrage (par défaut)"
-
-#: generate:107
-msgid "Enable autologin on boot (default)"
-msgstr "Activer la connexion automatique (par défaut)"
-
-#: generate:108
-msgid "Disable autologin on boot"
-msgstr "Désactiver la connexion automatique"
-
-#: generate:109
-msgid "Enable gfxpayload=keep (default)"
-msgstr "Activer gfxpayload=keep (par défaut)"
-
-#: generate:110
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "Désactiver gfxpayload=keep (essayez ça si problème)"
-
-#: generate:111
-msgid "Change root password"
-msgstr "Changer mot de passe root"
-
-#: generate:112
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr "Mot de passe root (« ask » pour le taper plus tard) :"
-
-#: generate:113
-msgid "Set a proxy"
-msgstr "Définissez un proxy"
-
-#: generate:114
-msgid "New proxy (empty for no proxy):"
-msgstr "Nouveau proxy (vide pour aucun proxy) :"
-
-#: generate:115
-msgid "Boot from an ISO"
-msgstr "Démarrer à partir d'un ISO"
-
-#: generate:116
-msgid "Path to the ISO to boot from:"
-msgstr "Chemin vers l'ISO depuis lequel démarrer :"
-
-#: generate:117
+#, sh-format
 msgid "Live system is loading..."
 msgstr "Le système Live démarre..."
 
-#: generate:118
-msgid "Return to boot menu"
-msgstr "Retourner au menu de démarrage"
+#, sh-format
+msgid "Change boot options"
+msgstr "Changer les options de démarrage"
 
-#: generate:119
+#, sh-format
+msgid "Memory Test"
+msgstr "Tester la mémoire (RAM)"
+
+#, sh-format
+msgid "Change language"
+msgstr "Changer la langue"
+
+#, sh-format
+msgid "Change time zone"
+msgstr "Changer le fuseau horaire"
+
+#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "Enregistrer les paramètres pour les futurs démarrages"
 
-#: generate:120
+#, sh-format
 msgid "Do you want to skip the language selection menu? [y/N]"
 msgstr "Voulez-vous ignorer la sélection de langue ? [o/N]"
 
-#: generate:121
+#, sh-format
 msgid "Invalid response"
 msgstr "Réponse non valide"
 
-#: generate:122
+#, sh-format
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -162,26 +85,102 @@ msgstr ""
 "trouvent-ils sur un support inscriptible comme une clé USB (c'est à dire pas "
 "un CDROM) ?"
 
-#: generate:123
+#, sh-format
+msgid "Return to boot menu"
+msgstr "Retourner au menu de démarrage"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "Démarrer en runlevel '3' (mode texte)"
+
+#, sh-format
+msgid "Boot to runlevel '4' (graphical login) (default)"
+msgstr "Démarrer en runlevel '4' (mode graphique) (défaut)"
+
+#, sh-format
+msgid "Enable 'Copy everything to RAM'"
+msgstr "Activer la 'Copie intégrale vers la RAM'"
+
+#, sh-format
+msgid "Disable 'Copy everything to RAM' (default)"
+msgstr "Désactiver la 'Copie intégrale vers la RAM' (défaut)"
+
+#, sh-format
+msgid "Enable numlock on boot"
+msgstr "Activer le verrou numérique au démarrage"
+
+#, sh-format
+msgid "Disable numlock on boot (default)"
+msgstr "Désactiver le verrou numérique au démarrage (défaut)"
+
+#, sh-format
+msgid "Enable Ibus"
+msgstr "Activer Ibus"
+
+#, sh-format
+msgid "Disable Ibus (default)"
+msgstr "Désactiver Ibus (par défaut)"
+
+#, sh-format
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr "Activer le pavé tactile Synaptic (parfois non fiable)"
+
+#, sh-format
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr "Désactiver le pavé tactile Synaptic (fiable) (défaut)"
+
+#, sh-format
+msgid "No sound on boot"
+msgstr "Pas de son au démarrage"
+
+#, sh-format
+msgid "Enable sound on boot (default)"
+msgstr "Activer le son au démarrage (par défaut)"
+
+#, sh-format
+msgid "Enable autologin on boot (default)"
+msgstr "Activer la connexion automatique (par défaut)"
+
+#, sh-format
+msgid "Disable autologin on boot"
+msgstr "Désactiver la connexion automatique"
+
+#, sh-format
+msgid "Enable gfxpayload=keep (default)"
+msgstr "Activer gfxpayload=keep (par défaut)"
+
+#, sh-format
+msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+msgstr "Désactiver gfxpayload=keep (essayez ça si problème)"
+
+#, sh-format
+msgid "Change root password"
+msgstr "Changer mot de passe root"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr "Mot de passe root (« ask » pour le taper plus tard) :"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "Définissez un proxy"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "Nouveau proxy (vide pour aucun proxy) :"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "Démarrer à partir d'un ISO"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "Chemin vers l'ISO depuis lequel démarrer :"
+
+#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "Paramètres personnalisés de démarrage du noyau Linux"
 
-#: generate:124
+#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "Paramètres personnalisés de démarrage de Linux :"
-
-#: generate:125
-msgid "y"
-msgstr "o"
-
-#: generate:126
-msgid "Y"
-msgstr "O"
-
-#: generate:127
-msgid "n"
-msgstr "n"
-
-#: generate:128
-msgid "N"
-msgstr "N"

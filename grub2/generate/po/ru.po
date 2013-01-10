@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-01 23:17+0100\n"
+"POT-Creation-Date: 2013-01-10 00:19+0100\n"
 "PO-Revision-Date: 2012-04-06 17:18+0000\n"
 "Last-Translator: Gregory none <wolfr2@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,146 +19,63 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: generate:89
-msgid "Start _DISTRONAME_"
-msgstr "Запустить _DISTRONAME_"
+#, sh-format
+msgid "y"
+msgstr "y"
 
-#: generate:90
-msgid "Memory Test"
-msgstr "Тест памяти"
+#, sh-format
+msgid "Y"
+msgstr "Y"
 
-#: generate:91
-msgid "Change language"
-msgstr "Сменить язык"
+#, sh-format
+msgid "n"
+msgstr "n"
 
-#: generate:92
+#, sh-format
+msgid "N"
+msgstr "N"
+
+#, sh-format
 msgid "Change keyboard layout"
 msgstr "Сменить раскладку клавиатуры"
 
-#: generate:93
-msgid "Change time zone"
-msgstr ""
+#, sh-format
+msgid "Start _DISTRONAME_"
+msgstr "Запустить _DISTRONAME_"
 
-#: generate:94
-msgid "Change boot options"
-msgstr "Сменить опции загрузки"
-
-#: generate:95
-msgid "Boot to runlevel '3' (text mode)"
-msgstr ""
-"Использовать уровень запуска (runlevel) '3' при загрузке (текстовый режим)"
-
-#: generate:96
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr ""
-"Использовать уровень запуска (runlevel) '4' при загрузке (графический вход в "
-"систему) (по умолчанию)"
-
-#: generate:97
-msgid "Enable 'Copy everything to RAM'"
-msgstr "Разрешить 'Копировать все в ОЗУ'"
-
-#: generate:98
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Запретить 'Копировать все в ОЗУ' (по умолчанию)"
-
-#: generate:99
-msgid "Enable numlock on boot"
-msgstr "Включить numlock при загрузке"
-
-#: generate:100
-msgid "Disable numlock on boot (default)"
-msgstr "Отключить numlock при загрузке (по умолчанию)"
-
-#: generate:101
-msgid "Enable Ibus"
-msgstr "Разрешить Ibus"
-
-#: generate:102
-msgid "Disable Ibus (default)"
-msgstr "Запретить Ibus (по умолчанию)"
-
-#: generate:103
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Включить synaptics fdi (иногда ненадежно)"
-
-#: generate:104
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Отключить synaptics fdi (надежно) (по умолчанию)"
-
-#: generate:105
-msgid "No sound on boot"
-msgstr "Отключить звук при загрузке"
-
-#: generate:106
-msgid "Enable sound on boot (default)"
-msgstr "Включить звук при загрузке (по умолчанию)"
-
-#: generate:107
-msgid "Enable autologin on boot (default)"
-msgstr "Включить автоматический вход в систему (по умолчанию)"
-
-#: generate:108
-msgid "Disable autologin on boot"
-msgstr "Отключить автоматический вход в систему"
-
-#: generate:109
-msgid "Enable gfxpayload=keep (default)"
-msgstr "Использовать gfxpayload=keep (по умолчанию)"
-
-#: generate:110
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
-"Не использовать gfxpayload=keep (попробуйте эту опцию если не загружается)"
-
-#: generate:111
-msgid "Change root password"
-msgstr "Сменить пароль пользователя root"
-
-#: generate:112
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr ""
-"Новый пароль пользователя root (выберите 'ask' для запроса при загрузке):"
-
-#: generate:113
-msgid "Set a proxy"
-msgstr "Задать параметры прокси-сервера"
-
-#: generate:114
-msgid "New proxy (empty for no proxy):"
-msgstr ""
-"Новый прокси-сервер (оставьте пустым если прокси-сервер не используется):"
-
-#: generate:115
-msgid "Boot from an ISO"
-msgstr "Загрузка с ISO-образа"
-
-#: generate:116
-msgid "Path to the ISO to boot from:"
-msgstr "Путь до загрузочного ISO-образа:"
-
-#: generate:117
+#, sh-format
 msgid "Live system is loading..."
 msgstr "Live система загружается..."
 
-#: generate:118
-msgid "Return to boot menu"
-msgstr "Вернуться в меню загрузки"
+#, sh-format
+msgid "Change boot options"
+msgstr "Сменить опции загрузки"
 
-#: generate:119
+#, sh-format
+msgid "Memory Test"
+msgstr "Тест памяти"
+
+#, sh-format
+msgid "Change language"
+msgstr "Сменить язык"
+
+#, sh-format
+msgid "Change time zone"
+msgstr ""
+
+#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "Сохранить все настройки для их использования при следующих загрузках"
 
-#: generate:120
+#, sh-format
 msgid "Do you want to skip the language selection menu? [y/N]"
 msgstr "Хотите пропустить меню выбора языка? [y/N]"
 
-#: generate:121
+#, sh-format
 msgid "Invalid response"
 msgstr "Некорректный ответ"
 
-#: generate:122
+#, sh-format
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -166,26 +83,108 @@ msgstr ""
 "Произошла ошибка при сохранении ваших настроек. Файлы точно расположены на "
 "носителе доступном для записи вроде USB флеш-диска (то есть НЕ на CDROM)?"
 
-#: generate:123
+#, sh-format
+msgid "Return to boot menu"
+msgstr "Вернуться в меню загрузки"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr ""
+"Использовать уровень запуска (runlevel) '3' при загрузке (текстовый режим)"
+
+#, sh-format
+msgid "Boot to runlevel '4' (graphical login) (default)"
+msgstr ""
+"Использовать уровень запуска (runlevel) '4' при загрузке (графический вход в "
+"систему) (по умолчанию)"
+
+#, sh-format
+msgid "Enable 'Copy everything to RAM'"
+msgstr "Разрешить 'Копировать все в ОЗУ'"
+
+#, sh-format
+msgid "Disable 'Copy everything to RAM' (default)"
+msgstr "Запретить 'Копировать все в ОЗУ' (по умолчанию)"
+
+#, sh-format
+msgid "Enable numlock on boot"
+msgstr "Включить numlock при загрузке"
+
+#, sh-format
+msgid "Disable numlock on boot (default)"
+msgstr "Отключить numlock при загрузке (по умолчанию)"
+
+#, sh-format
+msgid "Enable Ibus"
+msgstr "Разрешить Ibus"
+
+#, sh-format
+msgid "Disable Ibus (default)"
+msgstr "Запретить Ibus (по умолчанию)"
+
+#, sh-format
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr "Включить synaptics fdi (иногда ненадежно)"
+
+#, sh-format
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr "Отключить synaptics fdi (надежно) (по умолчанию)"
+
+#, sh-format
+msgid "No sound on boot"
+msgstr "Отключить звук при загрузке"
+
+#, sh-format
+msgid "Enable sound on boot (default)"
+msgstr "Включить звук при загрузке (по умолчанию)"
+
+#, sh-format
+msgid "Enable autologin on boot (default)"
+msgstr "Включить автоматический вход в систему (по умолчанию)"
+
+#, sh-format
+msgid "Disable autologin on boot"
+msgstr "Отключить автоматический вход в систему"
+
+#, sh-format
+msgid "Enable gfxpayload=keep (default)"
+msgstr "Использовать gfxpayload=keep (по умолчанию)"
+
+#, sh-format
+msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+msgstr ""
+"Не использовать gfxpayload=keep (попробуйте эту опцию если не загружается)"
+
+#, sh-format
+msgid "Change root password"
+msgstr "Сменить пароль пользователя root"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr ""
+"Новый пароль пользователя root (выберите 'ask' для запроса при загрузке):"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "Задать параметры прокси-сервера"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr ""
+"Новый прокси-сервер (оставьте пустым если прокси-сервер не используется):"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "Загрузка с ISO-образа"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "Путь до загрузочного ISO-образа:"
+
+#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "Прочие параметры ядра linux"
 
-#: generate:124
+#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "Введите прочие параметры ядра linux:"
-
-#: generate:125
-msgid "y"
-msgstr "y"
-
-#: generate:126
-msgid "Y"
-msgstr "Y"
-
-#: generate:127
-msgid "n"
-msgstr "n"
-
-#: generate:128
-msgid "N"
-msgstr "N"

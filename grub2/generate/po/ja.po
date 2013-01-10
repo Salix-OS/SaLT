@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-01 23:17+0100\n"
+"POT-Creation-Date: 2013-01-10 00:19+0100\n"
 "PO-Revision-Date: 2012-02-14 13:07+0000\n"
 "Last-Translator: tsuren <hydrangea_and_snail@hotmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,140 +18,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: generate:89
-msgid "Start _DISTRONAME_"
-msgstr "_DISTRONAME_を起動します。"
+#, sh-format
+msgid "y"
+msgstr "y"
 
-#: generate:90
-msgid "Memory Test"
-msgstr "メモリーテスト"
+#, sh-format
+msgid "Y"
+msgstr "Y"
 
-#: generate:91
-msgid "Change language"
-msgstr "言語設定"
+#, sh-format
+msgid "n"
+msgstr "n"
 
-#: generate:92
+#, sh-format
+msgid "N"
+msgstr "N"
+
+#, sh-format
 msgid "Change keyboard layout"
 msgstr "キーボードの設定"
 
-#: generate:93
-msgid "Change time zone"
-msgstr ""
+#, sh-format
+msgid "Start _DISTRONAME_"
+msgstr "_DISTRONAME_を起動します。"
 
-#: generate:94
-msgid "Change boot options"
-msgstr "ブート・オプションの設定"
-
-#: generate:95
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "runlevel '3' (テキスト・モード)に起動する。"
-
-#: generate:96
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "runlevel '4' (グラフィック・ログイン) (デフォ)に起動する。"
-
-#: generate:97
-msgid "Enable 'Copy everything to RAM'"
-msgstr "'RAMに全てをコピーする'のオプションを使う。"
-
-#: generate:98
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "'RAMに全てコピーする' のオプションを使用しない。(デフォ)"
-
-#: generate:99
-msgid "Enable numlock on boot"
-msgstr "数字キーパッドを起動時にアクチベートする。"
-
-#: generate:100
-msgid "Disable numlock on boot (default)"
-msgstr "起動時に数字キーパッドをアクチベートしない (デフォ)"
-
-#: generate:101
-msgid "Enable Ibus"
-msgstr "ibusを有効化する。"
-
-#: generate:102
-msgid "Disable Ibus (default)"
-msgstr "ibusを無効化する（デフォルト）"
-
-#: generate:103
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "synaptics fdi を使用する。(ときどき不安定)"
-
-#: generate:104
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "synaptics fdi を使用しない　(安定) (デフォ)"
-
-#: generate:105
-msgid "No sound on boot"
-msgstr "起動時に音を出さない。"
-
-#: generate:106
-msgid "Enable sound on boot (default)"
-msgstr "ブート時の音を有効化する（デフォルト）"
-
-#: generate:107
-msgid "Enable autologin on boot (default)"
-msgstr "ブート時の自動ログインを有効化する（デフォルト）"
-
-#: generate:108
-msgid "Disable autologin on boot"
-msgstr "ブート時の自動ログインを無効化する"
-
-#: generate:109
-msgid "Enable gfxpayload=keep (default)"
-msgstr "gfxpayload=keep の有効化（デフォルト）"
-
-#: generate:110
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "gfxpayload=keep の無効化（ロードしない場合）"
-
-#: generate:111
-msgid "Change root password"
-msgstr "ルートパスワードを変更する。"
-
-#: generate:112
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr "新しいルートパスワード（起動時に問いたい場合は、”ask”を選択）："
-
-#: generate:113
-msgid "Set a proxy"
-msgstr "プロキシを設定する。"
-
-#: generate:114
-msgid "New proxy (empty for no proxy):"
-msgstr "新しいプロキシ（プロキシなしの場合は、無記入）："
-
-#: generate:115
-msgid "Boot from an ISO"
-msgstr "ISOからのブート。"
-
-#: generate:116
-msgid "Path to the ISO to boot from:"
-msgstr "起動するためのISOへのパス："
-
-#: generate:117
+#, sh-format
 msgid "Live system is loading..."
 msgstr "ライブシステムがロードされています..."
 
-#: generate:118
-msgid "Return to boot menu"
-msgstr "ブート・メニューに戻る"
+#, sh-format
+msgid "Change boot options"
+msgstr "ブート・オプションの設定"
 
-#: generate:119
+#, sh-format
+msgid "Memory Test"
+msgstr "メモリーテスト"
+
+#, sh-format
+msgid "Change language"
+msgstr "言語設定"
+
+#, sh-format
+msgid "Change time zone"
+msgstr ""
+
+#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "次からのブートのためにオートロードされるすべての設定を保存"
 
-#: generate:120
+#, sh-format
 msgid "Do you want to skip the language selection menu? [y/N]"
 msgstr "言語選択メニューをスキップしますか？ [y/N]"
 
-#: generate:121
+#, sh-format
 msgid "Invalid response"
 msgstr "無効な応答"
 
-#: generate:122
+#, sh-format
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -159,26 +82,102 @@ msgstr ""
 "設定を保存中エラーが発生しました。 ライブファイルは、USBキー（つまり、CDROMで"
 "はない）などの書き込み可能なメディア上にありますか？"
 
-#: generate:123
+#, sh-format
+msgid "Return to boot menu"
+msgstr "ブート・メニューに戻る"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "runlevel '3' (テキスト・モード)に起動する。"
+
+#, sh-format
+msgid "Boot to runlevel '4' (graphical login) (default)"
+msgstr "runlevel '4' (グラフィック・ログイン) (デフォ)に起動する。"
+
+#, sh-format
+msgid "Enable 'Copy everything to RAM'"
+msgstr "'RAMに全てをコピーする'のオプションを使う。"
+
+#, sh-format
+msgid "Disable 'Copy everything to RAM' (default)"
+msgstr "'RAMに全てコピーする' のオプションを使用しない。(デフォ)"
+
+#, sh-format
+msgid "Enable numlock on boot"
+msgstr "数字キーパッドを起動時にアクチベートする。"
+
+#, sh-format
+msgid "Disable numlock on boot (default)"
+msgstr "起動時に数字キーパッドをアクチベートしない (デフォ)"
+
+#, sh-format
+msgid "Enable Ibus"
+msgstr "ibusを有効化する。"
+
+#, sh-format
+msgid "Disable Ibus (default)"
+msgstr "ibusを無効化する（デフォルト）"
+
+#, sh-format
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr "synaptics fdi を使用する。(ときどき不安定)"
+
+#, sh-format
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr "synaptics fdi を使用しない　(安定) (デフォ)"
+
+#, sh-format
+msgid "No sound on boot"
+msgstr "起動時に音を出さない。"
+
+#, sh-format
+msgid "Enable sound on boot (default)"
+msgstr "ブート時の音を有効化する（デフォルト）"
+
+#, sh-format
+msgid "Enable autologin on boot (default)"
+msgstr "ブート時の自動ログインを有効化する（デフォルト）"
+
+#, sh-format
+msgid "Disable autologin on boot"
+msgstr "ブート時の自動ログインを無効化する"
+
+#, sh-format
+msgid "Enable gfxpayload=keep (default)"
+msgstr "gfxpayload=keep の有効化（デフォルト）"
+
+#, sh-format
+msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+msgstr "gfxpayload=keep の無効化（ロードしない場合）"
+
+#, sh-format
+msgid "Change root password"
+msgstr "ルートパスワードを変更する。"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr "新しいルートパスワード（起動時に問いたい場合は、”ask”を選択）："
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "プロキシを設定する。"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "新しいプロキシ（プロキシなしの場合は、無記入）："
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "ISOからのブート。"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "起動するためのISOへのパス："
+
+#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "カスタム·リナックス·カーネル·パラメータ"
 
-#: generate:124
+#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "カスタム·リナックス·カーネル·パラメータを入力："
-
-#: generate:125
-msgid "y"
-msgstr "y"
-
-#: generate:126
-msgid "Y"
-msgstr "Y"
-
-#: generate:127
-msgid "n"
-msgstr "n"
-
-#: generate:128
-msgid "N"
-msgstr "N"

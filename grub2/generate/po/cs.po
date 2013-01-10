@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-01 23:17+0100\n"
+"POT-Creation-Date: 2013-01-10 00:19+0100\n"
 "PO-Revision-Date: 2012-04-20 13:52+0000\n"
 "Last-Translator: Jiří Šůla <jiri.sula@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,141 +17,64 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: generate:89
-msgid "Start _DISTRONAME_"
-msgstr "Spustit _DISTRONAME_"
+#, sh-format
+msgid "y"
+msgstr "a"
 
-#: generate:90
-msgid "Memory Test"
-msgstr "Paměťový test"
+#, sh-format
+msgid "Y"
+msgstr "A"
 
-#: generate:91
-msgid "Change language"
-msgstr "Změnit jazyk"
+#, sh-format
+msgid "n"
+msgstr "n"
 
-#: generate:92
+#, sh-format
+msgid "N"
+msgstr "N"
+
+#, sh-format
 msgid "Change keyboard layout"
 msgstr "Změnit rozložení klávesnice"
 
-#: generate:93
-msgid "Change time zone"
-msgstr ""
+#, sh-format
+msgid "Start _DISTRONAME_"
+msgstr "Spustit _DISTRONAME_"
 
-#: generate:94
-msgid "Change boot options"
-msgstr "Změnit nastavení bootování"
-
-#: generate:95
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "Bootovat do režimu 3 (textový mód)"
-
-#: generate:96
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Bootovat do režimu 4 (grafické přihlášení) (základní)"
-
-#: generate:97
-msgid "Enable 'Copy everything to RAM'"
-msgstr "Zapnout 'kopírovat vše do RAM'"
-
-#: generate:98
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Vypnout 'kopírovat vše do RAM' (základní)"
-
-#: generate:99
-msgid "Enable numlock on boot"
-msgstr "Zapnout numerickou klávesnici při bootování"
-
-#: generate:100
-msgid "Disable numlock on boot (default)"
-msgstr "Vypnout numerickou klávesnici při bootování (základní)"
-
-#: generate:101
-msgid "Enable Ibus"
-msgstr "Povolit Ibus"
-
-#: generate:102
-msgid "Disable Ibus (default)"
-msgstr "Zakázat Ibus (defaultně)"
-
-#: generate:103
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Zapnout synaptics fdi (občas nespolehlivé)"
-
-#: generate:104
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Vypnout synaptics fdi (spolehlivé) (základní)"
-
-#: generate:105
-msgid "No sound on boot"
-msgstr "Při bootování bez zvuku"
-
-#: generate:106
-msgid "Enable sound on boot (default)"
-msgstr "Povolit zvuk při bootování (defaultně)"
-
-#: generate:107
-msgid "Enable autologin on boot (default)"
-msgstr "Povolit autologin při bootování (defaultně)"
-
-#: generate:108
-msgid "Disable autologin on boot"
-msgstr "Zakázat autologin při bootování"
-
-#: generate:109
-msgid "Enable gfxpayload=keep (default)"
-msgstr "Povolit gfxpayload=keep (defaultně)"
-
-#: generate:110
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "Nepovolit gfxpayload=keep (pokud se nenahraje, použijte tento)"
-
-#: generate:111
-msgid "Change root password"
-msgstr "Změnit root heslo"
-
-#: generate:112
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr "Nové heslo root (vyberte 'ask' pro zeptání se při bootování):"
-
-#: generate:113
-msgid "Set a proxy"
-msgstr "Nastavit proxy"
-
-#: generate:114
-msgid "New proxy (empty for no proxy):"
-msgstr "Nová proxy (prázdná hodnota pro žádnou)"
-
-#: generate:115
-msgid "Boot from an ISO"
-msgstr "Bootovat z ISO obrazu"
-
-#: generate:116
-msgid "Path to the ISO to boot from:"
-msgstr "Cesta k ISO, ze kterého se má bootovat:"
-
-#: generate:117
+#, sh-format
 msgid "Live system is loading..."
 msgstr "Live systém se nahrává..."
 
-#: generate:118
-msgid "Return to boot menu"
-msgstr "Návrat do boot menu"
+#, sh-format
+msgid "Change boot options"
+msgstr "Změnit nastavení bootování"
 
-#: generate:119
+#, sh-format
+msgid "Memory Test"
+msgstr "Paměťový test"
+
+#, sh-format
+msgid "Change language"
+msgstr "Změnit jazyk"
+
+#, sh-format
+msgid "Change time zone"
+msgstr ""
+
+#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
 "Uložte všechna nastavení, aby se automaticky nahrála při dalších spouštěních"
 
-#: generate:120
+#, sh-format
 msgid "Do you want to skip the language selection menu? [y/N]"
 msgstr "Přejete si přeskošit menu výběru jazyků? [a/N]"
 
-#: generate:121
+#, sh-format
 msgid "Invalid response"
 msgstr "Špatná odpověď"
 
-#: generate:122
+#, sh-format
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -160,26 +83,102 @@ msgstr ""
 "na médiu, na které se dá zapisovat, například na USB disku (například ne "
 "CDROM)?"
 
-#: generate:123
+#, sh-format
+msgid "Return to boot menu"
+msgstr "Návrat do boot menu"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "Bootovat do režimu 3 (textový mód)"
+
+#, sh-format
+msgid "Boot to runlevel '4' (graphical login) (default)"
+msgstr "Bootovat do režimu 4 (grafické přihlášení) (základní)"
+
+#, sh-format
+msgid "Enable 'Copy everything to RAM'"
+msgstr "Zapnout 'kopírovat vše do RAM'"
+
+#, sh-format
+msgid "Disable 'Copy everything to RAM' (default)"
+msgstr "Vypnout 'kopírovat vše do RAM' (základní)"
+
+#, sh-format
+msgid "Enable numlock on boot"
+msgstr "Zapnout numerickou klávesnici při bootování"
+
+#, sh-format
+msgid "Disable numlock on boot (default)"
+msgstr "Vypnout numerickou klávesnici při bootování (základní)"
+
+#, sh-format
+msgid "Enable Ibus"
+msgstr "Povolit Ibus"
+
+#, sh-format
+msgid "Disable Ibus (default)"
+msgstr "Zakázat Ibus (defaultně)"
+
+#, sh-format
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr "Zapnout synaptics fdi (občas nespolehlivé)"
+
+#, sh-format
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr "Vypnout synaptics fdi (spolehlivé) (základní)"
+
+#, sh-format
+msgid "No sound on boot"
+msgstr "Při bootování bez zvuku"
+
+#, sh-format
+msgid "Enable sound on boot (default)"
+msgstr "Povolit zvuk při bootování (defaultně)"
+
+#, sh-format
+msgid "Enable autologin on boot (default)"
+msgstr "Povolit autologin při bootování (defaultně)"
+
+#, sh-format
+msgid "Disable autologin on boot"
+msgstr "Zakázat autologin při bootování"
+
+#, sh-format
+msgid "Enable gfxpayload=keep (default)"
+msgstr "Povolit gfxpayload=keep (defaultně)"
+
+#, sh-format
+msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+msgstr "Nepovolit gfxpayload=keep (pokud se nenahraje, použijte tento)"
+
+#, sh-format
+msgid "Change root password"
+msgstr "Změnit root heslo"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr "Nové heslo root (vyberte 'ask' pro zeptání se při bootování):"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "Nastavit proxy"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "Nová proxy (prázdná hodnota pro žádnou)"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "Bootovat z ISO obrazu"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "Cesta k ISO, ze kterého se má bootovat:"
+
+#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "Vlastní linux kernel parametry"
 
-#: generate:124
+#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "Zadejte vlastní linux kernel parametry:"
-
-#: generate:125
-msgid "y"
-msgstr "a"
-
-#: generate:126
-msgid "Y"
-msgstr "A"
-
-#: generate:127
-msgid "n"
-msgstr "n"
-
-#: generate:128
-msgid "N"
-msgstr "N"

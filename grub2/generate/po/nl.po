@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-01 23:17+0100\n"
+"POT-Creation-Date: 2013-01-10 00:19+0100\n"
 "PO-Revision-Date: 2012-02-14 13:07+0000\n"
 "Last-Translator: Gambit <gambit73@gmail.com>\n"
 "Language-Team: Dutch (http://www.transifex.com/projects/p/salix/language/"
@@ -19,143 +19,63 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#. # Please leave _DISTRONAME_ as it is, it's a placeholder.
-#: generate:89
-msgid "Start _DISTRONAME_"
-msgstr "Start _DISTRONAME_"
+#, sh-format
+msgid "y"
+msgstr "j"
 
-#: generate:90
-msgid "Memory Test"
-msgstr "Geheugentest"
+#, sh-format
+msgid "Y"
+msgstr "J"
 
-#: generate:91
-msgid "Change language"
-msgstr "Taal wijzigen"
+#, sh-format
+msgid "n"
+msgstr "n"
 
-#: generate:92
+#, sh-format
+msgid "N"
+msgstr "N"
+
+#, sh-format
 msgid "Change keyboard layout"
 msgstr "Toetsenbordindeling wijzigen"
 
-#: generate:93
-msgid "Change time zone"
-msgstr ""
+#, sh-format
+msgid "Start _DISTRONAME_"
+msgstr "Start _DISTRONAME_"
 
-#: generate:94
-msgid "Change boot options"
-msgstr "Opstartopties wijzigen"
-
-#: generate:95
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "Boot in runlevel '3' (tekst modus)"
-
-#: generate:96
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Boot in runlevel '4' (grafische login) (standaard)"
-
-#: generate:97
-msgid "Enable 'Copy everything to RAM'"
-msgstr "'Kopieer alles naar RAM' inschakelen"
-
-#: generate:98
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "'Kopieer alles naar RAM' uitschakelen (standaard)"
-
-#: generate:99
-msgid "Enable numlock on boot"
-msgstr "NumLock bij het opstarten inschakelen"
-
-#: generate:100
-msgid "Disable numlock on boot (default)"
-msgstr "NumLock bij het opstarten (standaard) uitschakelen"
-
-#: generate:101
-msgid "Enable Ibus"
-msgstr "Schakel Ibus in"
-
-#: generate:102
-msgid "Disable Ibus (default)"
-msgstr "Schakel ibus uit (standaard)"
-
-#: generate:103
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "synaptics FDI inschakelen (soms onbetrouwbaar)"
-
-#: generate:104
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "synaptics FDI uitschakelen (betrouwbaar) (standaard)"
-
-#: generate:105
-msgid "No sound on boot"
-msgstr "Geen geluid bij opstarten"
-
-#: generate:106
-msgid "Enable sound on boot (default)"
-msgstr "Schakel geluid in bij het opstarten (standaard)"
-
-#: generate:107
-msgid "Enable autologin on boot (default)"
-msgstr "Schakel autologin in bij het opstarten (standaard)"
-
-#: generate:108
-msgid "Disable autologin on boot"
-msgstr "Schakel autologin uit bij opstarten"
-
-#: generate:109
-msgid "Enable gfxpayload=keep (default)"
-msgstr "Schakel gfxpayload=keep in (default)"
-
-#: generate:110
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
-"Schakel gfxpayload=keep uit (als het niet wordt geladen, probeer deze optie)"
-
-#: generate:111
-msgid "Change root password"
-msgstr "Root wachtwoord wijzigen"
-
-#: generate:112
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr ""
-"Nieuw root wachtwoord (kies 'ask' om tijdens het opstarten erom gevraagd te "
-"worden):"
-
-#: generate:113
-msgid "Set a proxy"
-msgstr "Stel een proxy in"
-
-#: generate:114
-msgid "New proxy (empty for no proxy):"
-msgstr "Nieuwe proxy (leeg voor geen proxy):"
-
-#: generate:115
-msgid "Boot from an ISO"
-msgstr "Opstarten vanaf een ISO"
-
-#: generate:116
-msgid "Path to the ISO to boot from:"
-msgstr "Pad naar de ISO om op te starten:"
-
-#: generate:117
+#, sh-format
 msgid "Live system is loading..."
 msgstr "Live systeem wordt geladen..."
 
-#: generate:118
-msgid "Return to boot menu"
-msgstr "Terug naar boot menu"
+#, sh-format
+msgid "Change boot options"
+msgstr "Opstartopties wijzigen"
 
-#: generate:119
+#, sh-format
+msgid "Memory Test"
+msgstr "Geheugentest"
+
+#, sh-format
+msgid "Change language"
+msgstr "Taal wijzigen"
+
+#, sh-format
+msgid "Change time zone"
+msgstr ""
+
+#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "Sla alle instellingen op voor alle toekomstige opstartmomenten"
 
-#: generate:120
+#, sh-format
 msgid "Do you want to skip the language selection menu? [y/N]"
 msgstr "Wilt u het taalkeuze menu overslaan? [j/N]"
 
-#: generate:121
+#, sh-format
 msgid "Invalid response"
 msgstr "Ongeldige invoer"
 
-#: generate:122
+#, sh-format
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -163,26 +83,105 @@ msgstr ""
 "Er is een fout opgetreden bij het opslaan van uw instellingen. Staan de live-"
 "bestanden op een beschrijfbare media zoals een USB-stick (dus geen CD-ROM)?"
 
-#: generate:123
+#, sh-format
+msgid "Return to boot menu"
+msgstr "Terug naar boot menu"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "Boot in runlevel '3' (tekst modus)"
+
+#, sh-format
+msgid "Boot to runlevel '4' (graphical login) (default)"
+msgstr "Boot in runlevel '4' (grafische login) (standaard)"
+
+#, sh-format
+msgid "Enable 'Copy everything to RAM'"
+msgstr "'Kopieer alles naar RAM' inschakelen"
+
+#, sh-format
+msgid "Disable 'Copy everything to RAM' (default)"
+msgstr "'Kopieer alles naar RAM' uitschakelen (standaard)"
+
+#, sh-format
+msgid "Enable numlock on boot"
+msgstr "NumLock bij het opstarten inschakelen"
+
+#, sh-format
+msgid "Disable numlock on boot (default)"
+msgstr "NumLock bij het opstarten (standaard) uitschakelen"
+
+#, sh-format
+msgid "Enable Ibus"
+msgstr "Schakel Ibus in"
+
+#, sh-format
+msgid "Disable Ibus (default)"
+msgstr "Schakel ibus uit (standaard)"
+
+#, sh-format
+msgid "Enable synaptics fdi (sometimes unreliable)"
+msgstr "synaptics FDI inschakelen (soms onbetrouwbaar)"
+
+#, sh-format
+msgid "Disable synaptics fdi (reliable) (default)"
+msgstr "synaptics FDI uitschakelen (betrouwbaar) (standaard)"
+
+#, sh-format
+msgid "No sound on boot"
+msgstr "Geen geluid bij opstarten"
+
+#, sh-format
+msgid "Enable sound on boot (default)"
+msgstr "Schakel geluid in bij het opstarten (standaard)"
+
+#, sh-format
+msgid "Enable autologin on boot (default)"
+msgstr "Schakel autologin in bij het opstarten (standaard)"
+
+#, sh-format
+msgid "Disable autologin on boot"
+msgstr "Schakel autologin uit bij opstarten"
+
+#, sh-format
+msgid "Enable gfxpayload=keep (default)"
+msgstr "Schakel gfxpayload=keep in (default)"
+
+#, sh-format
+msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+msgstr ""
+"Schakel gfxpayload=keep uit (als het niet wordt geladen, probeer deze optie)"
+
+#, sh-format
+msgid "Change root password"
+msgstr "Root wachtwoord wijzigen"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr ""
+"Nieuw root wachtwoord (kies 'ask' om tijdens het opstarten erom gevraagd te "
+"worden):"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "Stel een proxy in"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "Nieuwe proxy (leeg voor geen proxy):"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "Opstarten vanaf een ISO"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "Pad naar de ISO om op te starten:"
+
+#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "Aangepaste Linux kernel parameters"
 
-#: generate:124
+#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "Voer aangepaste Linux kernel parameters in:"
-
-#: generate:125
-msgid "y"
-msgstr "j"
-
-#: generate:126
-msgid "Y"
-msgstr "J"
-
-#: generate:127
-msgid "n"
-msgstr "n"
-
-#: generate:128
-msgid "N"
-msgstr "N"

@@ -146,6 +146,7 @@ debugshell() {
       d_sec=
     fi
     setsid hush -c 'exec hush </dev/tty1 >/dev/tty1 2>&1'
+    echo
     if [ -n "$d_sec" ] && [ $(stat -L -c %Y $d_lib) -gt $d_sec ]; then
       echodebug "Reloading $d_lib..."
       . $d_lib
@@ -702,11 +703,6 @@ make_tweaks() {
   debuglog 'Disabling root filesystem check'
   touch $MP/etc/fastboot
   rm -f $MP/etc/forcefsck
-  timezone=$(get_value_cmdline timezone)
-  if [ ! -e $MP/etc/hardwareclock ] && [ -n "$timezone" ]; then
-    debuglog 'Setting /etc/hardwareclock'
-    echo "$timezone" > $MP/etc/hardwareclock
-  fi
   debuglog 'Informing that / is already mounted in the $MP'
   echo 'salt / aufs ro 0 0' > $MP/etc/mtab
   debuglog 'Setting /etc/fstab'
@@ -762,12 +758,15 @@ EOF
       sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" $MP/etc/kde/kdm/kdmrc
     fi
   fi
+  debuglog 'Setting /etc/hardwareclock to UTC'
+  echo "UTC" > $MP/etc/hardwareclock
+  timezone=$(get_value_cmdline timezone)
   if [ -n "$timezone" ] && [ -e $MP/usr/share/zoneinfo/$timezone ]; then
     debuglog "Early configure timezone to $timezone"
     (
       cd $MP
       cp usr/share/zoneinfo/$timezone etc/localtime
-      [ -e etc/localtime-copied-from ] && rm etc/localtime-copied-from
+      rm -f etc/localtime-copied-from
       ln -s /usr/share/zoneinfo/$timezone etc/localtime-copied-from
     )
   fi
