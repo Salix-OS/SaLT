@@ -48,7 +48,7 @@ if [ -z "$SALT_DEBUG" ]; then
   line=''
   spcs=''
   for i in $(seq 1 $(expr length "$salt")); do
-    line="${line}━"
+    line="${line}─"
     spcs="${spcs} "
   done
   clear
