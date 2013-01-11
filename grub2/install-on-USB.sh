@@ -1,22 +1,24 @@
 #!/bin/sh
 cd "$(dirname "$0")"
 
-VER=1.7
-AUTHOR='Pontvieux Cyrille - jrd@enialis.net'
+VER=2.0
+AUTHOR='Cyrille Pontvieux - jrd@enialis.net'
 LICENCE='GPL v3+'
 SCRIPT=$(basename "$0")
 SCRIPT=$(readlink -f "$SCRIPT")
 
 version() {
-  echo "install-on-USB v$VER by $AUTHOR"
-  echo "Licence : $LICENCE"
-  echo '-> Install grub2(+syslinux) on an USB key using an ISO or the USB key itself.'
+  echo "SaLT USB installer v$VER"
+  echo "  by $AUTHOR"
+  echo "Licence: $LICENCE"
 }
 
 usage() {
-  version
+  echo 'install-on-USB.sh [-h/--help] [-v/--version]'
+  echo '  -h, --help: this usage message'
+  echo '  -v, --version: the version author and licence'
   echo ''
-  echo 'usage: install-on-USB.sh [-h/--help] [-v/--version]'
+  echo '-> Install grub2(+syslinux) on an USB key using an ISO or the USB key itself.'
   exit 1
 }
 
@@ -185,11 +187,11 @@ if [ ! -t 0 ]; then
   fi
 fi
 
-if ([ "$1" = "--version" ] || [ "$1" = "-v" ]); then
+if [ "$1" = "--version" ] || [ "$1" = "-v" ]; then
   version
   exit 0
 fi
-if ([ "$1" = "--help" ] || [ "$1" = "-h" ]); then
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
   usage
 fi
 if [ $(id -ru) -ne 0 ]; then

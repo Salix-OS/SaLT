@@ -3,22 +3,24 @@ SETLOCAL ENABLEEXTENSIONS
 SETLOCAL ENABLEDELAYEDEXPANSION
 cd /d %~dp0
 
-set VER=1.5
-set AUTHOR=Pontvieux Cyrille - jrd@enialis.net
+set VER=2.0
+set AUTHOR=Cyrille Pontvieux - jrd@enialis.net
 set LICENCE=GPL v3+
-title install-on-USB v%VER
+title SaLT USB installer v%VER%
 goto start
 
 :version
-  echo install-on-USB v%VER% by %AUTHOR%
-  echo Licence : %LICENCE%
-  echo -^> Install syslinux that will chainload to grub2 on an USB key using the USB key itself.
+  echo SaLT USB installer v%VER%
+  echo   by %AUTHOR%
+  echo Licence: %LICENCE%
   goto :EOF
 
 :usage
-  call :version
+  echo.install-on-USB.cmd [/?] [/v]
+  echo.  /? this usage message
+  echo.  /v the version, author and licence
   echo.
-  echo usage: install-on-USB.sh [/?] [/v]
+  echo -^> Install syslinux that will chainload to grub2 on an USB key using the USB key itself.
   goto :EOF
 
 :install_syslinux
@@ -42,7 +44,7 @@ goto start
   syslinux.exe -i -m -a -s -f %DRIVE%
   if ERRORLEVEL 1 (
     endlocal
-    exit /b %errorlevel%
+    exit /b 1
   )
 :syslinuxok
   set relimg=%BASEDIR%g2l.img
@@ -58,22 +60,40 @@ goto start
   goto :EOF
 
 :start
-  if _%1 == _/v goto version
-  if _%1 == _/? goto usage
-  WhoAmI /Groups > nul
+  if "%1" == "/v" goto version
+  if "%1" == "/?" goto usage
+  if "%1" == "--help" goto usage
+  if not "%1" == "" (echo.%1 not recognized & goto usage)
+  echo.
+  echo.  +------------------------------------+
+  echo.  ^| Installing SaLT system on USB (%~d0) ^|
+  echo.  +------------------------------------+
+  echo.
+  echo. SaLT USB installer version %VER%
+  echo.   by %AUTHOR%
+  echo.
+  echo Checking rights...
+  whoami /groups > nul
   if ERRORLEVEL 1 goto prevista
-  WhoAmI /Groups | Find "S-1-16-12288" > nul
-  if ERRORLEVEL 0 goto elevated
+  whoami /groups | find "S-1-16-12288" > nul
+  if ERRORLEVEL 1 goto elevate
+  goto elevated
+:elevate
+  echo Asking for elevated rights...
   elevate.exe %0 %1 %2 %3 %4 %5 %6 %7 %8 %9
+  if ERRORLEVEL 1 echo. & echo. /^^!\ Could not continue, administrator rights are required^^!
   goto :EOF
 :prevista
 :elevated
+  echo.  -^> ok
   set DRIVE=%~d0
   set BASEDIR=%~p0
   set BASEDIR=%BASEDIR:\=/%
   echo Installing syslinux...
   call :install_syslinux "%DRIVE%" "%BASEDIR%"
   if ERRORLEVEL 1 goto end
-  echo syslinux+GRUB2 installed successfully in %DRIVE%
+  echo.
+  echo *** SaLT system installed successfully in %DRIVE% ***
 :end
+  echo.
   pause
