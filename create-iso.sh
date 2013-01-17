@@ -116,15 +116,17 @@ PROMPT 0
 NOESCAPE 1
 TOTALTIMEOUT 1
 ONTIMEOUT grub2
+SAY Chainloading to grub2...
 LABEL grub2
-  SAY Chainloading to grub2...
-  LINUX /boot/g2l.img
+  COM32 /boot/isolinux/chain.c32
+  APPEND file=/boot/g2l.img
 
 EOF
   cp -v syslinux-$SYSLINUX_VER/core/isolinux.bin $ISODIR/$BOOTFILE
   cp -v syslinux-$SYSLINUX_VER/mbr/mbr.bin $ISODIR/boot/
   cp -v syslinux-$SYSLINUX_VER/mbr/isohdpfx.bin .
   cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
+  cp -v syslinux-$SYSLINUX_VER/com32/chain/chain.c32 $ISODIR/boot/isolinux/
   rm -rf syslinux-$SYSLINUX_VER
   mkdir elevate
   ( cd elevate && unzip ../Elevate.zip )
