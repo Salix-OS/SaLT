@@ -163,9 +163,11 @@ PROMPT 0
 NOESCAPE 1
 TOTALTIMEOUT 1
 ONTIMEOUT grub2
+SAY Chainloading to grub2...
 LABEL grub2
-  SAY Chainloading to grub2...
-  LINUX $relimg
+  COM32 /boot/chain.c32
+  APPEND file=$relimg
+
 EOF
     set +e
   fi

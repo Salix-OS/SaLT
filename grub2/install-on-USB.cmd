@@ -53,9 +53,10 @@ goto start
   echo NOESCAPE 1 >> %DRIVE%\syslinux.cfg
   echo TOTALTIMEOUT 1 >> %DRIVE%\syslinux.cfg
   echo ONTIMEOUT grub2 >> %DRIVE%\syslinux.cfg
+  echo SAY Chainloading to grub2... >> %DRIVE%\syslinux.cfg
   echo LABEL grub2 >> %DRIVE%\syslinux.cfg
-  echo   SAY Chainloading to grub2... >> %DRIVE%\syslinux.cfg
-  echo   LINUX %relimg% >> %DRIVE%\syslinux.cfg
+  echo   COM32 /boot/chain.c32 >> %DRIVE%\syslinux.cfg
+  echo   APPEND file=%relimg% >> %DRIVE%\syslinux.cfg
   endlocal
   goto :EOF
 
