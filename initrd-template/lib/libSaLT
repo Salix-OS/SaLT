@@ -758,8 +758,10 @@ EOF
       sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" $MP/etc/kde/kdm/kdmrc
     fi
   fi
-  debuglog 'Setting /etc/hardwareclock to UTC'
-  echo "UTC" > $MP/etc/hardwareclock
+  hwclock=$(get_value_cmdline hwclock)
+  [ -z "$hwclock" ] && hwclock='UTC'
+  debuglog "Setting /etc/hardwareclock to $hwclock"
+  echo "$hwclock" > $MP/etc/hardwareclock
   timezone=$(get_value_cmdline timezone)
   if [ -n "$timezone" ] && [ -e $MP/usr/share/zoneinfo/$timezone ]; then
     debuglog "Early configure timezone to $timezone"

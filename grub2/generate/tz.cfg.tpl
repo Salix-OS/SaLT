@@ -5,5 +5,5 @@ fi
 initmenu
 # next config file to load
 function nextconfig {
-  configfile $cfgprefix/boot.cfg
+  configfile $cfgprefix/hwclock.cfg
 }

@@ -12,5 +12,6 @@ function skipnextconfig {
 }
 menuentry "UTC" {
   set salt_timezone="UTC"
+  set salt_hwclock="UTC"
   skipnextconfig
 }
