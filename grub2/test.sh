@@ -18,13 +18,21 @@ mkdir -p "$ISODIR"
 BOOTFILE=boot/eltorito.img
 CATALOGFILE=boot/grub.cat
 export DISTRONAME="GRUB2 Test"
-cp bg.png "$grubdir/build/boot/grub/bg.png"
+if [ -e bg.png ]; then
+  cp bg.png "$grubdir/build/boot/grub/bg.png"
+fi
+if [ -d themes ]; then
+  theme_name=$(basename $(find themes/ -type d -mindepth 1 | head -n 1))
+  export theme_name
+  echo "** theme = $theme_name **"
+fi
 cp ../initrd-template/lib/keymaps "$grubdir/"
 # generate grub config
 (
   cd "$grubdir/generate"
   echo "Create locale + timezone dirs containg translations"
   rm -rf "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
+  rm -f "$grubdir/build/boot/grub/"{lang.cfg,keyboard.cfg,timezone.cfg}
   ./generate "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone"
   echo "Compile mo files"
   make clean all DISTRONAME="$DISTRONAME"
@@ -51,6 +59,11 @@ rm "$grubdir/keymaps"
   for cfg in boot.cfg simpleboot.cfg; do
     sed -i "s:_DISTRONAME_:$DISTRONAME:" boot/grub/$cfg
   done
+  if [ -n "$theme_name" ]; then
+    mkdir -p boot/grub/themes
+    cp -r $startdir/themes/$theme_name boot/grub/themes/
+    sed -i "s:^#\(set theme_name\)=.*:\1=\"$theme_name\":" boot/grub/include.cfg
+  fi
   mkdir -p boot/grub/i386-pc/
   for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do
     if [ -f $i ]; then
@@ -77,4 +90,4 @@ if [ $QEMU -eq 1 ]; then
   read R
   rm -rf grub2menu.iso
 fi
-rm -rf "$ISODIR" "$grubdir/build/boot/grub/"{locale,timezone,keymaps,lang.cfg,keyboard.cfg,timezone.cfg,bg.png}
+rm -rf "$ISODIR" "$grubdir/build/boot/grub/"{locale,timezone,keymaps,lang.cfg,keyboard.cfg,timezone.cfg,bg.png,themes}

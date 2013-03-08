@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Salix\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-10 00:19+0100\n"
+"POT-Creation-Date: 2013-01-10 00:45+0100\n"
 "PO-Revision-Date: 2012-02-14 13:07+0000\n"
 "Last-Translator: shador <futur.andy@googlemail.com>\n"
 "Language-Team: German (http://www.transifex.com/projects/p/salix/language/"
@@ -188,3 +188,87 @@ msgstr "Eigene Parameter für den Linux-Kernel"
 #, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "Geben Sie Ihre eigenen Parameter für den Linux-Kernel ein:"
+
+#, sh-format
+msgid "Please select your keyboard layout:"
+msgstr ""
+
+#, sh-format
+msgid "Reboot"
+msgstr ""
+
+#, sh-format
+msgid "Power off"
+msgstr ""
+
+#, sh-format
+msgid "Select an item to change the configuration:"
+msgstr ""
+
+#, sh-format
+msgid "Boot to runlevel '4' (graphical login)"
+msgstr ""
+
+#, sh-format
+msgid "'Copy everything to RAM' disabled"
+msgstr ""
+
+#, sh-format
+msgid "'Copy everything to RAM' enabled"
+msgstr ""
+
+#, sh-format
+msgid "Numlock on boot disabled"
+msgstr ""
+
+#, sh-format
+msgid "Numlock on boot enabled"
+msgstr ""
+
+#, sh-format
+msgid "Ibus disabled"
+msgstr ""
+
+#, sh-format
+msgid "Ibus enabled"
+msgstr ""
+
+#, sh-format
+msgid "Synaptics fdi disabled"
+msgstr ""
+
+#, sh-format
+msgid "Synaptics fdi enabled"
+msgstr ""
+
+#, sh-format
+msgid "Sound on boot enabled"
+msgstr ""
+
+#, sh-format
+msgid "Sound on boot disabled"
+msgstr ""
+
+#, sh-format
+msgid "Autologin on boot enabled"
+msgstr ""
+
+#, sh-format
+msgid "Autologin on boot disabled"
+msgstr ""
+
+#, sh-format
+msgid "gfxpayload=keep not used"
+msgstr ""
+
+#, sh-format
+msgid "gfxpayload=keep used"
+msgstr ""
+
+#, sh-format
+msgid "Please select your time zone area:"
+msgstr ""
+
+#, sh-format
+msgid "Please select your language:"
+msgstr ""

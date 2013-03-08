@@ -5,6 +5,7 @@
 cd $(dirname $0)
 . ./config
 IMAGE='bg.png'
+THEME=''
 KERNEL=
 DEBUG=
 VOLNAME='SaLT'
@@ -27,6 +28,7 @@ while [ -n "$1" ]; do
       echo 'create-iso.sh [-i image] [-k kernelpackage] [-d 0|1] [-v volume_name] [-o iso_name]'
       echo '  -i image: specify an image to use as background. The image will be converted to PNG 8bit 640x480.'
       echo '    The conversion is done through Image Magic and xcftools if needed. Default: bg.png'
+      echo '  -t theme: specify a grub2 theme folder. Cannot be used with -i.'
       echo '  -k kernelpackage: specify a kernel package to use for kernel modules and vmlinuz.'
       echo '    If not specified, the data will be get from the "kernel" directory'
       echo '  -d 0: non debug (default), 1: debug. If debug is specified, it is injected as a default kernel parameter'
@@ -37,6 +39,11 @@ while [ -n "$1" ]; do
     '-i')
       shift
       IMAGE="$1"
+      shift
+      ;;
+    '-t')
+      shift
+      THEME="$1"
       shift
       ;;
     '-k')
@@ -82,29 +89,39 @@ if [ $? -eq 0 ]; then
   echo "ident_content=$IDENT_CONTENT" > $ISODIR/$IDENT_FILE
   echo "basedir=/" >> $ISODIR/$IDENT_FILE
   echo "iso_name=$(basename $ISONAME)" >> $ISODIR/$IDENT_FILE
-  # generate background image
-  if [ ! -e $IMAGE ]; then
-    echo "$IMAGE not found" >&2
-    exit 1
-  fi
-  infos=$(identify "$IMAGE")
-  (echo "$infos" | grep -q 'PNG 640x480') && (echo "$infos" | grep -q ' 8-bit ')
-  if [ $? -eq 0 ]; then
-    cp "$IMAGE" .bg.png
-  else
-    echo "Image needs conversion"
-    echo "Format: "$(file -L $IMAGE)
-    if file -L "$IMAGE"|grep -q 'GIMP XCF image data'; then
-      echo "Converting from GIMP XCF format to 8 bits 640x480 png..."
-      xcf2png "$IMAGE" | convert -depth 8 -alpha deactivate -type truecolor -define png:color-type=2 -resize 640x480 - .bg.png
-    else
-      echo "Converting from bitmap to 8 bits 640x480 png..."
-      convert -flatten -depth 8 -alpha deactivate -type truecolor -define png:color-type=2 -resize 640x480 "$IMAGE" .bg.png
+  if [ -n "$THEME" ]; then
+    if [ ! -d "$THEME" ]; then
+      echo "$THEME not found" >&2
+      exit 1
     fi
-  fi
-  if [ $? -ne 0 ]; then
-    echo "error in converting $IMAGE to the correct format" >&2
-    exit 1
+    rm -rf .bg.png .themes
+    mkdir .themes
+    cp -r "$THEME" .themes/
+  else
+    # generate background image
+    if [ ! -e "$IMAGE" ]; then
+      echo "$IMAGE not found" >&2
+      exit 1
+    fi
+    infos=$(identify "$IMAGE")
+    (echo "$infos" | grep -q 'PNG 640x480') && (echo "$infos" | grep -q ' 8-bit ')
+    if [ $? -eq 0 ]; then
+      cp "$IMAGE" .bg.png
+    else
+      echo "Image needs conversion"
+      echo "Format: "$(file -L "$IMAGE")
+      if file -L "$IMAGE"|grep -q 'GIMP XCF image data'; then
+        echo "Converting from GIMP XCF format to 8 bits 640x480 png..."
+        xcf2png "$IMAGE" | convert -depth 8 -alpha deactivate -type truecolor -define png:color-type=2 -resize 640x480 - .bg.png
+      else
+        echo "Converting from bitmap to 8 bits 640x480 png..."
+        convert -flatten -depth 8 -alpha deactivate -type truecolor -define png:color-type=2 -resize 640x480 "$IMAGE" .bg.png
+      fi
+    fi
+    if [ $? -ne 0 ]; then
+      echo "error in converting $IMAGE to the correct format" >&2
+      exit 1
+    fi
   fi
   BOOTFILE=boot/isolinux/isolinux.bin
   CATALOGFILE=boot/eltorito.cat
@@ -138,7 +155,15 @@ EOF
   grubdir="$PWD/.grub2"
   [ -e $grubdir ] && rm -rf $grubdir
   cp -r grub2 $grubdir
-  mv .bg.png "$grubdir/build/boot/grub/bg.png"
+  rm -rf "$grubdir/build/boot/grub/bg.png" "$grubdir/build/boot/grub/themes"
+  if [ -e .bg.png ]; then
+    mv .bg.png "$grubdir/build/boot/grub/bg.png"
+    rm .bg.png
+  else
+    mkdir -p "$grubdir/build/boot/grub/themes"
+    mv .themes/* "$grubdir/build/boot/grub/themes/"
+    rmdir .themes
+  fi
   cp initrd-template/lib/keymaps "$grubdir/"
   # generate grub config
   (
@@ -175,6 +200,10 @@ EOF
     sed -i -e "s,\(ident_file=\).*,\1$IDENT_FILE," \
       -e "s,\(searched_ident_content=\).*,\1$IDENT_CONTENT," \
       -e "s,\(default_iso_name=\).*,\1$(basename $ISONAME)," boot/grub/memdisk_grub.cfg
+    if [ -d boot/grub/themes ]; then
+      theme_name=$(basename $(find boot/grub/themes/ -type d -mindepth 1 | head -n 1))
+      sed -i "s:^#\(set theme_name)=.*:\1=$theme_name:" boot/grub/include.cfg
+    fi
     # copy modules and other grub files
     mkdir -p boot/grub/i386-pc/
     for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do

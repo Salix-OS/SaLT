@@ -1,14 +1,16 @@
 # vim: syn=sh et sw=2 st=2 ts=2 tw=0:
-if [ -z "$included" ]; then
-  source $cfgprefix/include.cfg
-fi
-initmenu
 # next config file to load
 function nextconfig {
+  loadlocale $_lang
   loadkeymap
   if [ -n "$salt_timezone" ]; then
-    configfile $cfgprefix/boot.cfg
+    source $cfgprefix/boot.cfg
   else
-    configfile $cfgprefix/timezone.cfg
+    source $cfgprefix/timezone.cfg
   fi
 }
+menuclear
+unset chosen
+unset default
+unset timeout
+gettextvar title "Please select your language:"

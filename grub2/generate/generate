@@ -45,36 +45,36 @@ langavailable = [
   ]
 
 kbmenuentry = """
-menuentry "%s"%s {
-  set salt_kb="%s"
-  set salt_kbnum="%d"
+menuentry "{title}"{hotkey} --class=keyboard {{
+  set salt_kb="{title}"
+  set salt_kbnum="{num}"
   nextconfig
-}
+}}
 """
 
 langmenuentry = """
-menuentry "%s"%s {
-  set salt_langnum="%s"
-  set salt_locale="%s"
-  set lang="%s"
-  set salt_kb="%s"
-  set salt_kbnum="%d"
+menuentry "{title}"{hotkey} --class=locale {{
+  set salt_langnum="{lang_num}"
+  set salt_locale="{locale}"
+  set _lang="{lang}"
+  set salt_kb="{key}"
+  set salt_kbnum="{key_num}"
   nextconfig
-}
+}}
 """
 
 zonemenuentry = """
-menuentry "%s" {
-  set salt_timezone="%s"
+menuentry "{title}" --class=clock {{
+  set salt_timezone="{title}"
   nextconfig
-}
+}}
 """
 
 timezonemenuentry = """
-menuentry "%s" {
-  set salt_timezone="${salt_timezone}/%s"
+menuentry "{title}" --class=clock {{
+  set salt_timezone="${{salt_timezone}}/{title}"
   nextconfig
-}
+}}
 """
 
 # which field to display as name
@@ -139,19 +139,13 @@ def genkbcfg(tpl, cfg, kbs):
         if hotkey != '':
           lasthotkey = hotkey
           hotkey = ' --hotkey ' + hotkey
-        fcfg.write(kbmenuentry % (v, hotkey, v, k))
+        fcfg.write(kbmenuentry.format(title = v, hotkey = hotkey, num = k))
 
 def genlangcfg(tpl, cfg, langs, invkbs, invlanglocale):
   with open(tpl, 'r') as ftpl:
     with open(cfg, 'w') as fcfg:
       fcfg.write(ftpl.read())
       fcfg.write('\n')
-      fcfg.write('if [ -z "${salt_langnum}" ]; then\n')
-      fcfg.write('  set salt_langnum=%d\n' % invlanglocale[defaultlocale])
-      fcfg.write('  set salt_locale=%s\n' % defaultlocale)
-      fcfg.write('  set lang=%s\n' % langs[invlanglocale[defaultlocale]]['polang'])
-      fcfg.write('fi\n')
-      fcfg.write('set default=${salt_langnum}\n')
       lasthotkey = ''
       for l in langs:
         name = l['nativename']
@@ -166,7 +160,7 @@ def genlangcfg(tpl, cfg, langs, invkbs, invlanglocale):
         lang = l['polang']
         kb = l['kb'][0]  # first element is the default
         kbnum = invkbs[kb]  # look the position up
-        fcfg.write(langmenuentry % (name, hotkey, num, loc, lang, kb, kbnum))
+        fcfg.write(langmenuentry.format(title = name, hotkey = hotkey, lang_num = num, locale = loc, lang = lang, key = kb, key_num = kbnum))
 
 def genzones(tpl, cfg, timezones):
   with open(tpl, 'r') as ftpl:
@@ -175,7 +169,7 @@ def genzones(tpl, cfg, timezones):
       fcfg.write('\n')
       for tz in timezones:
         zone = tz[0]
-        fcfg.write(zonemenuentry % (zone, zone))
+        fcfg.write(zonemenuentry.format(title = zone))
 
 def gentimezone(tpl, tzdir, zone, cities):
   with open(tpl, 'r') as ftpl:
@@ -183,7 +177,7 @@ def gentimezone(tpl, tzdir, zone, cities):
       fcfg.write(ftpl.read())
       fcfg.write('\n')
       for city in cities:
-        fcfg.write(timezonemenuentry % (city, city))
+        fcfg.write(timezonemenuentry.format(title = city))
 
 def main():
   for dir in [cfgdir, kbdir, tzdir]:

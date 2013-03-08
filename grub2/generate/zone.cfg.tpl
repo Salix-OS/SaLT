@@ -1,16 +1,17 @@
 # vim: syn=sh et sw=2 st=2 ts=2 tw=0:
-if [ -z "$included" ]; then
-  source $cfgprefix/include.cfg
-fi
-initmenu
 # next config file to load
 function nextconfig {
-  configfile $cfgprefix/timezone/$salt_timezone.cfg
+  source $cfgprefix/timezone/$salt_timezone.cfg
 }
 function skipnextconfig {
-  configfile $cfgprefix/boot.cfg
+  source $cfgprefix/boot.cfg
 }
-menuentry "UTC" {
+menuclear
+unset chosen
+set timeout=30
+set default=0
+gettextvar title "Please select your time zone area:"
+menuentry "UTC" --class=clock {
   set salt_timezone="UTC"
   set salt_hwclock="UTC"
   skipnextconfig
