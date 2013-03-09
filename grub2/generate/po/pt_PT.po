@@ -19,26 +19,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, sh-format
-msgid "y"
-msgstr "s"
-
-#, sh-format
-msgid "Y"
-msgstr "S"
-
-#, sh-format
-msgid "n"
-msgstr "n"
-
-#, sh-format
-msgid "N"
-msgstr "N"
-
-#, sh-format
-msgid "Change keyboard layout"
-msgstr "Alterar a disposição do teclado"
-
-#, sh-format
 msgid "Start _DISTRONAME_"
 msgstr "Iniciar _DISTRONAME_"
 
@@ -51,16 +31,16 @@ msgid "Change boot options"
 msgstr "Alterar as opções de inicialização"
 
 #, sh-format
-msgid "Memory Test"
-msgstr "Teste de Memória"
+msgid "Change time zone"
+msgstr ""
 
 #, sh-format
 msgid "Change language"
 msgstr "Alterar o idioma"
 
 #, sh-format
-msgid "Change time zone"
-msgstr ""
+msgid "Change keyboard layout"
+msgstr "Alterar a disposição do teclado"
 
 #, sh-format
 msgid "Save all settings to be autoloaded for future boots"
@@ -69,124 +49,12 @@ msgstr ""
 "inicializações futuras"
 
 #, sh-format
-msgid "Do you want to skip the language selection menu? [y/N]"
-msgstr "Você quer saltar o menu de seleção de idioma? [y/N]"
-
-#, sh-format
-msgid "Invalid response"
-msgstr "Resposta inválida"
-
-#, sh-format
-msgid ""
-"There was an error saving your settings. Are the live files located on a "
-"writeable media like an USB key (i.e. not a CDROM)?"
+msgid "Hardware detection tool"
 msgstr ""
-"Ocorreu um erro ao salvar as suas configurações. Estão os ficheiros live "
-"localizados numa media gravável como uma pendrive (i.e. não um CDROM)?"
 
 #, sh-format
-msgid "Return to boot menu"
-msgstr "Voltar ao menu de arranque"
-
-#, sh-format
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "Arranque para runlevel '3' (modo de texto)"
-
-#, sh-format
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Arranque para runlevel '4' (login gráfico) (padrão)"
-
-#, sh-format
-msgid "Enable 'Copy everything to RAM'"
-msgstr "Habilitar 'Copiar tudo para a RAM'"
-
-#, sh-format
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Inabilitar 'Copiar tudo para a RAM' (padrão)"
-
-#, sh-format
-msgid "Enable numlock on boot"
-msgstr "Habilitar numlock no arranque"
-
-#, sh-format
-msgid "Disable numlock on boot (default)"
-msgstr "Inabilitar numlock no arranque (padrão)"
-
-#, sh-format
-msgid "Enable Ibus"
-msgstr "Habilitar Ibus"
-
-#, sh-format
-msgid "Disable Ibus (default)"
-msgstr "Inabilitar Ibus (padrão)"
-
-#, sh-format
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Habilitar synaptics fdi (às vezes não confiáveis)"
-
-#, sh-format
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Inabilitar synaptics fdi (confiável) (padrão)"
-
-#, sh-format
-msgid "No sound on boot"
-msgstr "Não há som no arranque"
-
-#, sh-format
-msgid "Enable sound on boot (default)"
-msgstr "Habilitar o som no arranque (padrão)"
-
-#, sh-format
-msgid "Enable autologin on boot (default)"
-msgstr "Habilitar autologin no arranque (padrão)"
-
-#, sh-format
-msgid "Disable autologin on boot"
-msgstr "Inabilitar autologin no arranque"
-
-#, sh-format
-msgid "Enable gfxpayload=keep (default)"
-msgstr "Habilitar gfxpayload=manter (padrão)"
-
-#, sh-format
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "Inabilitar gfxpayload=manter (se ele não carregar tente isto)"
-
-#, sh-format
-msgid "Change root password"
-msgstr "Alterar senha do root"
-
-#, sh-format
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr "Nova senha root (escolha a opção 'ask' a ser feita no arranque):"
-
-#, sh-format
-msgid "Set a proxy"
-msgstr "Definir um proxy"
-
-#, sh-format
-msgid "New proxy (empty for no proxy):"
-msgstr "Novo proxy (vazio para nenhum proxy):"
-
-#, sh-format
-msgid "Boot from an ISO"
-msgstr "Arranque a partir de uma ISO"
-
-#, sh-format
-msgid "Path to the ISO to boot from:"
-msgstr "Caminho para o ISO para arrancar a partir:"
-
-#, sh-format
-msgid "Custom linux kernel parameters"
-msgstr "Personalizar parâmetros no núcleo linux"
-
-#, sh-format
-msgid "Enter custom linux kernel parameters:"
-msgstr "Introduza parâmetros personalizáveis no núcleo linux:"
-
-#, sh-format
-msgid "Please select your keyboard layout:"
-msgstr ""
+msgid "Memory Test"
+msgstr "Teste de Memória"
 
 #, sh-format
 msgid "Reboot"
@@ -199,6 +67,14 @@ msgstr ""
 #, sh-format
 msgid "Select an item to change the configuration:"
 msgstr ""
+
+#, sh-format
+msgid "Return to boot menu"
+msgstr "Voltar ao menu de arranque"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "Arranque para runlevel '3' (modo de texto)"
 
 #, sh-format
 msgid "Boot to runlevel '4' (graphical login)"
@@ -245,11 +121,11 @@ msgid "Sound on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot enabled"
+msgid "Autologin on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot disabled"
+msgid "Autologin on boot enabled"
 msgstr ""
 
 #, sh-format
@@ -261,9 +137,148 @@ msgid "gfxpayload=keep used"
 msgstr ""
 
 #, sh-format
+msgid "Change root password"
+msgstr "Alterar senha do root"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr "Nova senha root (escolha a opção 'ask' a ser feita no arranque):"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "Definir um proxy"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "Novo proxy (vazio para nenhum proxy):"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "Arranque a partir de uma ISO"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "Caminho para o ISO para arrancar a partir:"
+
+#, sh-format
+msgid "Custom linux kernel parameters"
+msgstr "Personalizar parâmetros no núcleo linux"
+
+#, sh-format
+msgid "Enter custom linux kernel parameters:"
+msgstr "Introduza parâmetros personalizáveis no núcleo linux:"
+
+#, sh-format
+msgid "The hardware clock is"
+msgstr ""
+
+#, sh-format
+msgid "This is not my current time"
+msgstr ""
+
+#, sh-format
+msgid "This time is correct"
+msgstr ""
+
+#, sh-format
+msgid ""
+"There was an error saving your settings. Are the live files located on a "
+"writeable media like an USB key (i.e. not a CDROM)?"
+msgstr ""
+"Ocorreu um erro ao salvar as suas configurações. Estão os ficheiros live "
+"localizados numa media gravável como uma pendrive (i.e. não um CDROM)?"
+
+#, sh-format
+msgid "y"
+msgstr "s"
+
+#, sh-format
+msgid "Y"
+msgstr "S"
+
+#, sh-format
+msgid "n"
+msgstr "n"
+
+#, sh-format
+msgid "N"
+msgstr "N"
+
+#, sh-format
 msgid "Please select your time zone area:"
+msgstr ""
+
+#, sh-format
+msgid "Next page"
+msgstr ""
+
+#, sh-format
+msgid "Previous page"
+msgstr ""
+
+#, sh-format
+msgid "Please select your keyboard layout:"
 msgstr ""
 
 #, sh-format
 msgid "Please select your language:"
 msgstr ""
+
+#, sh-format
+msgid "Please select your time zone city:"
+msgstr ""
+
+#, sh-format
+msgid "Select an item:"
+msgstr ""
+
+#~ msgid "Do you want to skip the language selection menu? [y/N]"
+#~ msgstr "Você quer saltar o menu de seleção de idioma? [y/N]"
+
+#~ msgid "Invalid response"
+#~ msgstr "Resposta inválida"
+
+#~ msgid "Boot to runlevel '4' (graphical login) (default)"
+#~ msgstr "Arranque para runlevel '4' (login gráfico) (padrão)"
+
+#~ msgid "Enable 'Copy everything to RAM'"
+#~ msgstr "Habilitar 'Copiar tudo para a RAM'"
+
+#~ msgid "Disable 'Copy everything to RAM' (default)"
+#~ msgstr "Inabilitar 'Copiar tudo para a RAM' (padrão)"
+
+#~ msgid "Enable numlock on boot"
+#~ msgstr "Habilitar numlock no arranque"
+
+#~ msgid "Disable numlock on boot (default)"
+#~ msgstr "Inabilitar numlock no arranque (padrão)"
+
+#~ msgid "Enable Ibus"
+#~ msgstr "Habilitar Ibus"
+
+#~ msgid "Disable Ibus (default)"
+#~ msgstr "Inabilitar Ibus (padrão)"
+
+#~ msgid "Enable synaptics fdi (sometimes unreliable)"
+#~ msgstr "Habilitar synaptics fdi (às vezes não confiáveis)"
+
+#~ msgid "Disable synaptics fdi (reliable) (default)"
+#~ msgstr "Inabilitar synaptics fdi (confiável) (padrão)"
+
+#~ msgid "No sound on boot"
+#~ msgstr "Não há som no arranque"
+
+#~ msgid "Enable sound on boot (default)"
+#~ msgstr "Habilitar o som no arranque (padrão)"
+
+#~ msgid "Enable autologin on boot (default)"
+#~ msgstr "Habilitar autologin no arranque (padrão)"
+
+#~ msgid "Disable autologin on boot"
+#~ msgstr "Inabilitar autologin no arranque"
+
+#~ msgid "Enable gfxpayload=keep (default)"
+#~ msgstr "Habilitar gfxpayload=manter (padrão)"
+
+#~ msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+#~ msgstr "Inabilitar gfxpayload=manter (se ele não carregar tente isto)"

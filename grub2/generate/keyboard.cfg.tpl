@@ -4,8 +4,7 @@ function nextconfig {
   loadkeymap
   source $cfgprefix/boot.cfg
 }
-menuclear
-unset chosen
+newmenu
 set timeout=30
 set default=$salt_kbnum
 gettextvar title "Please select your keyboard layout:"

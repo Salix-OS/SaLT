@@ -3,6 +3,7 @@ file-*
 lsof_*
 ntfs-3g-*
 mt86p
+syslinux-*
 .initrd-tree
 initrd.gz
 .iso

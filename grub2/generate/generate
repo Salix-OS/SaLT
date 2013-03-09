@@ -3,6 +3,7 @@
 import sys, os
 from subprocess import *
 import glob
+from math import ceil
 
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 cwd = os.getcwd()
@@ -44,14 +45,14 @@ langavailable = [
     ['uk_UA.utf8', 'uk',    'uk',        'Ukrainian',              'Українська',             ['ua']],
   ]
 
-kbmenuentry = """
-menuentry "{title}"{hotkey} --class=keyboard {{
-  set salt_kb="{title}"
-  set salt_kbnum="{num}"
-  nextconfig
-}}
+langpremenu = """
+if [ -z "${{salt_langnum}}" ]; then
+  set salt_langnum={deflangnum}
+  set salt_locale={deflocale}
+  set lang={deflang}
+fi
+set default=${{salt_langnum}}
 """
-
 langmenuentry = """
 menuentry "{title}"{hotkey} --class=locale {{
   set salt_langnum="{lang_num}"
@@ -62,14 +63,26 @@ menuentry "{title}"{hotkey} --class=locale {{
   nextconfig
 }}
 """
-
+kbmenuentry = """
+menuentry "{title}"{hotkey} --class=keyboard {{
+  set salt_kb="{title}"
+  set salt_kbnum="{num}"
+  nextconfig
+}}
+"""
+zoneentryUTC="""
+menuentry "UTC" --class=clock {
+  set salt_timezone="UTC"
+  set salt_hwclock="UTC"
+  skipnextconfig
+}
+"""
 zonemenuentry = """
 menuentry "{title}" --class=clock {{
   set salt_timezone="{title}"
   nextconfig
 }}
 """
-
 timezonemenuentry = """
 menuentry "{title}" --class=clock {{
   set salt_timezone="${{salt_timezone}}/{title}"
@@ -145,7 +158,7 @@ def genlangcfg(tpl, cfg, langs, invkbs, invlanglocale):
   with open(tpl, 'r') as ftpl:
     with open(cfg, 'w') as fcfg:
       fcfg.write(ftpl.read())
-      fcfg.write('\n')
+      fcfg.write(langpremenu.format(deflocale = defaultlocale, deflangnum = invlanglocale[defaultlocale], deflang = langs[invlanglocale[defaultlocale]]['polang']))
       lasthotkey = ''
       for l in langs:
         name = l['nativename']
@@ -162,22 +175,61 @@ def genlangcfg(tpl, cfg, langs, invkbs, invlanglocale):
         kbnum = invkbs[kb]  # look the position up
         fcfg.write(langmenuentry.format(title = name, hotkey = hotkey, lang_num = num, locale = loc, lang = lang, key = kb, key_num = kbnum))
 
-def genzones(tpl, cfg, timezones):
-  with open(tpl, 'r') as ftpl:
-    with open(cfg, 'w') as fcfg:
-      fcfg.write(ftpl.read())
+def genzones(tpl, prevtpl, nexttpl, cfg, timezones):
+  pre = open(tpl, 'r').read() + "\n"
+  p = 1
+  fcfg = open(cfg, 'w')
+  fcfg.write("source ${cfgprefix}/timezone_1.cfg\n")
+  fcfg.close()
+  maxpp = 8 # max per page
+  n = 1 + len(timezones)
+  nbp = int(ceil(float(n) / maxpp))
+  while p <= nbp:
+    fcfg = open(os.path.join(cfgdir, 'timezone_{p}.cfg'.format(p = p)), 'w')
+    fcfg.write(pre)
+    if p < nbp:
+      fcfg.write("set nextpage=${{cfgprefix}}/timezone_{p}.cfg\n".format(p = (p + 1)))
+      fcfg.write(open(nexttpl, 'r').read())
       fcfg.write('\n')
-      for tz in timezones:
-        zone = tz[0]
-        fcfg.write(zonemenuentry.format(title = zone))
+    if p > 1:
+      fcfg.write("set previouspage=${{cfgprefix}}/timezone_{p}.cfg\n".format(p = (p - 1)))
+      fcfg.write(open(prevtpl, 'r').read())
+      fcfg.write('\n')
+    for i in range((p - 1) * maxpp, p * maxpp):
+      if i == 0:
+        fcfg.write(zoneentryUTC)
+      else:
+        if (i + 1) < n:
+          fcfg.write(zonemenuentry.format(title = timezones[i - 1][0]))
+    fcfg.close()
+    p += 1
 
-def gentimezone(tpl, tzdir, zone, cities):
-  with open(tpl, 'r') as ftpl:
-    with open(tzdir + '/' + zone + '.cfg', 'w') as fcfg:
-      fcfg.write(ftpl.read())
+def gentimezone(tpl, prevtpl, nexttpl, tzdir, zone, cities):
+  pre = open(tpl, 'r').read() + "\n"
+  p = 1
+  fcfg = open(os.path.join(tzdir, zone + '.cfg'), 'w')
+  tzsimpledir = os.path.basename(tzdir)
+  fcfg.write("source ${{cfgprefix}}/{dir}/{zone}_1.cfg\n".format(dir = tzsimpledir, zone = zone))
+  fcfg.close()
+  maxpp = 8 # max per page
+  n = len(cities)
+  nbp = int(ceil(float(n) / maxpp))
+  while p <= nbp:
+    fcfg = open(os.path.join(tzdir, '{zone}_{p}.cfg'.format(zone = zone, p = p)), 'w')
+    fcfg.write(pre)
+    if p < nbp:
+      fcfg.write("set nextpage=${{cfgprefix}}/{dir}/{zone}_{p}.cfg\n".format(dir = tzsimpledir, zone = zone, p = (p + 1)))
+      fcfg.write(open(nexttpl, 'r').read())
       fcfg.write('\n')
-      for city in cities:
-        fcfg.write(timezonemenuentry.format(title = city))
+    if p > 1:
+      fcfg.write("set previouspage=${{cfgprefix}}/{dir}/{zone}_{p}.cfg\n".format(dir = tzsimpledir, zone = zone, p = (p - 1)))
+      fcfg.write(open(prevtpl, 'r').read())
+      fcfg.write('\n')
+    for i in range((p - 1) * maxpp, p * maxpp):
+      if i < n:
+        fcfg.write(timezonemenuentry.format(title = cities[i]))
+    fcfg.close()
+    p += 1
 
 def main():
   for dir in [cfgdir, kbdir, tzdir]:
@@ -193,11 +245,11 @@ def main():
   invlanglocale = inversedict(dict(enumerate([lang['locale'] for lang in langs])))
   timezones = gettimezones()
 
-  genkbcfg(kbtpl, kbcfg, kbs)
   genlangcfg(langtpl, langcfg, langs, invkbs, invlanglocale)
-  genzones(zonetpl, timezonecfg, timezones)
+  genkbcfg(kbtpl, kbcfg, kbs)
+  genzones(zonetpl, previoustpl, nexttpl, timezonecfg, timezones)
   for tz in timezones:
-    gentimezone(tztpl, tzdir, tz[0], tz[1])
+    gentimezone(tztpl, previoustpl, nexttpl, tzdir, tz[0], tz[1])
   
   kmaps = [line.strip() for line in open(keympas_path, 'r')]
   for k, kb in kbs.iteritems():
@@ -212,7 +264,7 @@ def main():
       xkb_opts = xkb
     xkb_opts = '-o ' + xkb + '.gkb ' + xkb_opts
     print 'grub-kbdcomp ' + xkb_opts
-    os.system('grub-kbdcomp ' + xkb_opts)
+    os.system('grub-kbdcomp ' + xkb_opts + '>/dev/null 2>&1')
     if os.path.isfile(xkb + '.gkb') and os.stat(xkb + '.gkb').st_size == 0:
       os.remove(xkb + '.gkb')
     if os.path.isfile(xkb + '.gkb') and kb != xkb:
@@ -273,9 +325,11 @@ else:
 
   kbtpl = os.path.join(cwd, 'keyboard.cfg.tpl')
   langtpl = os.path.join(cwd, 'lang.cfg.tpl')
+  previoustpl = os.path.join(cwd, 'previous.cfg.tpl')
+  nexttpl = os.path.join(cwd, 'next.cfg.tpl')
   zonetpl = os.path.join(cwd, 'zone.cfg.tpl')
   tztpl = os.path.join(cwd, 'tz.cfg.tpl')
-  kbcfg = os.path.join(cfgdir, 'keyboard.cfg')
   langcfg = os.path.join(cfgdir, 'lang.cfg')
+  kbcfg = os.path.join(cfgdir, 'keyboard.cfg')
   timezonecfg = os.path.join(cfgdir, 'timezone.cfg')
   main()

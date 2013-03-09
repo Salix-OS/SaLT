@@ -21,26 +21,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #, sh-format
-msgid "y"
-msgstr "o"
-
-#, sh-format
-msgid "Y"
-msgstr "O"
-
-#, sh-format
-msgid "n"
-msgstr "n"
-
-#, sh-format
-msgid "N"
-msgstr "N"
-
-#, sh-format
-msgid "Change keyboard layout"
-msgstr "Changer la disposition du clavier"
-
-#, sh-format
 msgid "Start _DISTRONAME_"
 msgstr "Démarrer _DISTRONAME_"
 
@@ -53,37 +33,40 @@ msgid "Change boot options"
 msgstr "Changer les options de démarrage"
 
 #, sh-format
-msgid "Memory Test"
-msgstr "Tester la mémoire (RAM)"
+msgid "Change time zone"
+msgstr "Changer le fuseau horaire"
 
 #, sh-format
 msgid "Change language"
 msgstr "Changer la langue"
 
 #, sh-format
-msgid "Change time zone"
-msgstr "Changer le fuseau horaire"
+msgid "Change keyboard layout"
+msgstr "Changer la disposition du clavier"
 
 #, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "Enregistrer les paramètres pour les futurs démarrages"
 
 #, sh-format
-msgid "Do you want to skip the language selection menu? [y/N]"
-msgstr "Voulez-vous ignorer la sélection de langue ? [o/N]"
+msgid "Hardware detection tool"
+msgstr "Outil de détection matériel"
 
 #, sh-format
-msgid "Invalid response"
-msgstr "Réponse non valide"
+msgid "Memory Test"
+msgstr "Tester la mémoire (RAM)"
 
 #, sh-format
-msgid ""
-"There was an error saving your settings. Are the live files located on a "
-"writeable media like an USB key (i.e. not a CDROM)?"
-msgstr ""
-"Il y a eu une erreur d'enregistrer de vos paramètres. Les fichiers se "
-"trouvent-ils sur un support inscriptible comme une clé USB (c'est à dire pas "
-"un CDROM) ?"
+msgid "Reboot"
+msgstr "Redémarrer"
+
+#, sh-format
+msgid "Power off"
+msgstr "Éteindre"
+
+#, sh-format
+msgid "Select an item to change the configuration:"
+msgstr "Sélecionnez une ligne pour changer la configuration :"
 
 #, sh-format
 msgid "Return to boot menu"
@@ -94,64 +77,64 @@ msgid "Boot to runlevel '3' (text mode)"
 msgstr "Démarrer en runlevel '3' (mode texte)"
 
 #, sh-format
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Démarrer en runlevel '4' (mode graphique) (défaut)"
+msgid "Boot to runlevel '4' (graphical login)"
+msgstr "Démarrer en runlevel '4' (mode graphique)"
 
 #, sh-format
-msgid "Enable 'Copy everything to RAM'"
-msgstr "Activer la 'Copie intégrale vers la RAM'"
+msgid "'Copy everything to RAM' disabled"
+msgstr "'Copie intégrale vers la RAM' désactivée"
 
 #, sh-format
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Désactiver la 'Copie intégrale vers la RAM' (défaut)"
+msgid "'Copy everything to RAM' enabled"
+msgstr "'Copie intégrale vers la RAM' activée"
 
 #, sh-format
-msgid "Enable numlock on boot"
-msgstr "Activer le verrou numérique au démarrage"
+msgid "Numlock on boot disabled"
+msgstr "Verrou numérique au démarrage désactivé"
 
 #, sh-format
-msgid "Disable numlock on boot (default)"
-msgstr "Désactiver le verrou numérique au démarrage (défaut)"
+msgid "Numlock on boot enabled"
+msgstr "Verrou numérique au démarrage activé"
 
 #, sh-format
-msgid "Enable Ibus"
-msgstr "Activer Ibus"
+msgid "Ibus disabled"
+msgstr "Ibus désactivé"
 
 #, sh-format
-msgid "Disable Ibus (default)"
-msgstr "Désactiver Ibus (par défaut)"
+msgid "Ibus enabled"
+msgstr "Ibus activé"
 
 #, sh-format
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Activer le pavé tactile Synaptic (parfois non fiable)"
+msgid "Synaptics fdi disabled"
+msgstr "Pavé tactile Synaptic désactivé"
 
 #, sh-format
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Désactiver le pavé tactile Synaptic (fiable) (défaut)"
+msgid "Synaptics fdi enabled"
+msgstr "Pavé tactile Synaptic activé"
 
 #, sh-format
-msgid "No sound on boot"
+msgid "Sound on boot enabled"
+msgstr "Son au démarrage"
+
+#, sh-format
+msgid "Sound on boot disabled"
 msgstr "Pas de son au démarrage"
 
 #, sh-format
-msgid "Enable sound on boot (default)"
-msgstr "Activer le son au démarrage (par défaut)"
+msgid "Autologin on boot disabled"
+msgstr "Connexion automatique désactivée"
 
 #, sh-format
-msgid "Enable autologin on boot (default)"
-msgstr "Activer la connexion automatique (par défaut)"
+msgid "Autologin on boot enabled"
+msgstr "Connexion automatique activée"
 
 #, sh-format
-msgid "Disable autologin on boot"
-msgstr "Désactiver la connexion automatique"
+msgid "gfxpayload=keep not used"
+msgstr "gfxpayload=keep non-utilisé"
 
 #, sh-format
-msgid "Enable gfxpayload=keep (default)"
-msgstr "Activer gfxpayload=keep (par défaut)"
-
-#, sh-format
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "Désactiver gfxpayload=keep (essayez ça si problème)"
+msgid "gfxpayload=keep used"
+msgstr "gfxpayload=keep utilisé"
 
 #, sh-format
 msgid "Change root password"
@@ -186,85 +169,66 @@ msgid "Enter custom linux kernel parameters:"
 msgstr "Paramètres personnalisés de démarrage de Linux :"
 
 #, sh-format
-msgid "Please select your keyboard layout:"
-msgstr ""
+msgid "The hardware clock is"
+msgstr "L'horloge interne est"
 
 #, sh-format
-msgid "Reboot"
-msgstr ""
+msgid "This is not my current time"
+msgstr "Ce n'est pas mon heure"
 
 #, sh-format
-msgid "Power off"
-msgstr ""
+msgid "This time is correct"
+msgstr "Cette heure est correcte"
 
 #, sh-format
-msgid "Select an item to change the configuration:"
+msgid ""
+"There was an error saving your settings. Are the live files located on a "
+"writeable media like an USB key (i.e. not a CDROM)?"
 msgstr ""
+"Il y a eu une erreur d'enregistrer de vos paramètres. Les fichiers se "
+"trouvent-ils sur un support inscriptible comme une clé USB (c'est à dire pas "
+"un CDROM) ?"
 
 #, sh-format
-msgid "Boot to runlevel '4' (graphical login)"
-msgstr ""
+msgid "y"
+msgstr "o"
 
 #, sh-format
-msgid "'Copy everything to RAM' disabled"
-msgstr ""
+msgid "Y"
+msgstr "O"
 
 #, sh-format
-msgid "'Copy everything to RAM' enabled"
-msgstr ""
+msgid "n"
+msgstr "n"
 
 #, sh-format
-msgid "Numlock on boot disabled"
-msgstr ""
-
-#, sh-format
-msgid "Numlock on boot enabled"
-msgstr ""
-
-#, sh-format
-msgid "Ibus disabled"
-msgstr ""
-
-#, sh-format
-msgid "Ibus enabled"
-msgstr ""
-
-#, sh-format
-msgid "Synaptics fdi disabled"
-msgstr ""
-
-#, sh-format
-msgid "Synaptics fdi enabled"
-msgstr ""
-
-#, sh-format
-msgid "Sound on boot enabled"
-msgstr ""
-
-#, sh-format
-msgid "Sound on boot disabled"
-msgstr ""
-
-#, sh-format
-msgid "Autologin on boot enabled"
-msgstr ""
-
-#, sh-format
-msgid "Autologin on boot disabled"
-msgstr ""
-
-#, sh-format
-msgid "gfxpayload=keep not used"
-msgstr ""
-
-#, sh-format
-msgid "gfxpayload=keep used"
-msgstr ""
+msgid "N"
+msgstr "N"
 
 #, sh-format
 msgid "Please select your time zone area:"
-msgstr ""
+msgstr "Veuillez sélectionner votre zone de fuseau horaire :"
+
+#, sh-format
+msgid "Next page"
+msgstr "Page suivante"
+
+#, sh-format
+msgid "Previous page"
+msgstr "Page précédente"
+
+#, sh-format
+msgid "Please select your keyboard layout:"
+msgstr "Veuillez sélectionner votre disposition clavier :"
 
 #, sh-format
 msgid "Please select your language:"
-msgstr ""
+msgstr "Veuillez sélecyionner votre langue :"
+
+#, sh-format
+msgid "Please select your time zone city:"
+msgstr "Veuillez sélectionner votre ville de fuseau horaire :"
+
+#, sh-format
+msgid "Select an item:"
+msgstr "Sélectionnez une ligne :"

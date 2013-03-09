@@ -20,26 +20,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, sh-format
-msgid "y"
-msgstr "j"
-
-#, sh-format
-msgid "Y"
-msgstr "J"
-
-#, sh-format
-msgid "n"
-msgstr "n"
-
-#, sh-format
-msgid "N"
-msgstr "N"
-
-#, sh-format
-msgid "Change keyboard layout"
-msgstr "Toetsenbordindeling wijzigen"
-
-#, sh-format
 msgid "Start _DISTRONAME_"
 msgstr "Start _DISTRONAME_"
 
@@ -52,143 +32,28 @@ msgid "Change boot options"
 msgstr "Opstartopties wijzigen"
 
 #, sh-format
-msgid "Memory Test"
-msgstr "Geheugentest"
+msgid "Change time zone"
+msgstr ""
 
 #, sh-format
 msgid "Change language"
 msgstr "Taal wijzigen"
 
 #, sh-format
-msgid "Change time zone"
-msgstr ""
+msgid "Change keyboard layout"
+msgstr "Toetsenbordindeling wijzigen"
 
 #, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "Sla alle instellingen op voor alle toekomstige opstartmomenten"
 
 #, sh-format
-msgid "Do you want to skip the language selection menu? [y/N]"
-msgstr "Wilt u het taalkeuze menu overslaan? [j/N]"
-
-#, sh-format
-msgid "Invalid response"
-msgstr "Ongeldige invoer"
-
-#, sh-format
-msgid ""
-"There was an error saving your settings. Are the live files located on a "
-"writeable media like an USB key (i.e. not a CDROM)?"
+msgid "Hardware detection tool"
 msgstr ""
-"Er is een fout opgetreden bij het opslaan van uw instellingen. Staan de live-"
-"bestanden op een beschrijfbare media zoals een USB-stick (dus geen CD-ROM)?"
 
 #, sh-format
-msgid "Return to boot menu"
-msgstr "Terug naar boot menu"
-
-#, sh-format
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "Boot in runlevel '3' (tekst modus)"
-
-#, sh-format
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Boot in runlevel '4' (grafische login) (standaard)"
-
-#, sh-format
-msgid "Enable 'Copy everything to RAM'"
-msgstr "'Kopieer alles naar RAM' inschakelen"
-
-#, sh-format
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "'Kopieer alles naar RAM' uitschakelen (standaard)"
-
-#, sh-format
-msgid "Enable numlock on boot"
-msgstr "NumLock bij het opstarten inschakelen"
-
-#, sh-format
-msgid "Disable numlock on boot (default)"
-msgstr "NumLock bij het opstarten (standaard) uitschakelen"
-
-#, sh-format
-msgid "Enable Ibus"
-msgstr "Schakel Ibus in"
-
-#, sh-format
-msgid "Disable Ibus (default)"
-msgstr "Schakel ibus uit (standaard)"
-
-#, sh-format
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "synaptics FDI inschakelen (soms onbetrouwbaar)"
-
-#, sh-format
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "synaptics FDI uitschakelen (betrouwbaar) (standaard)"
-
-#, sh-format
-msgid "No sound on boot"
-msgstr "Geen geluid bij opstarten"
-
-#, sh-format
-msgid "Enable sound on boot (default)"
-msgstr "Schakel geluid in bij het opstarten (standaard)"
-
-#, sh-format
-msgid "Enable autologin on boot (default)"
-msgstr "Schakel autologin in bij het opstarten (standaard)"
-
-#, sh-format
-msgid "Disable autologin on boot"
-msgstr "Schakel autologin uit bij opstarten"
-
-#, sh-format
-msgid "Enable gfxpayload=keep (default)"
-msgstr "Schakel gfxpayload=keep in (default)"
-
-#, sh-format
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr ""
-"Schakel gfxpayload=keep uit (als het niet wordt geladen, probeer deze optie)"
-
-#, sh-format
-msgid "Change root password"
-msgstr "Root wachtwoord wijzigen"
-
-#, sh-format
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr ""
-"Nieuw root wachtwoord (kies 'ask' om tijdens het opstarten erom gevraagd te "
-"worden):"
-
-#, sh-format
-msgid "Set a proxy"
-msgstr "Stel een proxy in"
-
-#, sh-format
-msgid "New proxy (empty for no proxy):"
-msgstr "Nieuwe proxy (leeg voor geen proxy):"
-
-#, sh-format
-msgid "Boot from an ISO"
-msgstr "Opstarten vanaf een ISO"
-
-#, sh-format
-msgid "Path to the ISO to boot from:"
-msgstr "Pad naar de ISO om op te starten:"
-
-#, sh-format
-msgid "Custom linux kernel parameters"
-msgstr "Aangepaste Linux kernel parameters"
-
-#, sh-format
-msgid "Enter custom linux kernel parameters:"
-msgstr "Voer aangepaste Linux kernel parameters in:"
-
-#, sh-format
-msgid "Please select your keyboard layout:"
-msgstr ""
+msgid "Memory Test"
+msgstr "Geheugentest"
 
 #, sh-format
 msgid "Reboot"
@@ -201,6 +66,14 @@ msgstr ""
 #, sh-format
 msgid "Select an item to change the configuration:"
 msgstr ""
+
+#, sh-format
+msgid "Return to boot menu"
+msgstr "Terug naar boot menu"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "Boot in runlevel '3' (tekst modus)"
 
 #, sh-format
 msgid "Boot to runlevel '4' (graphical login)"
@@ -247,11 +120,11 @@ msgid "Sound on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot enabled"
+msgid "Autologin on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot disabled"
+msgid "Autologin on boot enabled"
 msgstr ""
 
 #, sh-format
@@ -263,9 +136,152 @@ msgid "gfxpayload=keep used"
 msgstr ""
 
 #, sh-format
+msgid "Change root password"
+msgstr "Root wachtwoord wijzigen"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr ""
+"Nieuw root wachtwoord (kies 'ask' om tijdens het opstarten erom gevraagd te "
+"worden):"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "Stel een proxy in"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "Nieuwe proxy (leeg voor geen proxy):"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "Opstarten vanaf een ISO"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "Pad naar de ISO om op te starten:"
+
+#, sh-format
+msgid "Custom linux kernel parameters"
+msgstr "Aangepaste Linux kernel parameters"
+
+#, sh-format
+msgid "Enter custom linux kernel parameters:"
+msgstr "Voer aangepaste Linux kernel parameters in:"
+
+#, sh-format
+msgid "The hardware clock is"
+msgstr ""
+
+#, sh-format
+msgid "This is not my current time"
+msgstr ""
+
+#, sh-format
+msgid "This time is correct"
+msgstr ""
+
+#, sh-format
+msgid ""
+"There was an error saving your settings. Are the live files located on a "
+"writeable media like an USB key (i.e. not a CDROM)?"
+msgstr ""
+"Er is een fout opgetreden bij het opslaan van uw instellingen. Staan de live-"
+"bestanden op een beschrijfbare media zoals een USB-stick (dus geen CD-ROM)?"
+
+#, sh-format
+msgid "y"
+msgstr "j"
+
+#, sh-format
+msgid "Y"
+msgstr "J"
+
+#, sh-format
+msgid "n"
+msgstr "n"
+
+#, sh-format
+msgid "N"
+msgstr "N"
+
+#, sh-format
 msgid "Please select your time zone area:"
+msgstr ""
+
+#, sh-format
+msgid "Next page"
+msgstr ""
+
+#, sh-format
+msgid "Previous page"
+msgstr ""
+
+#, sh-format
+msgid "Please select your keyboard layout:"
 msgstr ""
 
 #, sh-format
 msgid "Please select your language:"
 msgstr ""
+
+#, sh-format
+msgid "Please select your time zone city:"
+msgstr ""
+
+#, sh-format
+msgid "Select an item:"
+msgstr ""
+
+#~ msgid "Do you want to skip the language selection menu? [y/N]"
+#~ msgstr "Wilt u het taalkeuze menu overslaan? [j/N]"
+
+#~ msgid "Invalid response"
+#~ msgstr "Ongeldige invoer"
+
+#~ msgid "Boot to runlevel '4' (graphical login) (default)"
+#~ msgstr "Boot in runlevel '4' (grafische login) (standaard)"
+
+#~ msgid "Enable 'Copy everything to RAM'"
+#~ msgstr "'Kopieer alles naar RAM' inschakelen"
+
+#~ msgid "Disable 'Copy everything to RAM' (default)"
+#~ msgstr "'Kopieer alles naar RAM' uitschakelen (standaard)"
+
+#~ msgid "Enable numlock on boot"
+#~ msgstr "NumLock bij het opstarten inschakelen"
+
+#~ msgid "Disable numlock on boot (default)"
+#~ msgstr "NumLock bij het opstarten (standaard) uitschakelen"
+
+#~ msgid "Enable Ibus"
+#~ msgstr "Schakel Ibus in"
+
+#~ msgid "Disable Ibus (default)"
+#~ msgstr "Schakel ibus uit (standaard)"
+
+#~ msgid "Enable synaptics fdi (sometimes unreliable)"
+#~ msgstr "synaptics FDI inschakelen (soms onbetrouwbaar)"
+
+#~ msgid "Disable synaptics fdi (reliable) (default)"
+#~ msgstr "synaptics FDI uitschakelen (betrouwbaar) (standaard)"
+
+#~ msgid "No sound on boot"
+#~ msgstr "Geen geluid bij opstarten"
+
+#~ msgid "Enable sound on boot (default)"
+#~ msgstr "Schakel geluid in bij het opstarten (standaard)"
+
+#~ msgid "Enable autologin on boot (default)"
+#~ msgstr "Schakel autologin in bij het opstarten (standaard)"
+
+#~ msgid "Disable autologin on boot"
+#~ msgstr "Schakel autologin uit bij opstarten"
+
+#~ msgid "Enable gfxpayload=keep (default)"
+#~ msgstr "Schakel gfxpayload=keep in (default)"
+
+#~ msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+#~ msgstr ""
+#~ "Schakel gfxpayload=keep uit (als het niet wordt geladen, probeer deze "
+#~ "optie)"

@@ -20,26 +20,6 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #, sh-format
-msgid "y"
-msgstr "ن"
-
-#, sh-format
-msgid "Y"
-msgstr "ن"
-
-#, sh-format
-msgid "n"
-msgstr "ﻻ"
-
-#, sh-format
-msgid "N"
-msgstr "ﻻ"
-
-#, sh-format
-msgid "Change keyboard layout"
-msgstr "تغيير تخطيط لوحة المفاتيح"
-
-#, sh-format
 msgid "Start _DISTRONAME_"
 msgstr "بدء تشغيل _DISTRONAME_"
 
@@ -52,140 +32,28 @@ msgid "Change boot options"
 msgstr "تغيير خيارات الإقلاع"
 
 #, sh-format
-msgid "Memory Test"
-msgstr "اختبار الذاكرة"
+msgid "Change time zone"
+msgstr ""
 
 #, sh-format
 msgid "Change language"
 msgstr "تغيير اللغة"
 
 #, sh-format
-msgid "Change time zone"
-msgstr ""
+msgid "Change keyboard layout"
+msgstr "تغيير تخطيط لوحة المفاتيح"
 
 #, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "حفظ كافة الإعدادات لتكون مُحملة تلقائياً عند الإقلاع في المستقبل"
 
 #, sh-format
-msgid "Do you want to skip the language selection menu? [y/N]"
-msgstr "هل تريد تخطي قائمة اختيار اللغة؟ [ن/ﻻ]"
-
-#, sh-format
-msgid "Invalid response"
-msgstr "استجابة غير صالحة"
-
-#, sh-format
-msgid ""
-"There was an error saving your settings. Are the live files located on a "
-"writeable media like an USB key (i.e. not a CDROM)?"
+msgid "Hardware detection tool"
 msgstr ""
-"حدث خطأ أثناء حفظ الإعدادات. هل الملفات الحية الموجودة على وسائط قابل "
-"للكتابة مثل على سواقة USB (أي ليست CDROM)؟"
 
 #, sh-format
-msgid "Return to boot menu"
-msgstr "العودة إلى قائمة الإقلاع"
-
-#, sh-format
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "الإقلاع في مستوى تشغيل '3' (وضع النص)"
-
-#, sh-format
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "الإقلاع في مستوى تشغيل '4' (دخول رسومي) (افتراضي)"
-
-#, sh-format
-msgid "Enable 'Copy everything to RAM'"
-msgstr "تمكين 'نسخ كل شيء إلى ذاكرة الوصول العشوائي'"
-
-#, sh-format
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "تعطيل 'نسخ كل شيء إلى ذاكرة الوصول العشوائي' (الافتراضي)"
-
-#, sh-format
-msgid "Enable numlock on boot"
-msgstr "تمكين numlock عند الإقلاع"
-
-#, sh-format
-msgid "Disable numlock on boot (default)"
-msgstr "تعطيل numlock عند الإقلاع (افتراضي)"
-
-#, sh-format
-msgid "Enable Ibus"
-msgstr "تمكين Ibus"
-
-#, sh-format
-msgid "Disable Ibus (default)"
-msgstr "تعطيل Ibus (افتراضي)"
-
-#, sh-format
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "تمكين synaptics fdiر (في بعض الأحيان غير موثوقة)"
-
-#, sh-format
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "تعطيل synaptics fdi (افتراضي) (موثوقة)"
-
-#, sh-format
-msgid "No sound on boot"
-msgstr "بدون صوت عند الإقلاع"
-
-#, sh-format
-msgid "Enable sound on boot (default)"
-msgstr "تمكين الصوت عند الإقلاع (افتراضي)"
-
-#, sh-format
-msgid "Enable autologin on boot (default)"
-msgstr "تمكين الدخول التلقائي عند الإقلاع (افتراضي)"
-
-#, sh-format
-msgid "Disable autologin on boot"
-msgstr "تعطيل الدخول التلقائي عند الإقلاع"
-
-#, sh-format
-msgid "Enable gfxpayload=keep (default)"
-msgstr "تمكين gfxpayload=keep (افتراضي)"
-
-#, sh-format
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "تعطيل gfxpayload=keep (إذا لم يتم تحميله حاول هذا)"
-
-#, sh-format
-msgid "Change root password"
-msgstr "تغيير كلمة مرور الجذر"
-
-#, sh-format
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr "كلمة المرور الجديدة للجذر (اختر 'ask' للمطالبة بها عند الإقلاع):"
-
-#, sh-format
-msgid "Set a proxy"
-msgstr "تعيين وكيل"
-
-#, sh-format
-msgid "New proxy (empty for no proxy):"
-msgstr "الوكيل الجديد (فارغة بدون وكيل):"
-
-#, sh-format
-msgid "Boot from an ISO"
-msgstr "الإقلاع من ISO"
-
-#, sh-format
-msgid "Path to the ISO to boot from:"
-msgstr "المسار إلى ISO للإقلاع منه:"
-
-#, sh-format
-msgid "Custom linux kernel parameters"
-msgstr "تخصيص معلمات نواة لينكس"
-
-#, sh-format
-msgid "Enter custom linux kernel parameters:"
-msgstr "قم بإدخال معلمات النواة لينكس المخصصة:"
-
-#, sh-format
-msgid "Please select your keyboard layout:"
-msgstr ""
+msgid "Memory Test"
+msgstr "اختبار الذاكرة"
 
 #, sh-format
 msgid "Reboot"
@@ -198,6 +66,14 @@ msgstr ""
 #, sh-format
 msgid "Select an item to change the configuration:"
 msgstr ""
+
+#, sh-format
+msgid "Return to boot menu"
+msgstr "العودة إلى قائمة الإقلاع"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "الإقلاع في مستوى تشغيل '3' (وضع النص)"
 
 #, sh-format
 msgid "Boot to runlevel '4' (graphical login)"
@@ -244,11 +120,11 @@ msgid "Sound on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot enabled"
+msgid "Autologin on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot disabled"
+msgid "Autologin on boot enabled"
 msgstr ""
 
 #, sh-format
@@ -260,9 +136,148 @@ msgid "gfxpayload=keep used"
 msgstr ""
 
 #, sh-format
+msgid "Change root password"
+msgstr "تغيير كلمة مرور الجذر"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr "كلمة المرور الجديدة للجذر (اختر 'ask' للمطالبة بها عند الإقلاع):"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "تعيين وكيل"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "الوكيل الجديد (فارغة بدون وكيل):"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "الإقلاع من ISO"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "المسار إلى ISO للإقلاع منه:"
+
+#, sh-format
+msgid "Custom linux kernel parameters"
+msgstr "تخصيص معلمات نواة لينكس"
+
+#, sh-format
+msgid "Enter custom linux kernel parameters:"
+msgstr "قم بإدخال معلمات النواة لينكس المخصصة:"
+
+#, sh-format
+msgid "The hardware clock is"
+msgstr ""
+
+#, sh-format
+msgid "This is not my current time"
+msgstr ""
+
+#, sh-format
+msgid "This time is correct"
+msgstr ""
+
+#, sh-format
+msgid ""
+"There was an error saving your settings. Are the live files located on a "
+"writeable media like an USB key (i.e. not a CDROM)?"
+msgstr ""
+"حدث خطأ أثناء حفظ الإعدادات. هل الملفات الحية الموجودة على وسائط قابل "
+"للكتابة مثل على سواقة USB (أي ليست CDROM)؟"
+
+#, sh-format
+msgid "y"
+msgstr "ن"
+
+#, sh-format
+msgid "Y"
+msgstr "ن"
+
+#, sh-format
+msgid "n"
+msgstr "ﻻ"
+
+#, sh-format
+msgid "N"
+msgstr "ﻻ"
+
+#, sh-format
 msgid "Please select your time zone area:"
+msgstr ""
+
+#, sh-format
+msgid "Next page"
+msgstr ""
+
+#, sh-format
+msgid "Previous page"
+msgstr ""
+
+#, sh-format
+msgid "Please select your keyboard layout:"
 msgstr ""
 
 #, sh-format
 msgid "Please select your language:"
 msgstr ""
+
+#, sh-format
+msgid "Please select your time zone city:"
+msgstr ""
+
+#, sh-format
+msgid "Select an item:"
+msgstr ""
+
+#~ msgid "Do you want to skip the language selection menu? [y/N]"
+#~ msgstr "هل تريد تخطي قائمة اختيار اللغة؟ [ن/ﻻ]"
+
+#~ msgid "Invalid response"
+#~ msgstr "استجابة غير صالحة"
+
+#~ msgid "Boot to runlevel '4' (graphical login) (default)"
+#~ msgstr "الإقلاع في مستوى تشغيل '4' (دخول رسومي) (افتراضي)"
+
+#~ msgid "Enable 'Copy everything to RAM'"
+#~ msgstr "تمكين 'نسخ كل شيء إلى ذاكرة الوصول العشوائي'"
+
+#~ msgid "Disable 'Copy everything to RAM' (default)"
+#~ msgstr "تعطيل 'نسخ كل شيء إلى ذاكرة الوصول العشوائي' (الافتراضي)"
+
+#~ msgid "Enable numlock on boot"
+#~ msgstr "تمكين numlock عند الإقلاع"
+
+#~ msgid "Disable numlock on boot (default)"
+#~ msgstr "تعطيل numlock عند الإقلاع (افتراضي)"
+
+#~ msgid "Enable Ibus"
+#~ msgstr "تمكين Ibus"
+
+#~ msgid "Disable Ibus (default)"
+#~ msgstr "تعطيل Ibus (افتراضي)"
+
+#~ msgid "Enable synaptics fdi (sometimes unreliable)"
+#~ msgstr "تمكين synaptics fdiر (في بعض الأحيان غير موثوقة)"
+
+#~ msgid "Disable synaptics fdi (reliable) (default)"
+#~ msgstr "تعطيل synaptics fdi (افتراضي) (موثوقة)"
+
+#~ msgid "No sound on boot"
+#~ msgstr "بدون صوت عند الإقلاع"
+
+#~ msgid "Enable sound on boot (default)"
+#~ msgstr "تمكين الصوت عند الإقلاع (افتراضي)"
+
+#~ msgid "Enable autologin on boot (default)"
+#~ msgstr "تمكين الدخول التلقائي عند الإقلاع (افتراضي)"
+
+#~ msgid "Disable autologin on boot"
+#~ msgstr "تعطيل الدخول التلقائي عند الإقلاع"
+
+#~ msgid "Enable gfxpayload=keep (default)"
+#~ msgstr "تمكين gfxpayload=keep (افتراضي)"
+
+#~ msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+#~ msgstr "تعطيل gfxpayload=keep (إذا لم يتم تحميله حاول هذا)"

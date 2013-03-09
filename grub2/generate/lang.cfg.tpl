@@ -9,8 +9,5 @@ function nextconfig {
     source $cfgprefix/timezone.cfg
   fi
 }
-menuclear
-unset chosen
-unset default
-unset timeout
+newmenu
 gettextvar title "Please select your language:"

@@ -21,26 +21,6 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, sh-format
-msgid "y"
-msgstr "i"
-
-#, sh-format
-msgid "Y"
-msgstr "I"
-
-#, sh-format
-msgid "n"
-msgstr "n"
-
-#, sh-format
-msgid "N"
-msgstr "N"
-
-#, sh-format
-msgid "Change keyboard layout"
-msgstr "Billentyűzetkiosztás megváltoztatása"
-
-#, sh-format
 msgid "Start _DISTRONAME_"
 msgstr "Start _DISTRONAME_"
 
@@ -53,16 +33,16 @@ msgid "Change boot options"
 msgstr "Betöltési opciók megváltoztatása"
 
 #, sh-format
-msgid "Memory Test"
-msgstr "Memóriateszt"
+msgid "Change time zone"
+msgstr ""
 
 #, sh-format
 msgid "Change language"
 msgstr "Nyelv megváltoztatása"
 
 #, sh-format
-msgid "Change time zone"
-msgstr ""
+msgid "Change keyboard layout"
+msgstr "Billentyűzetkiosztás megváltoztatása"
 
 #, sh-format
 msgid "Save all settings to be autoloaded for future boots"
@@ -70,126 +50,12 @@ msgstr ""
 "Minden beállítás elmentése és automatikus betöltése a következő indításkor"
 
 #, sh-format
-msgid "Do you want to skip the language selection menu? [y/N]"
-msgstr "Valóban kihagyja a nyelvválasztó menüt? [i/N]"
-
-#, sh-format
-msgid "Invalid response"
-msgstr "Érvénytelen válasz"
-
-#, sh-format
-msgid ""
-"There was an error saving your settings. Are the live files located on a "
-"writeable media like an USB key (i.e. not a CDROM)?"
+msgid "Hardware detection tool"
 msgstr ""
-"Hiba történt az egyéni beállításainak mentésekor. Ugye a live rendszer "
-"fájljai írható médián találhatóak, olyanon mint pl. USB kulcs (és nem egy CD-"
-"n)?"
 
 #, sh-format
-msgid "Return to boot menu"
-msgstr "Vissza az indítómenübe"
-
-#, sh-format
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "Indítás '3'-as futási szinten (szöveges mód)"
-
-#, sh-format
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr ""
-"Indítás '4'-es futási szinten (grafikus bejelentkezés) (alapértelmezett)"
-
-#, sh-format
-msgid "Enable 'Copy everything to RAM'"
-msgstr "A 'Minden másolása a memóriába' opció engedélyezése"
-
-#, sh-format
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "A 'Minden másolása a memóriába' opció tiltása (alapértelmezett)"
-
-#, sh-format
-msgid "Enable numlock on boot"
-msgstr "Numerikus billentyűzet engedélyezése indításkor"
-
-#, sh-format
-msgid "Disable numlock on boot (default)"
-msgstr "Numerikus billentyűzet tiltása indításkor (alapértelmezett)"
-
-#, sh-format
-msgid "Enable Ibus"
-msgstr "Ibus engedélyezése"
-
-#, sh-format
-msgid "Disable Ibus (default)"
-msgstr "Ibus tiltása (alapértelmezett)"
-
-#, sh-format
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "A synaptics fdi engedélyezése (néha megbízhatatlan)"
-
-#, sh-format
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "A synaptics fdi tiltása (megbízható) (alapértelmezett)"
-
-#, sh-format
-msgid "No sound on boot"
-msgstr "Ne legyen hang indításkor"
-
-#, sh-format
-msgid "Enable sound on boot (default)"
-msgstr "Hang engedélyezése indításkor (alapértelmezett)"
-
-#, sh-format
-msgid "Enable autologin on boot (default)"
-msgstr "Automatikus belépés engedélyezése (alapértelmezett)"
-
-#, sh-format
-msgid "Disable autologin on boot"
-msgstr "Automatikus belépés tiltása"
-
-#, sh-format
-msgid "Enable gfxpayload=keep (default)"
-msgstr "Engedélyezze a gfxpayload=keep opciót (alapértelmezés)"
-
-#, sh-format
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "Tiltsa a gfxpayload=keep opciót (ha egyáltalán nem indulna)"
-
-#, sh-format
-msgid "Change root password"
-msgstr "Rendszergazda jelszó megváltoztatása"
-
-#, sh-format
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr "Új rendszergazda jelszó (válassza az 'ask lehetőséget indításkor):"
-
-#, sh-format
-msgid "Set a proxy"
-msgstr "Proxy beállítása"
-
-#, sh-format
-msgid "New proxy (empty for no proxy):"
-msgstr "Új proxy (hagyja üresen ha nincs):"
-
-#, sh-format
-msgid "Boot from an ISO"
-msgstr "Rendszerindítás egy ISO fájlból"
-
-#, sh-format
-msgid "Path to the ISO to boot from:"
-msgstr "Az indítandó ISO fájl elérési útja:"
-
-#, sh-format
-msgid "Custom linux kernel parameters"
-msgstr "Egyéb linux kernel paraméterek"
-
-#, sh-format
-msgid "Enter custom linux kernel parameters:"
-msgstr "Adja meg az egyéb linux kernel paramétereket:"
-
-#, sh-format
-msgid "Please select your keyboard layout:"
-msgstr ""
+msgid "Memory Test"
+msgstr "Memóriateszt"
 
 #, sh-format
 msgid "Reboot"
@@ -202,6 +68,14 @@ msgstr ""
 #, sh-format
 msgid "Select an item to change the configuration:"
 msgstr ""
+
+#, sh-format
+msgid "Return to boot menu"
+msgstr "Vissza az indítómenübe"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "Indítás '3'-as futási szinten (szöveges mód)"
 
 #, sh-format
 msgid "Boot to runlevel '4' (graphical login)"
@@ -248,11 +122,11 @@ msgid "Sound on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot enabled"
+msgid "Autologin on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot disabled"
+msgid "Autologin on boot enabled"
 msgstr ""
 
 #, sh-format
@@ -264,9 +138,150 @@ msgid "gfxpayload=keep used"
 msgstr ""
 
 #, sh-format
+msgid "Change root password"
+msgstr "Rendszergazda jelszó megváltoztatása"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr "Új rendszergazda jelszó (válassza az 'ask lehetőséget indításkor):"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "Proxy beállítása"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "Új proxy (hagyja üresen ha nincs):"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "Rendszerindítás egy ISO fájlból"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "Az indítandó ISO fájl elérési útja:"
+
+#, sh-format
+msgid "Custom linux kernel parameters"
+msgstr "Egyéb linux kernel paraméterek"
+
+#, sh-format
+msgid "Enter custom linux kernel parameters:"
+msgstr "Adja meg az egyéb linux kernel paramétereket:"
+
+#, sh-format
+msgid "The hardware clock is"
+msgstr ""
+
+#, sh-format
+msgid "This is not my current time"
+msgstr ""
+
+#, sh-format
+msgid "This time is correct"
+msgstr ""
+
+#, sh-format
+msgid ""
+"There was an error saving your settings. Are the live files located on a "
+"writeable media like an USB key (i.e. not a CDROM)?"
+msgstr ""
+"Hiba történt az egyéni beállításainak mentésekor. Ugye a live rendszer "
+"fájljai írható médián találhatóak, olyanon mint pl. USB kulcs (és nem egy CD-"
+"n)?"
+
+#, sh-format
+msgid "y"
+msgstr "i"
+
+#, sh-format
+msgid "Y"
+msgstr "I"
+
+#, sh-format
+msgid "n"
+msgstr "n"
+
+#, sh-format
+msgid "N"
+msgstr "N"
+
+#, sh-format
 msgid "Please select your time zone area:"
+msgstr ""
+
+#, sh-format
+msgid "Next page"
+msgstr ""
+
+#, sh-format
+msgid "Previous page"
+msgstr ""
+
+#, sh-format
+msgid "Please select your keyboard layout:"
 msgstr ""
 
 #, sh-format
 msgid "Please select your language:"
 msgstr ""
+
+#, sh-format
+msgid "Please select your time zone city:"
+msgstr ""
+
+#, sh-format
+msgid "Select an item:"
+msgstr ""
+
+#~ msgid "Do you want to skip the language selection menu? [y/N]"
+#~ msgstr "Valóban kihagyja a nyelvválasztó menüt? [i/N]"
+
+#~ msgid "Invalid response"
+#~ msgstr "Érvénytelen válasz"
+
+#~ msgid "Boot to runlevel '4' (graphical login) (default)"
+#~ msgstr ""
+#~ "Indítás '4'-es futási szinten (grafikus bejelentkezés) (alapértelmezett)"
+
+#~ msgid "Enable 'Copy everything to RAM'"
+#~ msgstr "A 'Minden másolása a memóriába' opció engedélyezése"
+
+#~ msgid "Disable 'Copy everything to RAM' (default)"
+#~ msgstr "A 'Minden másolása a memóriába' opció tiltása (alapértelmezett)"
+
+#~ msgid "Enable numlock on boot"
+#~ msgstr "Numerikus billentyűzet engedélyezése indításkor"
+
+#~ msgid "Disable numlock on boot (default)"
+#~ msgstr "Numerikus billentyűzet tiltása indításkor (alapértelmezett)"
+
+#~ msgid "Enable Ibus"
+#~ msgstr "Ibus engedélyezése"
+
+#~ msgid "Disable Ibus (default)"
+#~ msgstr "Ibus tiltása (alapértelmezett)"
+
+#~ msgid "Enable synaptics fdi (sometimes unreliable)"
+#~ msgstr "A synaptics fdi engedélyezése (néha megbízhatatlan)"
+
+#~ msgid "Disable synaptics fdi (reliable) (default)"
+#~ msgstr "A synaptics fdi tiltása (megbízható) (alapértelmezett)"
+
+#~ msgid "No sound on boot"
+#~ msgstr "Ne legyen hang indításkor"
+
+#~ msgid "Enable sound on boot (default)"
+#~ msgstr "Hang engedélyezése indításkor (alapértelmezett)"
+
+#~ msgid "Enable autologin on boot (default)"
+#~ msgstr "Automatikus belépés engedélyezése (alapértelmezett)"
+
+#~ msgid "Disable autologin on boot"
+#~ msgstr "Automatikus belépés tiltása"
+
+#~ msgid "Enable gfxpayload=keep (default)"
+#~ msgstr "Engedélyezze a gfxpayload=keep opciót (alapértelmezés)"
+
+#~ msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+#~ msgstr "Tiltsa a gfxpayload=keep opciót (ha egyáltalán nem indulna)"

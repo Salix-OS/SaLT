@@ -1,7 +1,7 @@
 PACKAGE = salt
-SRCFILES = $(wildcard ../build/boot/grub/*.cfg)
-POFILES = $(wildcard po/*.po)
-MOFILES = $(POFILES:.po=.mo)
+SRCFILES = $(sort $(wildcard ../build/boot/grub/*.cfg *.cfg.tpl))
+POFILES = $(sort $(wildcard po/*.po))
+MOFILES = $(POFILES:.po=.mo.gz)
 POTFILE = po/$(PACKAGE).pot
 DISTRONAME = SalixLive
 
@@ -16,9 +16,10 @@ all: updatepot build
 
 build: $(MOFILES)
 
-%.mo : %.po
+%.mo.gz: %.po
 	@echo "Compiling $<"
 	$(shell sh ./pohelper "$(DISTRONAME)" $<)
+	@gzip -9 -v $*.mo
 
 clean:
 	@rm -f $(MOFILES)
@@ -37,6 +38,7 @@ updatepot:
 		-o $(POTFILE) \
 		-
 	@for i in $(POFILES); do \
+		echo -n "merging $$i "; \
 		msgmerge -NU $$i $(POTFILE); \
 	done
 

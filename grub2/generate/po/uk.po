@@ -20,26 +20,6 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #, sh-format
-msgid "y"
-msgstr "y"
-
-#, sh-format
-msgid "Y"
-msgstr "Y"
-
-#, sh-format
-msgid "n"
-msgstr "n"
-
-#, sh-format
-msgid "N"
-msgstr "N"
-
-#, sh-format
-msgid "Change keyboard layout"
-msgstr "Змінити розкладку клавіатури"
-
-#, sh-format
 msgid "Start _DISTRONAME_"
 msgstr "Запустити _DISTRONAME_"
 
@@ -52,16 +32,16 @@ msgid "Change boot options"
 msgstr "Змінити опції завантаження"
 
 #, sh-format
-msgid "Memory Test"
-msgstr "Тестування пам’яті"
+msgid "Change time zone"
+msgstr ""
 
 #, sh-format
 msgid "Change language"
 msgstr "Змінити мову"
 
 #, sh-format
-msgid "Change time zone"
-msgstr ""
+msgid "Change keyboard layout"
+msgstr "Змінити розкладку клавіатури"
 
 #, sh-format
 msgid "Save all settings to be autoloaded for future boots"
@@ -70,126 +50,12 @@ msgstr ""
 "завантажень"
 
 #, sh-format
-msgid "Do you want to skip the language selection menu? [y/N]"
-msgstr "Ви бажаєте пропустити меню вибору мови? [y/N]"
-
-#, sh-format
-msgid "Invalid response"
-msgstr "Невірна відповідь"
-
-#, sh-format
-msgid ""
-"There was an error saving your settings. Are the live files located on a "
-"writeable media like an USB key (i.e. not a CDROM)?"
+msgid "Hardware detection tool"
 msgstr ""
-"Виникла помилка при збереженні налаштувань. Чи файли системи розташовані на "
-"носіях, таких як флешка USB (тобто не на CD-ROM)?"
 
 #, sh-format
-msgid "Return to boot menu"
-msgstr "Повернутися до меню завантаження"
-
-#, sh-format
-msgid "Boot to runlevel '3' (text mode)"
-msgstr "Завантажити '3' рівень (текстовий режим)"
-
-#, sh-format
-msgid "Boot to runlevel '4' (graphical login) (default)"
-msgstr "Завантажити '4' рівень (графічний режим) (типово)"
-
-#, sh-format
-msgid "Enable 'Copy everything to RAM'"
-msgstr "Включити 'Копіювання всього у RAM'"
-
-#, sh-format
-msgid "Disable 'Copy everything to RAM' (default)"
-msgstr "Виключити 'Копіювання всього у RAM' (типово)"
-
-#, sh-format
-msgid "Enable numlock on boot"
-msgstr "Включити numlock при завантаженні"
-
-#, sh-format
-msgid "Disable numlock on boot (default)"
-msgstr "Виключити numlock при завантаженні (типово)"
-
-#, sh-format
-msgid "Enable Ibus"
-msgstr "Включити IBUs"
-
-#, sh-format
-msgid "Disable Ibus (default)"
-msgstr "Вимкнути IBUs (за замовчуванням)"
-
-#, sh-format
-msgid "Enable synaptics fdi (sometimes unreliable)"
-msgstr "Включити synaptics fdi (іноді не працює)"
-
-#, sh-format
-msgid "Disable synaptics fdi (reliable) (default)"
-msgstr "Виключити synaptics fdi (працює завжди) (типово)"
-
-#, sh-format
-msgid "No sound on boot"
-msgstr "Відсутній звук при завантаженні"
-
-#, sh-format
-msgid "Enable sound on boot (default)"
-msgstr "Увімкнути звук при завантаженні (за замовчуванням)"
-
-#, sh-format
-msgid "Enable autologin on boot (default)"
-msgstr "Включити автоматичний вхід при завантаженні системи (за замовчуванням)"
-
-#, sh-format
-msgid "Disable autologin on boot"
-msgstr "Відключення автоматичного входу при завантаженні"
-
-#, sh-format
-msgid "Enable gfxpayload=keep (default)"
-msgstr "Включити gfxpayload=keep (за замовчуванням)"
-
-#, sh-format
-msgid "Disable gfxpayload=keep (if it doesn't load try this)"
-msgstr "Вимкнути gfxpayload=keep (якщо не завантажується спробувати це)"
-
-#, sh-format
-msgid "Change root password"
-msgstr "Зміна пароля суперкористувача"
-
-#, sh-format
-msgid "New root password (choose 'ask' to be asked at boot):"
-msgstr ""
-"Новий пароль суперкористувача (виберіть 'ask', щоб запитувало при "
-"завантаженні):"
-
-#, sh-format
-msgid "Set a proxy"
-msgstr "Встановити проксі"
-
-#, sh-format
-msgid "New proxy (empty for no proxy):"
-msgstr "Новий проксі-сервер (порожньо без проксі):"
-
-#, sh-format
-msgid "Boot from an ISO"
-msgstr "Завантаження з ISO"
-
-#, sh-format
-msgid "Path to the ISO to boot from:"
-msgstr "Шлях до ISO для завантаження:"
-
-#, sh-format
-msgid "Custom linux kernel parameters"
-msgstr "Додаткові параметри ядра лінукс"
-
-#, sh-format
-msgid "Enter custom linux kernel parameters:"
-msgstr "Введіть додаткові параметри ядра лінукс:"
-
-#, sh-format
-msgid "Please select your keyboard layout:"
-msgstr ""
+msgid "Memory Test"
+msgstr "Тестування пам’яті"
 
 #, sh-format
 msgid "Reboot"
@@ -202,6 +68,14 @@ msgstr ""
 #, sh-format
 msgid "Select an item to change the configuration:"
 msgstr ""
+
+#, sh-format
+msgid "Return to boot menu"
+msgstr "Повернутися до меню завантаження"
+
+#, sh-format
+msgid "Boot to runlevel '3' (text mode)"
+msgstr "Завантажити '3' рівень (текстовий режим)"
 
 #, sh-format
 msgid "Boot to runlevel '4' (graphical login)"
@@ -248,11 +122,11 @@ msgid "Sound on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot enabled"
+msgid "Autologin on boot disabled"
 msgstr ""
 
 #, sh-format
-msgid "Autologin on boot disabled"
+msgid "Autologin on boot enabled"
 msgstr ""
 
 #, sh-format
@@ -264,9 +138,151 @@ msgid "gfxpayload=keep used"
 msgstr ""
 
 #, sh-format
+msgid "Change root password"
+msgstr "Зміна пароля суперкористувача"
+
+#, sh-format
+msgid "New root password (choose 'ask' to be asked at boot):"
+msgstr ""
+"Новий пароль суперкористувача (виберіть 'ask', щоб запитувало при "
+"завантаженні):"
+
+#, sh-format
+msgid "Set a proxy"
+msgstr "Встановити проксі"
+
+#, sh-format
+msgid "New proxy (empty for no proxy):"
+msgstr "Новий проксі-сервер (порожньо без проксі):"
+
+#, sh-format
+msgid "Boot from an ISO"
+msgstr "Завантаження з ISO"
+
+#, sh-format
+msgid "Path to the ISO to boot from:"
+msgstr "Шлях до ISO для завантаження:"
+
+#, sh-format
+msgid "Custom linux kernel parameters"
+msgstr "Додаткові параметри ядра лінукс"
+
+#, sh-format
+msgid "Enter custom linux kernel parameters:"
+msgstr "Введіть додаткові параметри ядра лінукс:"
+
+#, sh-format
+msgid "The hardware clock is"
+msgstr ""
+
+#, sh-format
+msgid "This is not my current time"
+msgstr ""
+
+#, sh-format
+msgid "This time is correct"
+msgstr ""
+
+#, sh-format
+msgid ""
+"There was an error saving your settings. Are the live files located on a "
+"writeable media like an USB key (i.e. not a CDROM)?"
+msgstr ""
+"Виникла помилка при збереженні налаштувань. Чи файли системи розташовані на "
+"носіях, таких як флешка USB (тобто не на CD-ROM)?"
+
+#, sh-format
+msgid "y"
+msgstr "y"
+
+#, sh-format
+msgid "Y"
+msgstr "Y"
+
+#, sh-format
+msgid "n"
+msgstr "n"
+
+#, sh-format
+msgid "N"
+msgstr "N"
+
+#, sh-format
 msgid "Please select your time zone area:"
+msgstr ""
+
+#, sh-format
+msgid "Next page"
+msgstr ""
+
+#, sh-format
+msgid "Previous page"
+msgstr ""
+
+#, sh-format
+msgid "Please select your keyboard layout:"
 msgstr ""
 
 #, sh-format
 msgid "Please select your language:"
 msgstr ""
+
+#, sh-format
+msgid "Please select your time zone city:"
+msgstr ""
+
+#, sh-format
+msgid "Select an item:"
+msgstr ""
+
+#~ msgid "Do you want to skip the language selection menu? [y/N]"
+#~ msgstr "Ви бажаєте пропустити меню вибору мови? [y/N]"
+
+#~ msgid "Invalid response"
+#~ msgstr "Невірна відповідь"
+
+#~ msgid "Boot to runlevel '4' (graphical login) (default)"
+#~ msgstr "Завантажити '4' рівень (графічний режим) (типово)"
+
+#~ msgid "Enable 'Copy everything to RAM'"
+#~ msgstr "Включити 'Копіювання всього у RAM'"
+
+#~ msgid "Disable 'Copy everything to RAM' (default)"
+#~ msgstr "Виключити 'Копіювання всього у RAM' (типово)"
+
+#~ msgid "Enable numlock on boot"
+#~ msgstr "Включити numlock при завантаженні"
+
+#~ msgid "Disable numlock on boot (default)"
+#~ msgstr "Виключити numlock при завантаженні (типово)"
+
+#~ msgid "Enable Ibus"
+#~ msgstr "Включити IBUs"
+
+#~ msgid "Disable Ibus (default)"
+#~ msgstr "Вимкнути IBUs (за замовчуванням)"
+
+#~ msgid "Enable synaptics fdi (sometimes unreliable)"
+#~ msgstr "Включити synaptics fdi (іноді не працює)"
+
+#~ msgid "Disable synaptics fdi (reliable) (default)"
+#~ msgstr "Виключити synaptics fdi (працює завжди) (типово)"
+
+#~ msgid "No sound on boot"
+#~ msgstr "Відсутній звук при завантаженні"
+
+#~ msgid "Enable sound on boot (default)"
+#~ msgstr "Увімкнути звук при завантаженні (за замовчуванням)"
+
+#~ msgid "Enable autologin on boot (default)"
+#~ msgstr ""
+#~ "Включити автоматичний вхід при завантаженні системи (за замовчуванням)"
+
+#~ msgid "Disable autologin on boot"
+#~ msgstr "Відключення автоматичного входу при завантаженні"
+
+#~ msgid "Enable gfxpayload=keep (default)"
+#~ msgstr "Включити gfxpayload=keep (за замовчуванням)"
+
+#~ msgid "Disable gfxpayload=keep (if it doesn't load try this)"
+#~ msgstr "Вимкнути gfxpayload=keep (якщо не завантажується спробувати це)"

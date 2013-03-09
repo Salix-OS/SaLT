@@ -144,6 +144,14 @@ EOF
   cp -v syslinux-$SYSLINUX_VER/mbr/isohdpfx.bin .
   cp -v syslinux-$SYSLINUX_VER/win32/syslinux.exe $ISODIR/boot/
   cp -v syslinux-$SYSLINUX_VER/com32/chain/chain.c32 $ISODIR/boot/
+  # creating hdt.img
+  (
+    cd syslinux-SYSLINUX_VER/com32/hdt
+    sed -i '/^hdt.elf/ { s/^/#/; n; s/^/#/ }' Makefile
+    make hdt.img
+    cp -L -v hdt.img $ISODIR/boot/hdt.img
+  )
+  cp -v syslinux-$SYSLINUX_VER/memdisk/memdisk $ISODIR/boot/
   rm -rf syslinux-$SYSLINUX_VER
   mkdir elevate
   ( cd elevate && unzip ../Elevate.zip )
