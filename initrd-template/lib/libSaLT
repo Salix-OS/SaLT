@@ -688,11 +688,6 @@ uninstall_hooks() {
   MP="$1"
   # remove any $MP/dev/initctl file
   rm -f $MP/dev/initctl
-  # remove symlinks to $MP/salt/tmp when init is dynamically linked.
-  if [ -e $MP/init-hooks.salt ]; then
-    sh $MP/init-hooks.salt
-    rm -f $MP/init-hooks.salt
-  fi
 }
 
 # Tweaks for Slackware.
