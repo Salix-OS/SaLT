@@ -20,167 +20,131 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#, sh-format
-msgid "Start _DISTRONAME_"
-msgstr "Démarrer _DISTRONAME_"
+msgid "Select an item:"
+msgstr "Sélectionnez une ligne :"
 
 #, sh-format
-msgid "Live system is loading..."
-msgstr "Le système Live démarre..."
+msgid "Start $distroname"
+msgstr "Démarrer $distroname"
 
 #, sh-format
+msgid "$distroname is loading..."
+msgstr "$distroname démarre..."
+
 msgid "Change boot options"
 msgstr "Changer les options de démarrage"
 
-#, sh-format
-msgid "Change time zone"
-msgstr "Changer le fuseau horaire"
+msgid "Check correct time"
+msgstr "Vérifier la correction de l'heure"
 
-#, sh-format
 msgid "Change language"
 msgstr "Changer la langue"
 
-#, sh-format
 msgid "Change keyboard layout"
 msgstr "Changer la disposition du clavier"
 
-#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr "Enregistrer les paramètres pour les futurs démarrages"
 
-#, sh-format
 msgid "Hardware detection tool"
 msgstr "Outil de détection matériel"
 
-#, sh-format
 msgid "Memory Test"
 msgstr "Tester la mémoire (RAM)"
 
-#, sh-format
 msgid "Reboot"
 msgstr "Redémarrer"
 
-#, sh-format
-msgid "Power off"
-msgstr "Éteindre"
-
-#, sh-format
 msgid "Select an item to change the configuration:"
 msgstr "Sélecionnez une ligne pour changer la configuration :"
 
-#, sh-format
 msgid "Return to boot menu"
 msgstr "Retourner au menu de démarrage"
 
-#, sh-format
 msgid "Boot to runlevel '3' (text mode)"
 msgstr "Démarrer en runlevel '3' (mode texte)"
 
-#, sh-format
 msgid "Boot to runlevel '4' (graphical login)"
 msgstr "Démarrer en runlevel '4' (mode graphique)"
 
-#, sh-format
 msgid "'Copy everything to RAM' disabled"
 msgstr "'Copie intégrale vers la RAM' désactivée"
 
-#, sh-format
 msgid "'Copy everything to RAM' enabled"
 msgstr "'Copie intégrale vers la RAM' activée"
 
-#, sh-format
 msgid "Numlock on boot disabled"
 msgstr "Verrou numérique au démarrage désactivé"
 
-#, sh-format
 msgid "Numlock on boot enabled"
 msgstr "Verrou numérique au démarrage activé"
 
-#, sh-format
 msgid "Ibus disabled"
 msgstr "Ibus désactivé"
 
-#, sh-format
 msgid "Ibus enabled"
 msgstr "Ibus activé"
 
-#, sh-format
 msgid "Synaptics fdi disabled"
 msgstr "Pavé tactile Synaptic désactivé"
 
-#, sh-format
 msgid "Synaptics fdi enabled"
 msgstr "Pavé tactile Synaptic activé"
 
-#, sh-format
 msgid "Sound on boot enabled"
 msgstr "Son au démarrage"
 
-#, sh-format
 msgid "Sound on boot disabled"
 msgstr "Pas de son au démarrage"
 
-#, sh-format
 msgid "Autologin on boot disabled"
 msgstr "Connexion automatique désactivée"
 
-#, sh-format
 msgid "Autologin on boot enabled"
 msgstr "Connexion automatique activée"
 
-#, sh-format
 msgid "gfxpayload=keep not used"
 msgstr "gfxpayload=keep non-utilisé"
 
-#, sh-format
 msgid "gfxpayload=keep used"
 msgstr "gfxpayload=keep utilisé"
 
-#, sh-format
 msgid "Change root password"
 msgstr "Changer mot de passe root"
 
-#, sh-format
 msgid "New root password (choose 'ask' to be asked at boot):"
 msgstr "Mot de passe root (« ask » pour le taper plus tard) :"
 
-#, sh-format
 msgid "Set a proxy"
 msgstr "Définissez un proxy"
 
-#, sh-format
 msgid "New proxy (empty for no proxy):"
 msgstr "Nouveau proxy (vide pour aucun proxy) :"
 
-#, sh-format
 msgid "Boot from an ISO"
 msgstr "Démarrer à partir d'un ISO"
 
-#, sh-format
 msgid "Path to the ISO to boot from:"
 msgstr "Chemin vers l'ISO depuis lequel démarrer :"
 
-#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "Paramètres personnalisés de démarrage du noyau Linux"
 
-#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "Paramètres personnalisés de démarrage de Linux :"
 
-#, sh-format
 msgid "The hardware clock is"
 msgstr "L'horloge interne est"
 
-#, sh-format
-msgid "This is not my current time"
-msgstr "Ce n'est pas mon heure"
-
-#, sh-format
 msgid "This time is correct"
 msgstr "Cette heure est correcte"
 
-#, sh-format
+msgid "This is not correct but I don't mind"
+msgstr "C'est incorrect mais c'est pas grâve"
+
+msgid "This is not my current time"
+msgstr "Ce n'est pas mon heure"
+
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -189,46 +153,29 @@ msgstr ""
 "trouvent-ils sur un support inscriptible comme une clé USB (c'est à dire pas "
 "un CDROM) ?"
 
-#, sh-format
 msgid "y"
 msgstr "o"
 
-#, sh-format
 msgid "Y"
 msgstr "O"
 
-#, sh-format
 msgid "n"
 msgstr "n"
 
-#, sh-format
 msgid "N"
 msgstr "N"
 
-#, sh-format
-msgid "Please select your time zone area:"
-msgstr "Veuillez sélectionner votre zone de fuseau horaire :"
-
-#, sh-format
-msgid "Next page"
-msgstr "Page suivante"
-
-#, sh-format
-msgid "Previous page"
-msgstr "Page précédente"
-
-#, sh-format
 msgid "Please select your keyboard layout:"
 msgstr "Veuillez sélectionner votre disposition clavier :"
 
-#, sh-format
 msgid "Please select your language:"
-msgstr "Veuillez sélecyionner votre langue :"
+msgstr "Veuillez sélectionner votre langue :"
 
-#, sh-format
-msgid "Please select your time zone city:"
-msgstr "Veuillez sélectionner votre ville de fuseau horaire :"
+msgid "Current layout:"
+msgstr "Disposition actuelle :"
 
-#, sh-format
-msgid "Select an item:"
-msgstr "Sélectionnez une ligne :"
+msgid "Available layouts:"
+msgstr "Dispositions disponibles :"
+
+msgid "Enter custom keyboard layout:"
+msgstr "Saisissez la disposition clavier :"

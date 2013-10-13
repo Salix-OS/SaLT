@@ -11,3 +11,4 @@ initrd.gz
 kernel
 .initextra-tree
 initextra.xz
+*.pyc

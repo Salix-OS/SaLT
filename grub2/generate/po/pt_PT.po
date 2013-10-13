@@ -18,169 +18,133 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#, sh-format
-msgid "Start _DISTRONAME_"
-msgstr "Iniciar _DISTRONAME_"
-
-#, sh-format
-msgid "Live system is loading..."
-msgstr "Sistema live está a carregar ..."
-
-#, sh-format
-msgid "Change boot options"
-msgstr "Alterar as opções de inicialização"
-
-#, sh-format
-msgid "Change time zone"
+msgid "Select an item:"
 msgstr ""
 
 #, sh-format
+msgid "Start $distroname"
+msgstr ""
+
+#, sh-format
+msgid "$distroname is loading..."
+msgstr ""
+
+msgid "Change boot options"
+msgstr "Alterar as opções de inicialização"
+
+msgid "Check correct time"
+msgstr ""
+
 msgid "Change language"
 msgstr "Alterar o idioma"
 
-#, sh-format
 msgid "Change keyboard layout"
 msgstr "Alterar a disposição do teclado"
 
-#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
 "Salvar todas as configurações para ser carregados automaticamente para "
 "inicializações futuras"
 
-#, sh-format
 msgid "Hardware detection tool"
 msgstr ""
 
-#, sh-format
 msgid "Memory Test"
 msgstr "Teste de Memória"
 
-#, sh-format
 msgid "Reboot"
 msgstr ""
 
-#, sh-format
-msgid "Power off"
-msgstr ""
-
-#, sh-format
 msgid "Select an item to change the configuration:"
 msgstr ""
 
-#, sh-format
 msgid "Return to boot menu"
 msgstr "Voltar ao menu de arranque"
 
-#, sh-format
 msgid "Boot to runlevel '3' (text mode)"
 msgstr "Arranque para runlevel '3' (modo de texto)"
 
-#, sh-format
 msgid "Boot to runlevel '4' (graphical login)"
 msgstr ""
 
-#, sh-format
 msgid "'Copy everything to RAM' disabled"
 msgstr ""
 
-#, sh-format
 msgid "'Copy everything to RAM' enabled"
 msgstr ""
 
-#, sh-format
 msgid "Numlock on boot disabled"
 msgstr ""
 
-#, sh-format
 msgid "Numlock on boot enabled"
 msgstr ""
 
-#, sh-format
 msgid "Ibus disabled"
 msgstr ""
 
-#, sh-format
 msgid "Ibus enabled"
 msgstr ""
 
-#, sh-format
 msgid "Synaptics fdi disabled"
 msgstr ""
 
-#, sh-format
 msgid "Synaptics fdi enabled"
 msgstr ""
 
-#, sh-format
 msgid "Sound on boot enabled"
 msgstr ""
 
-#, sh-format
 msgid "Sound on boot disabled"
 msgstr ""
 
-#, sh-format
 msgid "Autologin on boot disabled"
 msgstr ""
 
-#, sh-format
 msgid "Autologin on boot enabled"
 msgstr ""
 
-#, sh-format
 msgid "gfxpayload=keep not used"
 msgstr ""
 
-#, sh-format
 msgid "gfxpayload=keep used"
 msgstr ""
 
-#, sh-format
 msgid "Change root password"
 msgstr "Alterar senha do root"
 
-#, sh-format
 msgid "New root password (choose 'ask' to be asked at boot):"
 msgstr "Nova senha root (escolha a opção 'ask' a ser feita no arranque):"
 
-#, sh-format
 msgid "Set a proxy"
 msgstr "Definir um proxy"
 
-#, sh-format
 msgid "New proxy (empty for no proxy):"
 msgstr "Novo proxy (vazio para nenhum proxy):"
 
-#, sh-format
 msgid "Boot from an ISO"
 msgstr "Arranque a partir de uma ISO"
 
-#, sh-format
 msgid "Path to the ISO to boot from:"
 msgstr "Caminho para o ISO para arrancar a partir:"
 
-#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "Personalizar parâmetros no núcleo linux"
 
-#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "Introduza parâmetros personalizáveis no núcleo linux:"
 
-#, sh-format
 msgid "The hardware clock is"
 msgstr ""
 
-#, sh-format
-msgid "This is not my current time"
-msgstr ""
-
-#, sh-format
 msgid "This time is correct"
 msgstr ""
 
-#, sh-format
+msgid "This is not correct but I don't mind"
+msgstr ""
+
+msgid "This is not my current time"
+msgstr ""
+
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -188,49 +152,38 @@ msgstr ""
 "Ocorreu um erro ao salvar as suas configurações. Estão os ficheiros live "
 "localizados numa media gravável como uma pendrive (i.e. não um CDROM)?"
 
-#, sh-format
 msgid "y"
 msgstr "s"
 
-#, sh-format
 msgid "Y"
 msgstr "S"
 
-#, sh-format
 msgid "n"
 msgstr "n"
 
-#, sh-format
 msgid "N"
 msgstr "N"
 
-#, sh-format
-msgid "Please select your time zone area:"
-msgstr ""
-
-#, sh-format
-msgid "Next page"
-msgstr ""
-
-#, sh-format
-msgid "Previous page"
-msgstr ""
-
-#, sh-format
 msgid "Please select your keyboard layout:"
 msgstr ""
 
-#, sh-format
 msgid "Please select your language:"
 msgstr ""
 
-#, sh-format
-msgid "Please select your time zone city:"
+msgid "Current layout:"
 msgstr ""
 
-#, sh-format
-msgid "Select an item:"
+msgid "Available layouts:"
 msgstr ""
+
+msgid "Enter custom keyboard layout:"
+msgstr ""
+
+#~ msgid "Live system is loading..."
+#~ msgstr "Sistema live está a carregar ..."
+
+#~ msgid "Start _DISTRONAME_"
+#~ msgstr "Iniciar _DISTRONAME_"
 
 #~ msgid "Do you want to skip the language selection menu? [y/N]"
 #~ msgstr "Você quer saltar o menu de seleção de idioma? [y/N]"

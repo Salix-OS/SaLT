@@ -17,168 +17,132 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#, sh-format
-msgid "Start _DISTRONAME_"
-msgstr "Spustit _DISTRONAME_"
-
-#, sh-format
-msgid "Live system is loading..."
-msgstr "Live systém se nahrává..."
-
-#, sh-format
-msgid "Change boot options"
-msgstr "Změnit nastavení bootování"
-
-#, sh-format
-msgid "Change time zone"
+msgid "Select an item:"
 msgstr ""
 
 #, sh-format
+msgid "Start $distroname"
+msgstr ""
+
+#, sh-format
+msgid "$distroname is loading..."
+msgstr ""
+
+msgid "Change boot options"
+msgstr "Změnit nastavení bootování"
+
+msgid "Check correct time"
+msgstr ""
+
 msgid "Change language"
 msgstr "Změnit jazyk"
 
-#, sh-format
 msgid "Change keyboard layout"
 msgstr "Změnit rozložení klávesnice"
 
-#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
 "Uložte všechna nastavení, aby se automaticky nahrála při dalších spouštěních"
 
-#, sh-format
 msgid "Hardware detection tool"
 msgstr ""
 
-#, sh-format
 msgid "Memory Test"
 msgstr "Paměťový test"
 
-#, sh-format
 msgid "Reboot"
 msgstr ""
 
-#, sh-format
-msgid "Power off"
-msgstr ""
-
-#, sh-format
 msgid "Select an item to change the configuration:"
 msgstr ""
 
-#, sh-format
 msgid "Return to boot menu"
 msgstr "Návrat do boot menu"
 
-#, sh-format
 msgid "Boot to runlevel '3' (text mode)"
 msgstr "Bootovat do režimu 3 (textový mód)"
 
-#, sh-format
 msgid "Boot to runlevel '4' (graphical login)"
 msgstr ""
 
-#, sh-format
 msgid "'Copy everything to RAM' disabled"
 msgstr ""
 
-#, sh-format
 msgid "'Copy everything to RAM' enabled"
 msgstr ""
 
-#, sh-format
 msgid "Numlock on boot disabled"
 msgstr ""
 
-#, sh-format
 msgid "Numlock on boot enabled"
 msgstr ""
 
-#, sh-format
 msgid "Ibus disabled"
 msgstr ""
 
-#, sh-format
 msgid "Ibus enabled"
 msgstr ""
 
-#, sh-format
 msgid "Synaptics fdi disabled"
 msgstr ""
 
-#, sh-format
 msgid "Synaptics fdi enabled"
 msgstr ""
 
-#, sh-format
 msgid "Sound on boot enabled"
 msgstr ""
 
-#, sh-format
 msgid "Sound on boot disabled"
 msgstr ""
 
-#, sh-format
 msgid "Autologin on boot disabled"
 msgstr ""
 
-#, sh-format
 msgid "Autologin on boot enabled"
 msgstr ""
 
-#, sh-format
 msgid "gfxpayload=keep not used"
 msgstr ""
 
-#, sh-format
 msgid "gfxpayload=keep used"
 msgstr ""
 
-#, sh-format
 msgid "Change root password"
 msgstr "Změnit root heslo"
 
-#, sh-format
 msgid "New root password (choose 'ask' to be asked at boot):"
 msgstr "Nové heslo root (vyberte 'ask' pro zeptání se při bootování):"
 
-#, sh-format
 msgid "Set a proxy"
 msgstr "Nastavit proxy"
 
-#, sh-format
 msgid "New proxy (empty for no proxy):"
 msgstr "Nová proxy (prázdná hodnota pro žádnou)"
 
-#, sh-format
 msgid "Boot from an ISO"
 msgstr "Bootovat z ISO obrazu"
 
-#, sh-format
 msgid "Path to the ISO to boot from:"
 msgstr "Cesta k ISO, ze kterého se má bootovat:"
 
-#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "Vlastní linux kernel parametry"
 
-#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "Zadejte vlastní linux kernel parametry:"
 
-#, sh-format
 msgid "The hardware clock is"
 msgstr ""
 
-#, sh-format
-msgid "This is not my current time"
-msgstr ""
-
-#, sh-format
 msgid "This time is correct"
 msgstr ""
 
-#, sh-format
+msgid "This is not correct but I don't mind"
+msgstr ""
+
+msgid "This is not my current time"
+msgstr ""
+
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -187,49 +151,38 @@ msgstr ""
 "na médiu, na které se dá zapisovat, například na USB disku (například ne "
 "CDROM)?"
 
-#, sh-format
 msgid "y"
 msgstr "a"
 
-#, sh-format
 msgid "Y"
 msgstr "A"
 
-#, sh-format
 msgid "n"
 msgstr "n"
 
-#, sh-format
 msgid "N"
 msgstr "N"
 
-#, sh-format
-msgid "Please select your time zone area:"
-msgstr ""
-
-#, sh-format
-msgid "Next page"
-msgstr ""
-
-#, sh-format
-msgid "Previous page"
-msgstr ""
-
-#, sh-format
 msgid "Please select your keyboard layout:"
 msgstr ""
 
-#, sh-format
 msgid "Please select your language:"
 msgstr ""
 
-#, sh-format
-msgid "Please select your time zone city:"
+msgid "Current layout:"
 msgstr ""
 
-#, sh-format
-msgid "Select an item:"
+msgid "Available layouts:"
 msgstr ""
+
+msgid "Enter custom keyboard layout:"
+msgstr ""
+
+#~ msgid "Live system is loading..."
+#~ msgstr "Live systém se nahrává..."
+
+#~ msgid "Start _DISTRONAME_"
+#~ msgstr "Spustit _DISTRONAME_"
 
 #~ msgid "Do you want to skip the language selection menu? [y/N]"
 #~ msgstr "Přejete si přeskošit menu výběru jazyků? [a/N]"

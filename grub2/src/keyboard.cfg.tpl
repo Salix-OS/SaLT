@@ -1,0 +1,1 @@
+../generate/keyboard.cfg.tpl

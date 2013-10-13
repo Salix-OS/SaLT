@@ -1,0 +1,1 @@
+../generate/lang.cfg.tpl

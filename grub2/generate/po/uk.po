@@ -19,171 +19,135 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#, sh-format
-msgid "Start _DISTRONAME_"
-msgstr "Запустити _DISTRONAME_"
-
-#, sh-format
-msgid "Live system is loading..."
-msgstr "Жива система завантажується ..."
-
-#, sh-format
-msgid "Change boot options"
-msgstr "Змінити опції завантаження"
-
-#, sh-format
-msgid "Change time zone"
+msgid "Select an item:"
 msgstr ""
 
 #, sh-format
+msgid "Start $distroname"
+msgstr ""
+
+#, sh-format
+msgid "$distroname is loading..."
+msgstr ""
+
+msgid "Change boot options"
+msgstr "Змінити опції завантаження"
+
+msgid "Check correct time"
+msgstr ""
+
 msgid "Change language"
 msgstr "Змінити мову"
 
-#, sh-format
 msgid "Change keyboard layout"
 msgstr "Змінити розкладку клавіатури"
 
-#, sh-format
 msgid "Save all settings to be autoloaded for future boots"
 msgstr ""
 "Збережіть всі параметри, які будуть автоматично завантажуються для майбутніх "
 "завантажень"
 
-#, sh-format
 msgid "Hardware detection tool"
 msgstr ""
 
-#, sh-format
 msgid "Memory Test"
 msgstr "Тестування пам’яті"
 
-#, sh-format
 msgid "Reboot"
 msgstr ""
 
-#, sh-format
-msgid "Power off"
-msgstr ""
-
-#, sh-format
 msgid "Select an item to change the configuration:"
 msgstr ""
 
-#, sh-format
 msgid "Return to boot menu"
 msgstr "Повернутися до меню завантаження"
 
-#, sh-format
 msgid "Boot to runlevel '3' (text mode)"
 msgstr "Завантажити '3' рівень (текстовий режим)"
 
-#, sh-format
 msgid "Boot to runlevel '4' (graphical login)"
 msgstr ""
 
-#, sh-format
 msgid "'Copy everything to RAM' disabled"
 msgstr ""
 
-#, sh-format
 msgid "'Copy everything to RAM' enabled"
 msgstr ""
 
-#, sh-format
 msgid "Numlock on boot disabled"
 msgstr ""
 
-#, sh-format
 msgid "Numlock on boot enabled"
 msgstr ""
 
-#, sh-format
 msgid "Ibus disabled"
 msgstr ""
 
-#, sh-format
 msgid "Ibus enabled"
 msgstr ""
 
-#, sh-format
 msgid "Synaptics fdi disabled"
 msgstr ""
 
-#, sh-format
 msgid "Synaptics fdi enabled"
 msgstr ""
 
-#, sh-format
 msgid "Sound on boot enabled"
 msgstr ""
 
-#, sh-format
 msgid "Sound on boot disabled"
 msgstr ""
 
-#, sh-format
 msgid "Autologin on boot disabled"
 msgstr ""
 
-#, sh-format
 msgid "Autologin on boot enabled"
 msgstr ""
 
-#, sh-format
 msgid "gfxpayload=keep not used"
 msgstr ""
 
-#, sh-format
 msgid "gfxpayload=keep used"
 msgstr ""
 
-#, sh-format
 msgid "Change root password"
 msgstr "Зміна пароля суперкористувача"
 
-#, sh-format
 msgid "New root password (choose 'ask' to be asked at boot):"
 msgstr ""
 "Новий пароль суперкористувача (виберіть 'ask', щоб запитувало при "
 "завантаженні):"
 
-#, sh-format
 msgid "Set a proxy"
 msgstr "Встановити проксі"
 
-#, sh-format
 msgid "New proxy (empty for no proxy):"
 msgstr "Новий проксі-сервер (порожньо без проксі):"
 
-#, sh-format
 msgid "Boot from an ISO"
 msgstr "Завантаження з ISO"
 
-#, sh-format
 msgid "Path to the ISO to boot from:"
 msgstr "Шлях до ISO для завантаження:"
 
-#, sh-format
 msgid "Custom linux kernel parameters"
 msgstr "Додаткові параметри ядра лінукс"
 
-#, sh-format
 msgid "Enter custom linux kernel parameters:"
 msgstr "Введіть додаткові параметри ядра лінукс:"
 
-#, sh-format
 msgid "The hardware clock is"
 msgstr ""
 
-#, sh-format
-msgid "This is not my current time"
-msgstr ""
-
-#, sh-format
 msgid "This time is correct"
 msgstr ""
 
-#, sh-format
+msgid "This is not correct but I don't mind"
+msgstr ""
+
+msgid "This is not my current time"
+msgstr ""
+
 msgid ""
 "There was an error saving your settings. Are the live files located on a "
 "writeable media like an USB key (i.e. not a CDROM)?"
@@ -191,49 +155,38 @@ msgstr ""
 "Виникла помилка при збереженні налаштувань. Чи файли системи розташовані на "
 "носіях, таких як флешка USB (тобто не на CD-ROM)?"
 
-#, sh-format
 msgid "y"
 msgstr "y"
 
-#, sh-format
 msgid "Y"
 msgstr "Y"
 
-#, sh-format
 msgid "n"
 msgstr "n"
 
-#, sh-format
 msgid "N"
 msgstr "N"
 
-#, sh-format
-msgid "Please select your time zone area:"
-msgstr ""
-
-#, sh-format
-msgid "Next page"
-msgstr ""
-
-#, sh-format
-msgid "Previous page"
-msgstr ""
-
-#, sh-format
 msgid "Please select your keyboard layout:"
 msgstr ""
 
-#, sh-format
 msgid "Please select your language:"
 msgstr ""
 
-#, sh-format
-msgid "Please select your time zone city:"
+msgid "Current layout:"
 msgstr ""
 
-#, sh-format
-msgid "Select an item:"
+msgid "Available layouts:"
 msgstr ""
+
+msgid "Enter custom keyboard layout:"
+msgstr ""
+
+#~ msgid "Live system is loading..."
+#~ msgstr "Жива система завантажується ..."
+
+#~ msgid "Start _DISTRONAME_"
+#~ msgstr "Запустити _DISTRONAME_"
 
 #~ msgid "Do you want to skip the language selection menu? [y/N]"
 #~ msgstr "Ви бажаєте пропустити меню вибору мови? [y/N]"

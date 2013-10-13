@@ -1,8 +1,4 @@
-locale
-timezone
 keymaps
 lang.cfg
 keyboard.cfg
 bg.png
-timezone.cfg
-timezone_*.cfg

@@ -1,16 +1,20 @@
 #!/bin/bash
 # vim: set et sw=2 st=2 tw=0:
-if qemu -version >/dev/null 2>&1; then
-  QEMU=qemu
-elif qemu-system-i386 -version >/dev/null 2>&1; then
-  QEMU=qemu-system-i386
-elif qemu-system-x86_64 -version >/dev/null 2>&1; then
-  QEMU=qemu-system-x86_64
-else
-  echo ""
-  echo "WARNING: qemu not installed!"
-  echo ""
+if [ "$1" = "iso" ]; then
   QEMU=''
+else
+  if qemu -version >/dev/null 2>&1; then
+    QEMU=qemu
+  elif qemu-system-i386 -version >/dev/null 2>&1; then
+    QEMU=qemu-system-i386
+  elif qemu-system-x86_64 -version >/dev/null 2>&1; then
+    QEMU=qemu-system-x86_64
+  else
+    echo ""
+    echo "WARNING: qemu not installed!"
+    echo ""
+    QEMU=''
+  fi
 fi
 cd "$(dirname "$0")"
 startdir="$PWD"
@@ -70,12 +74,12 @@ cp ../initrd-template/lib/keymaps "$grubdir/"
 # generate grub config
 (
   cd "$grubdir/generate"
-  echo "Create locale + timezone dirs containg translations"
-  rm -rf "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
-  rm -f "$grubdir/build/boot/grub/"{lang.cfg,keyboard.cfg,timezone.cfg}
-  ./generate "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone"
+  echo "Create locale dir containg translations"
+  rm -rf "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps"
+  rm -f "$grubdir/build/boot/grub/"{lang.cfg,keyboard.cfg}
+  ./generate "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps"
   echo "Compile mo files"
-  make clean all DISTRONAME="$DISTRONAME"
+  make clean all
   mkdir -p "$grubdir/build/boot/grub/locale"
   cp -v po/*.mo.gz "$grubdir/build/boot/grub/locale/"
 )
@@ -94,9 +98,10 @@ rm "$grubdir/keymaps"
   mkdir -p boot/grub
   cp -arv "$grubdir"/build/* .
   sed -i "s:\(set salt_debug=\).*:\1=salt_debug:" boot/grub/grub.cfg
-  for cfg in boot.cfg simpleboot.cfg; do
-    sed -i "s:_DISTRONAME_:$DISTRONAME:" boot/grub/$cfg
-  done
+  sed -i "s:_DISTRONAME_:$DISTRONAME:; s/_DEFAULTPASSWD_/live/; s/_THEMENAME_/Shine/;" boot/grub/defaults.cfg
+  sed -i '/vmlinuz/ s/linux /echo linux /; /initrd\.gz/ { s/initrd /echo initrd /; a \
+    getInput "Hit enter to continue, this was a test." string ""
+    }' boot/grub/boot.cfg
   echo "ident_content=test" > salix.live
   echo "basedir=/" >> salix.live
   echo "iso_name=grub2menu.iso" >> salix.live
@@ -157,4 +162,4 @@ if [ -n "$QEMU" ]; then
   read R
   rm -f grub2menu.iso
 fi
-rm -rf "$ISODIR" "$grubdir/build/boot/grub/"{locale,timezone,keymaps,lang.cfg,keyboard.cfg,timezone.cfg,bg.png,themes}
+rm -rf "$ISODIR" "$grubdir/build/boot/grub/"{locale,keymaps,lang.cfg,keyboard.cfg,bg.png,themes}

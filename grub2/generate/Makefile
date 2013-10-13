@@ -3,7 +3,6 @@ SRCFILES = $(sort $(wildcard ../build/boot/grub/*.cfg *.cfg.tpl))
 POFILES = $(sort $(wildcard po/*.po))
 MOFILES = $(POFILES:.po=.mo.gz)
 POTFILE = po/$(PACKAGE).pot
-DISTRONAME = SalixLive
 
 help:
 	@echo "Help:"
@@ -18,16 +17,18 @@ build: $(MOFILES)
 
 %.mo.gz: %.po
 	@echo "Compiling $<"
-	$(shell sh ./pohelper "$(DISTRONAME)" $<)
+	$(shell sh ./pohelper $<)
 	@gzip -9 -v $*.mo
 
 clean:
 	@rm -f $(MOFILES)
 	@rm -f $(POFILES:.po=.po~)
 
+showtrans:
+	@sed -n '/^\([^#].*\)\?gettext/ { s/gettextvar \+[^ ]\+ /gettext /g; p }' $(SRCFILES)
 updatepot:
 	@[ -e $(POTFILE) ] || touch $(POTFILE)
-	@sed -n '/^\([^#].*\)\?gettext\(var\)\? / { s/.*gettext\(var \+[^ ]\+\)\? \+\("[^"]\+"\)/eval_gettext \2/; p }' $(SRCFILES) | xgettext \
+	@sed -n '/^\([^#].*\)\?gettext/ { s/gettextvar \+[^ ]\+ /gettext /g; p }' $(SRCFILES) | xgettext \
 		--from-code=utf-8 \
 		-L Shell \
 		--no-location \
