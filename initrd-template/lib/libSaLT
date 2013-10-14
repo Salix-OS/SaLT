@@ -17,7 +17,7 @@ else
 fi
 
 # debug mode is done using kernel command line or by putting something in the file /SALT_DEBUG
-SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -w -i salt_debug && echo 1 || cat /SALT_DEBUG /mnt/salt/SALT_DEBUG 2>/dev/null)
+SALT_DEBUG=$(cat /proc/cmdline 2>/dev/null | grep -q -i ' salt_debug\(=on\)\?\( \|$\)' && echo 1 || cat /SALT_DEBUG /mnt/salt/SALT_DEBUG 2>/dev/null)
 export SALT_DEBUG
 SAVE_FILE_NAME=${ROOT_DIR}.save
 export SAVE_FILE_NAME
@@ -202,6 +202,11 @@ get_value_cmdline() {
     done
     sed "s/.* $param=\([^ ]*\).*/\1/" /proc/cmdline
   fi
+}
+# return succes (0) if the specified cheatcode is present or has the value 'on' on the Linux kernel command line
+# $1 = cheatcode
+is_active_cmdline() {
+  grep -i -q " $1\(=on\)\?\( \|$\)" /proc/cmdline
 }
 
 # Fix the IDENT_FILE variable using the optional command line option
@@ -595,7 +600,7 @@ load_module() {
         n=$(basename "$m" .salt)
         mp="/mnt/modules/$n"
         mkdir -p "$mp"
-        if is_on_cmdline 'memonly'; then
+        if is_active_cmdline 'salt_memonly'; then
           mkdir -p /tmp/modules
           debuglog "copying $m to /tmp/modules/..."
           cp "$m" /tmp/modules/
@@ -729,7 +734,7 @@ EOF
   else
     errorlog "/etc/rc.d/rc.M does not seem to exist in the distro: cheatcodes will not work."
   fi
-  lang=$(get_value_cmdline lang)
+  lang=$(get_value_cmdline salt_lang)
   if [ -n "$lang" ] && [ -e $MP/etc/profile.d ]; then
     debuglog "Early configure locale to $lang"
     if [ -f $MP/etc/profile.d/lang.sh ]; then
@@ -753,11 +758,48 @@ EOF
       sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" $MP/etc/kde/kdm/kdmrc
     fi
   fi
-  hwclock=$(get_value_cmdline hwclock)
-  [ -z "$hwclock" ] && hwclock='UTC'
+  clock=$(get_value_cmdline salt_clock)
+  if [ "$clock" = "ok" ]; then
+    hwclock='localtime'
+    timezone='UTC'
+  elif [ "$clock" = "ko" ]; then
+    hwclock='localtime'
+    # we need to ask the user about the real timezone
+    while true; do
+      echo -e "\nPlease select your timezone area."
+      find $MP/usr/share/zoneinfo -mindepth 1 -maxdepth 1 -type d -exec basename '{}' \; | sort | grep -v 'posix\|right' | tr "\n" " "; echo "Other"
+      echo -ne "\nTimezone area: "
+      read tzarea
+      echo
+      [ "$tzarea" = "Other" ] && tzarea=.
+      if [ -n "$tzarea" ] && [ -e $MP/usr/share/zoneinfo/$tzarea ]; then
+        echo -e "\nPlease select your timezone."
+        if [ "$tzarea" = "." ]; then
+          find $MP/usr/share/zoneinfo -mindepth 1 -maxdepth 1 -type f -exec basename '{}' \; | sort | grep -v '\.\|posixrules' | tr "\n" " "; echo
+        else
+          find $MP/usr/share/zoneinfo/$tzarea -mindepth 1 -maxdepth 1 -type f -exec basename '{}' \; | sort | tr "\n" " "; echo
+        fi
+        echo -ne "\nTimezone: "
+        read tzcity
+        echo
+        if [ -n "$tzcity" ] && [ -e $MP/usr/share/zoneinfo/$tzarea/$tzcity ]; then
+          [ "$tzarea" = "." ] && timezone=$tzcity || timezone=$tzarea/$tzcity
+        fi
+      fi
+      if [ -n "$timezone" ]; then
+        break
+      else
+        echoerror "Timezone bad defined, please retry."
+      fi
+    done
+    unset tzarea tzcities
+  else # empty or other value. Means you don't mind
+    hwclock=$(get_value_cmdline salt_hwclock)
+    [ -z "$hwclock" ] && hwclock='UTC'
+    timezone=$(get_value_cmdline salt_timezone)
+  fi
   debuglog "Setting /etc/hardwareclock to $hwclock"
   echo "$hwclock" > $MP/etc/hardwareclock
-  timezone=$(get_value_cmdline timezone)
   if [ -n "$timezone" ] && [ -e $MP/usr/share/zoneinfo/$timezone ]; then
     debuglog "Early configure timezone to $timezone"
     (
@@ -767,6 +809,10 @@ EOF
       ln -s /usr/share/zoneinfo/$timezone etc/localtime-copied-from
     )
   fi
+  [ -d $MP/dev ] || mkdir -p $MP/dev
+  [ -e $MP/dev/console ] || mknod $MP/dev/console c 5 1
+  [ -e $MP/dev/null ] || mknod $MP/dev/null c 1 3
+  [ -e $MP/dev/zero ] || mknod $MP/dev/zero c 1 5
 }
 
 # Change root for another process that will replace current process.

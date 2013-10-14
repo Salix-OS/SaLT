@@ -19,7 +19,7 @@ SYSLINUX_URL="http://www.kernel.org/pub/linux/utils/boot/syslinux/syslinux-$SYSL
 # Elevate.exe is a tool similar to sudo/gksudo for windows vista+ (but without password).
 # Home page: http://jpassing.com/2007/12/08/launch-elevated-processes-from-the-command-line/
 # Licence: MIT
-ELEVATE_URL="int3.de/download/Elevate.zip"
+ELEVATE_URL="http://int3.de/download/Elevate.zip"
 # Compression used for the initrd, default to gz
 [ -z "$COMP" ] && COMP='gz'
 while [ -n "$1" ]; do
@@ -74,6 +74,10 @@ while [ -n "$1" ]; do
       ;;
   esac
 done
+if [ "$(id -ru)" -ne 0 ]; then
+  echo 'Need to be root to run.' >&2
+  exit 1
+fi
 [ -e mt86p ] || wget "$MEMTEST_URL" -O - | zcat > mt86p
 [ -e syslinux-$SYSLINUX_VER.tar.xz ] || wget "$SYSLINUX_URL"
 [ -e Elevate.zip ] || wget "$ELEVATE_URL"
@@ -146,7 +150,8 @@ EOF
   cp -v syslinux-$SYSLINUX_VER/com32/chain/chain.c32 $ISODIR/boot/
   # creating hdt.img
   (
-    cd syslinux-SYSLINUX_VER/com32/hdt
+    cp -v mt86p syslinux-$SYSLINUX_VER/com32/hdt/floppy/memtest.bin
+    cd syslinux-$SYSLINUX_VER/com32/hdt
     sed -i '/^hdt.elf/ { s/^/#/; n; s/^/#/ }' Makefile
     make hdt.img
     cp -L -v hdt.img $ISODIR/boot/hdt.img
@@ -176,15 +181,13 @@ EOF
   # generate grub config
   (
     cd "$grubdir/generate"
-    echo "Create locale + timezone dirs containg translations"
-    rm -rf "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps" "$grubdir/build/boot/grub/timezone"
-    ./generate "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps" "$grubdir/build/boot/grub/timezone"
+    echo "Create locale dirs containg translations"
+    rm -rf "$grubdir/build/boot/grub/locale" "$grubdir/build/boot/grub/keymaps"
+    ./generate "$grubdir/build/boot/grub" "$grubdir/build/boot/grub/keymaps" "$grubdir/keymaps"
     echo "Compile mo files"
-    make clean all DISTRONAME="$VOLNAME"
+    make clean all
     mkdir -p "$grubdir/build/boot/grub/locale"
-    for i in po/*.mo; do
-      gzip -9 -vc "$i" > "$grubdir/build/boot/grub/locale/$(basename "$i").gz"
-    done
+    cp -v po/*.mo.gz "$grubdir/build/boot/grub/locale/"
   )
   # add grub2 menu
   (
@@ -201,17 +204,14 @@ EOF
     cp -ar "$grubdir"/build/* .
     # modify the config files
     sed -i "s:\(set salt_debug\)=.*:\1=$DEBUG:" boot/grub/grub.cfg
-    for cfg in boot.cfg simpleboot.cfg; do
-      sed -i "s:_DISTRONAME_:$VOLNAME:" boot/grub/$cfg
-    done
+    if [ -d boot/grub/themes ]; then
+      theme_name=$(basename $(find boot/grub/themes/ -type d -mindepth 1 | head -n 1))
+    fi
+    sed -i "s:_DISTRONAME_:$VOLNAME:; s/_DEFAULTPASSWD_/live/; s/_THEMENAME_/$theme_name/;" boot/grub/defaults.cfg
     sed -i "s,initrd\.gz,initrd.$COMP," boot/grub/boot.cfg
     sed -i -e "s,\(ident_file=\).*,\1$IDENT_FILE," \
       -e "s,\(searched_ident_content=\).*,\1$IDENT_CONTENT," \
       -e "s,\(default_iso_name=\).*,\1$(basename $ISONAME)," boot/grub/memdisk_grub.cfg
-    if [ -d boot/grub/themes ]; then
-      theme_name=$(basename $(find boot/grub/themes/ -type d -mindepth 1 | head -n 1))
-      sed -i "s:^#\(set theme_name)=.*:\1=$theme_name:" boot/grub/include.cfg
-    fi
     # copy modules and other grub files
     mkdir -p boot/grub/i386-pc/
     for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do

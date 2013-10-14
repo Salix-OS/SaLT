@@ -14,7 +14,7 @@ echoinfo '| Starting SaLT Live configuration... |'
 echoinfo '+-------------------------------------+'
 LIBSUFFIX=
 [ -d /usr/lib64 ] && LIBSUFFIX=64
-lang=$(get_value_cmdline lang)
+lang=$(get_value_cmdline salt_lang)
 if [ -n "$lang" ]; then
   if [ -x /usr/sbin/localesetup ]; then
     /usr/sbin/localesetup $lang # Salix
@@ -55,8 +55,7 @@ if [ -n "$lang" ]; then
   fi
 fi
 restart_hal=no
-synaptics=$(get_value_cmdline synaptics)
-if [ "$synaptics" = "on" ]; then
+if is_active_cmdline salt_synaptics; then
   if [ ! -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
     if [ -e /usr/share/hal/fdi/policy/10osvendor/11-x11-synaptics.fdi ]; then
       mkdir -p /etc/hal/fdi/policy
@@ -64,16 +63,16 @@ if [ "$synaptics" = "on" ]; then
       restart_hal=yes
     fi
   fi
-elif [ "$synaptics" = "off" ]; then
+else
   if [ -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
     rm -f /etc/hal/fdi/policy/11-x11-synaptics.fdi
     restart_hal=yes
   fi
 fi
-keyb=$(get_value_cmdline keyb)
-numlock=$(get_value_cmdline numlock)
-scim=$(get_value_cmdline scim)
-ibus=$(get_value_cmdline ibus)
+keyb=$(get_value_cmdline salt_keyb)
+numlock=$(is_active_cmdline salt_numlock && echo on)
+scim=$(is_active_cmdline salt_scim && echo on)
+ibus=$(is_active_cmdline salt_ibus && echo on)
 if [ -n "$keyb" ] || [-n "$numlock" ] || [ -n "$scim" ] || [ -n "$ibus" ]; then
   # keyboard settting
   [ -n "$keyb" ] || keyb=us
@@ -166,7 +165,7 @@ EOF
   fi
 fi
 [ "$restart_hal" = "yes" ] && /etc/rc.d/rc.hald restart
-passwd=$(get_value_cmdline passwd)
+passwd=$(get_value_cmdline salt_passwd)
 if [ -n "$passwd" ]; then
   # root password
   if [ "$passwd" = "ask" ]; then
@@ -178,7 +177,7 @@ if [ -n "$passwd" ]; then
     echo "root:$passwd" | /usr/sbin/chpasswd
   fi
 fi
-if is_on_cmdline nosound; then
+if is_active_cmdline salt_nosound; then
   echoinfo 'Muting sound volume'
   for SCONTROL in Master PCM Front Surround Center CD Video Wave Music AC97 Headphone; do
     /usr/bin/amixer -q sset $SCONTROL 0 mute 2>/dev/null
@@ -193,20 +192,22 @@ else
     done
   fi
 fi
-if is_on_cmdline autologin; then
+if is_active_cmdline asalt_utologin; then
   [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=true/' /etc/gdm/custom.conf
   [ -e /etc/kde/kdm/kdmrc ] && sed -i 's/AutoLoginEnable=.*/AutoLoginEnable=true/' /etc/kde/kdm/kdmrc
 else
   [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=false/' /etc/gdm/custom.conf
   [ -e /etc/kde/kdm/kdmrc ] && sed -i 's/AutoLoginEnable=.*/AutoLoginEnable=false/' /etc/kde/kdm/kdmrc
 fi
-proxy=$(get_value_cmdline proxy)
+proxy=$(get_value_cmdline salt_proxy)
 if [ -n "$proxy" ]; then
   # set http and ftp proxy (same for both)
   cat <<EOF > /etc/profile.d/proxy.sh
 #!/bin/sh
 export http_proxy=$proxy
+export https_proxy=$http_proxy
 export ftp_proxy=$http_proxy
+export no_proxy=localhost,127.0.0.1
 EOF
   chmod +x /etc/profile.d/proxy.sh
   /etc/profile.d/proxy.sh

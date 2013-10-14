@@ -98,7 +98,7 @@ rm "$grubdir/keymaps"
   mkdir -p boot/grub
   cp -arv "$grubdir"/build/* .
   sed -i "s:\(set salt_debug=\).*:\1=salt_debug:" boot/grub/grub.cfg
-  sed -i "s:_DISTRONAME_:$DISTRONAME:; s/_DEFAULTPASSWD_/live/; s/_THEMENAME_/Shine/;" boot/grub/defaults.cfg
+  sed -i "s:_DISTRONAME_:$DISTRONAME:; s/_DEFAULTPASSWD_/live/; s/_THEMENAME_/$theme_name/;" boot/grub/defaults.cfg
   sed -i '/vmlinuz/ s/linux /echo linux /; /initrd\.gz/ { s/initrd /echo initrd /; a \
     getInput "Hit enter to continue, this was a test." string ""
     }' boot/grub/boot.cfg
@@ -111,7 +111,6 @@ rm "$grubdir/keymaps"
   if [ -n "$theme_name" ]; then
     mkdir -p boot/grub/themes
     cp -r $startdir/themes/$theme_name boot/grub/themes/
-    sed -i "s:^#\(set theme_name\)=.*:\1=\"$theme_name\":" boot/grub/include.cfg
   fi
   mkdir -p boot/grub/i386-pc/
   for i in $GRUB_DIR/*.mod $GRUB_DIR/*.lst $GRUB_DIR/*.img $GRUB_DIR/efiemu??.o; do

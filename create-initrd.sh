@@ -20,6 +20,18 @@ NTFS3GVER=2011.4.12
 NTFS3GURL=http://tuxera.com/opensource/ntfs-3g_ntfsprogs-$NTFS3GVER.tgz
 KERNELDIR=$PWD/kernel
 
+# download busybox
+if [ ! -e busybox-$BBVER.tar.bz2 ]; then
+  wget $BBURL
+fi
+# download file
+if [ ! -e file-$FILEVER.tar.gz ]; then
+  wget $FILEURL
+fi
+# download ntfs-3g
+if [ ! -e ntfs-3g_ntfsprogs-$NTFS3GVER.tgz ]; then
+  wget $NTFS3GURL
+fi
 KVER=$KERNELDIR/lib/modules/*
 KVER=$(echo $KVER | sed 's:.*/\([^/]\+\)$:\1:')
 # create the initial initrd
@@ -37,10 +49,7 @@ mknod -m 0600 $TREE/dev/tty1 c 4 1
 mknod -m 0600 $TREE/dev/tty2 c 4 2
 # copy the configuration
 cp config $TREE/etc/salt.cfg
-# download, compile and install busybox
-if [ ! -e busybox-$BBVER.tar.bz2 ]; then
-  wget $BBURL
-fi
+# compile and install busybox
 if [ ! -e busybox-$BBVER/_install/bin/busybox ]; then
   rm -rf busybox-$BBVER
   tar -xf busybox-$BBVER.tar.bz2
@@ -53,10 +62,7 @@ if [ ! -e busybox-$BBVER/_install/bin/busybox ]; then
 fi
 cp -av busybox-$BBVER/_install/bin/* $TREE/bin/
 cp -av busybox-$BBVER/_install/sbin/* $TREE/sbin/
-# download, compile and install file
-if [ ! -e file-$FILEVER.tar.gz ]; then
-  wget $FILEURL
-fi
+# compile and install file
 if [ ! -e file-$FILEVER/src/file ]; then
   rm -rf file-$FILEVER
   tar -xf file-$FILEVER.tar.gz
@@ -76,10 +82,7 @@ fi
 cp -av file-$FILEVER/src/file $TREE/bin/
 mkdir -pv $TREE/etc/misc/magic
 cp -rv file-$FILEVER/magic/Magdir/* $TREE/etc/misc/magic/
-# download, compile and install ntfs-3g (only needed binaries)
-if [ ! -e ntfs-3g_ntfsprogs-$NTFS3GVER.tgz ]; then
-  wget $NTFS3GURL
-fi
+# compile and install ntfs-3g (only needed binaries)
 if [ ! -e ntfs-3g_ntfsprogs-$NTFS3GVER/pkg/bin/ntfs-3g ]; then
   rm -rf ntfs-3g_ntfsprogs-$NTFS3GVER
   tar -xf ntfs-3g_ntfsprogs-$NTFS3GVER.tgz

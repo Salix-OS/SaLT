@@ -140,7 +140,7 @@ load_rootcopy $DISTRO_MP
 # Execute /mnt/union/salt-exec.sh if exist and is executable
 [ -x /mnt/union/salt-exec.sh ] && sh /mnt/union/salt-exec.sh
 
-if is_on_cmdline 'memonly'; then
+if is_active_cmdline 'salt_memonly'; then
   debuglog "Umounting $DISTRO_MP for using memory only"
   # This could not work if, for example, the save file is on $DISTRO_MP
   umount $DISTRO_MP 2>/dev/null && rmdir $DISTRO_MP 2>/dev/null

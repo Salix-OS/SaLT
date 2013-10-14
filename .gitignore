@@ -12,3 +12,6 @@ kernel
 .initextra-tree
 initextra.xz
 *.pyc
+Elevate.zip
+isohdpfx.bin
+ntfs-3g_ntfsprogs*
