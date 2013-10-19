@@ -80,7 +80,7 @@ if [ -n "$keyb" ] || [-n "$numlock" ] || [ -n "$scim" ] || [ -n "$ibus" ]; then
   [ -n "$scim" ] || scim=off
   [ -n "$ibus" ] || ibus=off
   if [ -x /usr/sbin/keyboardsetup ]; then # Salix
-    /usr/sbin/keyboardsetup -k $keyb -n $numlock -s $scim -i $ibus
+    /usr/sbin/keyboardsetup -k $keyb -n $numlock -s $scim -i $ibus 2>/dev/null # prevent errors if Xorg packages are not installed.
     restart_hal=no
   else
     grep "^$keyb|.*|.*|.*" /mnt/salt/lib/keymaps | sed -e "s/^.*|\(.*\)|\(.*\)|\(.*\)/\1|\2|\3/" > /tmp/xkb

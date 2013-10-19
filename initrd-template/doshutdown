@@ -1,0 +1,26 @@
+#!/bin/sh
+# vim: set syn=sh ai si et sw=2 st=2 ts=2 tw=0:
+#
+# This file is part of SaLT.
+# Copyright: Cyrille Pontvieux <jrd@salixos.org>
+# Licence: GPLv3+
+# Version: 0.2.1
+# Script launched by init to replace it and chroot in the shutdown process.
+
+PATH=:/usr/sbin:/usr/bin:/sbin:/bin
+export PATH
+if [ -f /mnt/salt/lib/libSaLT ]; then
+  . /mnt/salt/lib/libSaLT
+else
+  fumble "libSaLT not found. This is really weird.\nAre you running from a Live environment?"
+  exit 1
+fi
+if [ ! -e /mnt/salt/.doshutdown ]; then
+  fumble "/mnt/salt/.doshutdown not found. This is really weird.\nAre you running from a Live environment?"
+  exit 1
+fi
+
+cmd=/sbin/$(basename "$1")
+shift
+echodebug change_root_to_initrd /cleanup "$cmd" "$@"
+change_root_to_initrd /cleanup "$cmd" "$@"

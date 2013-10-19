@@ -155,20 +155,7 @@ debugshell
 
 [ -z "$SALT_DEBUG" ] && clear
 echoinfo "*** Passing execution process to $LIVE_NAME ***\n"
-INIT=
-for d in . sbin bin usr/sbin usr/bin; do
-  if [ -x /mnt/union/$d/init ]; then
-    INIT=$d/init
-    break
-  fi
-done
-if [ -z "$INIT" ]; then
-  fumble "Could not find 'init' in the union filesystem: could not chroot"
-else
-  cp /mnt/union/$INIT /tmp/init
-  ln -s tmp/init init.distro
-  killall klogd
-  debugshell
-  change_root_to_distro /mnt/salt/init.distro $args
-fi
+killall klogd
+debugshell
+change_root_to_distro /mnt/salt/lib/init.live $args
 fumble 'End of init: this line must never be executed!'

@@ -691,8 +691,7 @@ install_hooks() {
 # $1 = mount point
 uninstall_hooks() {
   MP="$1"
-  # remove any $MP/dev/initctl file
-  rm -f $MP/dev/initctl
+  # Nothing to do anymore.
 }
 
 # Tweaks for Slackware.
@@ -701,6 +700,7 @@ make_tweaks() {
   MP="$1"
   [ -e $MP/etc ] || mkdir -p $MP/etc
   debuglog 'Disabling root filesystem check'
+  # fastboot and forcefsck are in /etc/ in Slackware, because Pat applied a patch
   touch $MP/etc/fastboot
   rm -f $MP/etc/forcefsck
   debuglog 'Informing that / is already mounted in the $MP'
@@ -758,6 +758,8 @@ EOF
       sed -i "s/\(^\|^#\)Language=.*/Language=$locale_noutf8/" $MP/etc/kde/kdm/kdmrc
     fi
   fi
+  # disable setting the hardware clock in a live environement, too dangerous.
+  chmod -x $MP/sbin/hwclock
   clock=$(get_value_cmdline salt_clock)
   if [ "$clock" = "ok" ]; then
     hwclock='localtime'
@@ -909,7 +911,7 @@ kill_all_before() {
   PPID=$(grep '^PPid:' /proc/$PID/status|grep -o '[0-9]*')
   echodebug "kill -9 $PPID"
   kill -9 $PPID
-  # because init will print a message without a new line
+  # because init could print a message without a new line
   sleep .1
   echo
 }
@@ -932,7 +934,7 @@ umount_submounts_in() {
 eject_cd() {
   DEV=$(cut -d: -f2- /tmp/distro_infos)
   TYPE=$(find_fs_type $DEV)
-  if [ "$TYPE" = "iso9660" ]; then
+  if [ "$TYPE" = "iso9660" ] || grep -q 'drive name:.*'$(echo $DEV|sed 's,/dev/,,') /proc/sys/dev/cdrom/info; then
     echoinfo "Ejecting $DEV..."
     eject $DEV 2>/dev/null
     echoinfo "CD tray will be closed in 10 seconds or hit enter..."

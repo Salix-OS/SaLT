@@ -1,29 +1,32 @@
 #!/bin/sh
 cd $(dirname "$0")
-rm -rf overlay/*
-(
-  cd overlay
-  mkdir -p bashonly salixlive/modules
-  cd bashonly
-  mkdir -p sbin etc usr/share
-  cp /sbin/init sbin/
-  ln -s mnt/salt/bin bin
-  cat <<'EOF' > .profile
-mount -o remount,rw /
-for f in reboot halt poweroff; do (cd sbin && ln -s ../mnt/salt/cleanup $f); done
+mkdir -p overlay/test/root overlay/test/var/log/setup/tmp overlay/salixlive/modules
+cat <<'EOF' > overlay/test/root/.profile
 echo
-echo "* SaLT version $(cat /mnt/salt/salt-version)"
+echo "* SaLT version $(cat /mnt/salt/salt-version) - Test ISO"
 echo
 EOF
-  cat <<'EOF' > etc/inittab
-# Default runlevel.
-id:3:initdefault:
-# System initialization (runs when system boots).
-si:S:sysinit:/bin/bash -l
+for p in test/*.t?z; do
+  echo "$p..."
+  tar -C overlay/test -xf $p
+  if [ -e overlay/test/install/doinst.sh ]; then
+    (cd overlay/test && sh install/doinst.sh -install)
+  fi
+  [ -e overlay/test/install ] && rm -rf overlay/test/install
+done
+rootpwd=$(python -c "
+import crypt
+import string
+import random
+print crypt.crypt('live', '\$1\$'+''.join([random.choice(string.letters + string.digits + './') for c in range(8)])+'\$')
+")
+sed -i "/^root/ s,^root::,root:$rootpwd:," overlay/test/etc/shadow
+mksquashfs overlay/test overlay/salixlive/modules/test.salt -comp xz -no-exports -no-xattrs -noappend
+rm -rf overlay/test
+cat <<'EOF' > overlay.sh && chmod +x overlay.sh
+#!/bin/sh
+D=$1
+sed -i '/salt_runlevel=/ { s/=.*/=3/ }' $D/boot/grub/defaults.cfg
 EOF
-  cp -r /usr/share/zoneinfo usr/share/
-  cd ..
-  mksquashfs bashonly salixlive/modules/bashonly.salt -all-root
-)
-gksu "bash -c './create-iso.sh -t grub2/themes/Shine -k \"$PWD\"/kernelive-*.txz && chown $USER: salt.iso'"
-rm -r overlay/*
+./create-iso.sh -t grub2/themes/Shine -k "$PWD"/test/kernelive-*.txz
+rm -rf overlay/* overlay.sh

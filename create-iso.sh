@@ -253,6 +253,7 @@ EOF
   rm -r "$grubdir"
   # copy the rest to the isodir
   cp -rv overlay/* $ISODIR/
+  [ -x overlay.sh ] && ./overlay.sh $ISODIR
   # ensure there is no versioning files in the ISO
   find $ISODIR -type d \( -name '.cvs' -o -name '.svn' -o -name '.git' -o -name '.gitkeep' -o -name '.gitignore' \) -prune -exec rm -rf '{}' +
   # create iso using the bootfile for el torito and creating the catalog file.

@@ -32,6 +32,8 @@ fi
 if [ ! -e ntfs-3g_ntfsprogs-$NTFS3GVER.tgz ]; then
   wget $NTFS3GURL
 fi
+# download and build patched system V init
+./create-init.sh
 KVER=$KERNELDIR/lib/modules/*
 KVER=$(echo $KVER | sed 's:.*/\([^/]\+\)$:\1:')
 # create the initial initrd
@@ -49,6 +51,8 @@ mknod -m 0600 $TREE/dev/tty1 c 4 1
 mknod -m 0600 $TREE/dev/tty2 c 4 2
 # copy the configuration
 cp config $TREE/etc/salt.cfg
+# copy the patched init
+cp src-init/init $TREE/lib/init.live
 # compile and install busybox
 if [ ! -e busybox-$BBVER/_install/bin/busybox ]; then
   rm -rf busybox-$BBVER

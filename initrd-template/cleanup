@@ -7,6 +7,15 @@
 # Version: 0.2.1
 # Clean up script launched when coming back to the initrd of SaLT before halting or rebooting.
 
+# When initally called, the real halt, reboot and poweroff will be in /hooks/
+# So there will be three way to be called:
+# 1. Using the -w parameter of halt to only write the wtmp record.
+#    So in this case, it just pass it to the real binary.
+# 2. Without -w parameter, in order to real halt or reboot the system.
+#    It just intercept this call and start the live shutdown.
+# 3. When the case 2. has been called us on a new chroot to continue the live shutdown.
+#    In fact, it is only in this case that we actually do the sutdown process.
+
 PATH=:/usr/sbin:/usr/bin:/sbin:/bin
 export PATH
 if [ -f /lib/libSaLT ]; then
@@ -14,134 +23,145 @@ if [ -f /lib/libSaLT ]; then
 elif [ -f /mnt/salt/lib/libSaLT ]; then
   . /mnt/salt/lib/libSaLT
 else
-  echo "libSaLT not found, cannot proceed further" >&2
+  fumble "libSaLT not found. This is really weird.\nAre you running from a Live environment?"
   exit 1
 fi
 
-echodebug "cleanup: called with: $0 $@"
-orig=/hooks/$(basename $0)
-echo "$@"|grep -q -- -w
-if [ $? -eq 0 ]; then
-  echodebug "cleanup: '-w' detected, will run: $orig $@"
-  "$orig" "$@"
+check_runlevel_0_or_6() {
+  RL=$(runlevel | cut -d' ' -f2)
+  [ "$RL" = "unknown" ] && RL=$RUNLEVEL
+  [ -z "$RL" ] && RL=$runlevel
+  [ -z "$RL" ] && RL=0
+  export RL
+  [ "$RL" = "0" ] || [ "$RL" = "6" ]
+}
+
+# determine calling mode
+find_mode() {
+  mode=chroot
+  [ -e /.doshutdown ] && [ -e /mnt/union ] && mode=shutdown
+  echo "$@" | grep -q -- -w && mode=real
+  check_runlevel_0_or_6 || mode=real
+  echo $mode
+}
+
+mode_real() {
+  echodebug "cleanup: will run: /hooks/$orig $@"
+  /hooks/"$orig" "$@"
   exit $?
-fi
+}
 
-RL=$(runlevel|cut -d' ' -f2)
-[ "$RL" = "unknown" ] && RL=$RUNLEVEL
-[ -z "$RL" ] && RL=$runlevel
-[ -z "$RL" ] && RL=0
-if [ "$RL" != "0" ] && [ "$RL" != "6" ]; then
-  echodebug "cleanup: not in runlevel 0 or 6, will exec: $orig $@"
-  exec "$orig" "$@"
-  exit 0
-fi
-
-cd /
-
-if [ -z "$SALT_CLEANUP_IS_RUNNING" ]; then
-  if [ ! -e /mnt/salt ]; then
-    fumble "/mnt/salt not found. This is really weird.\nAre you running from a Live environment?"
-  else
-    SALT_CLEANUP_IS_RUNNING=1
-    export SALT_CLEANUP_IS_RUNNING
-    [ -z "$SALT_DEBUG" ] && echo -en '\e[H\e[2J'
-    echoinfo "*** Live system cleanup ***\n"
-    grep -q -w '/mnt/salt' /etc/mtab || (mount -o remount,rw / && echo 'rootfs /mnt/salt rootfs ro 0 0' >> /etc/mtab && mount -o remount,ro /)
-    echodebug "Rexecuting in chroot: $0 $@"
-    change_root_to_initrd /cleanup "$0" "$@"
-    fumble 'Rexecuting cleanup: this line must never be executed!'
-  fi
-fi
-
-CMD="$@"
-export CMD
-if [ ! -e /tmp/distro_infos ]; then
-  fumble "/tmp/distro_infos not found. This is really weird.\nAre you running from a Live environment?"
-fi
-
-# ensure / and /mnt/union are writable.
-touch /testrw 2>/dev/null
-[ -e /testrw ] && rm /testrw || mount -o remount,rw /
-debugshell
-debuglog 'Remounting /mnt/union read/write'
-mount -o remount,rw /mnt/union
-
-infolog 'Untweaking target distro'
-uninstall_hooks /mnt/union
-debugshell
-
-infolog 'Synchronizing memory data on disk'
-sync
-infolog 'Killing remaining process'
-kill_all_before $$
-debugshell
-debuglog 'Umount sub-mounts in /mnt/union'
-umount_submounts_in /mnt/union
-sleep 3
-debugshell
-
-infolog 'Unloading modules...'
-for m in $(ls -dr1 /mnt/modules/*); do
-  infolog "  - Unloading $m"
-  unload_module "$m"
+mode_chroot() {
+  mount -o remount,rw /
+  PATH=/mnt/salt/sbin:/mnt/salt/bin
+  export PATH
+  grep -q -w '/mnt/salt' /etc/mtab || echo 'rootfs /mnt/salt rootfs ro 0 0' >> /etc/mtab
+  echodebug "Creating a new inittab and rexecuting in chroot: /sbin/$orig"
+  touch /mnt/salt/.doshutdown
+  mv /etc/inittab /etc/inittab.orig && echo "id::exec:/mnt/salt/doshutdown /sbin/$orig" > /etc/inittab
+  mount -o remount,ro /
+  echodebug "init should now run this script in chroot."
   debugshell
-done
-debuglog 'Destroying union filesystem...'
-destroy_union
-rmdir /mnt/modules 2>/dev/null
-rm /mnt/rw
-if [ -e /mnt/ram ]; then
-  if [ -e /sync-persistence ]; then
-    dev=$(cut -d: -f1 /sync-persistence)
-    relpath=$(cut -d: -f2 /sync-persistence)
-    dir=$(mount_device $dev)
-    debugshell
-    if [ -e "$dir"/"$relpath" ]; then
-      infolog 'Syncing RAM -> persistence file...'
-      mkdir /mnt/sync
-      mount -o loop "$dir"/"$relpath" /mnt/sync
-      if [ $? -eq 0 ]; then
-        debugshell
-        SIZE_RAM=$(du -sm /mnt/ram|cut -f1)
-        SIZE_SYNC=$(sh -c 'echo $2' -- $(df -m /mnt/sync|tail -n1))
-        if [ $SIZE_RAM -lt $SIZE_SYNC ]; then
-          cp -a /mnt/ram/* /mnt/ram/.??* /mnt/sync
-          sync
-          infolog "  $dir/$relpath synchronized"
-        else
-          errorlog "  Cannot sync to $dir/$relpath: not enough size (${SIZE_RAM}M >= ${SIZE_SYNC}M)"
-        fi
-        debugshell
-        umount -d /mnt/sync
-      else
-        errorlog "  Cannot mount $dir/$relpath: bad persistence file"
-      fi
-      rmdir /mnt/sync
-    fi
-    umount_device $dev
+  kill -1 1
+}
+
+mode_shutdown() {
+  [ -z "$SALT_DEBUG" ] && echo -en '\e[H\e[2J'
+  echoinfo "*** Live system cleanup ***\n"
+  cd /
+  CMD="$1"
+  export CMD
+  if [ ! -e /tmp/distro_infos ]; then
+    fumble "/tmp/distro_infos not found. This is really weird.\nAre you running from a Live environment?"
   fi
-  umount /mnt/ram || umount -l /mnt/ram
-  rmdir /mnt/ram
-elif [ -e /mnt/save ]; then
-  umount /mnt/save || umount -l /mnt/save
-  rmdir /mnt/save
-fi
-[ -e /tmp/modules ] && rm -rf /tmp/modules 2>/dev/null
-debugshell
+  # ensure / and /mnt/union are writable.
+  touch /.testrw 2>/dev/null
+  [ -e /.testrw ] && rm /.testrw || mount -o remount,rw /
+  rm -f /.doshutdown
+  debugshell
+  debuglog 'Remounting /mnt/union read/write'
+  mount -o remount,rw /mnt/union
+  infolog 'Untweaking target distro'
+  uninstall_hooks /mnt/union
+  mv /mnt/union/etc/inittab.orig /mnt/union/etc/inittab
+  debugshell
+  infolog 'Synchronizing memory data on disk'
+  sync
+  infolog 'Killing remaining process'
+  kill_all_before $$
+  debugshell
+  debuglog 'Umount sub-mounts in /mnt/union'
+  umount_submounts_in /mnt/union
+  sleep 3
+  debugshell
+  infolog 'Unloading modules...'
+  for m in $(ls -dr1 /mnt/modules/*); do
+    infolog "  - Unloading $m"
+    unload_module "$m"
+    debugshell
+  done
+  debuglog 'Destroying union filesystem...'
+  destroy_union
+  rmdir /mnt/modules 2>/dev/null
+  rm /mnt/rw
+  if [ -e /mnt/ram ]; then
+    if [ -e /sync-persistence ]; then
+      dev=$(cut -d: -f1 /sync-persistence)
+      relpath=$(cut -d: -f2 /sync-persistence)
+      dir=$(mount_device $dev)
+      debugshell
+      if [ -e "$dir"/"$relpath" ]; then
+        infolog 'Syncing RAM -> persistence file...'
+        mkdir /mnt/sync
+        mount -o loop "$dir"/"$relpath" /mnt/sync
+        if [ $? -eq 0 ]; then
+          debugshell
+          SIZE_RAM=$(du -sm /mnt/ram|cut -f1)
+          SIZE_SYNC=$(sh -c 'echo $2' -- $(df -m /mnt/sync|tail -n1))
+          if [ $SIZE_RAM -lt $SIZE_SYNC ]; then
+            cp -a /mnt/ram/* /mnt/ram/.??* /mnt/sync
+            sync
+            infolog "  $dir/$relpath synchronized"
+          else
+            errorlog "  Cannot sync to $dir/$relpath: not enough size (${SIZE_RAM}M >= ${SIZE_SYNC}M)"
+          fi
+          debugshell
+          umount -d /mnt/sync
+        else
+          errorlog "  Cannot mount $dir/$relpath: bad persistence file"
+        fi
+        rmdir /mnt/sync
+      fi
+      umount_device $dev
+    fi
+    umount /mnt/ram || umount -l /mnt/ram
+    rmdir /mnt/ram
+  elif [ -e /mnt/save ]; then
+    umount /mnt/save || umount -l /mnt/save
+    rmdir /mnt/save
+  fi
+  [ -e /tmp/modules ] && rm -rf /tmp/modules 2>/dev/null
+  debugshell
+  umount_device $(cut -d: -f2- /tmp/distro_infos) >/dev/null
+  debugshell
+  eject_cd
+  debugshell
+  debuglog 'Umount what remains'
+  sync
+  umount -a -r -d -l 2>/dev/null
+  debugshell
+  echoinfo "Stopping/Rebooting: $CMD"
+  debugshell
+  sleep 1
+  exec "$CMD" -f
+  fumble 'End of cleanup: this line must never be executed!'
+}
 
-umount_device $(cut -d: -f2- /tmp/distro_infos) >/dev/null
-debugshell
-eject_cd
-debugshell
+echodebug "cleanup: called with: $0 $@"
+orig=$(basename $0)
+export orig
+mode=$(find_mode "$@")
+export mode
+echodebug "cleanup: mode: $mode"
+mode_$mode "$@"
 
-debuglog 'Umount what remains'
-sync
-umount -a -r -d -l 2>/dev/null
-debugshell
-
-echoinfo "Stopping/Rebooting: $CMD"
-debugshell
-sleep 1
-exec "$CMD" -f
-fumble 'End of cleanup: this line must never be executed!'
