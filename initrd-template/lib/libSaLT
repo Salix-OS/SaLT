@@ -934,12 +934,12 @@ umount_submounts_in() {
 eject_cd() {
   DEV=$(cut -d: -f2- /tmp/distro_infos)
   TYPE=$(find_fs_type $DEV)
-  if [ "$TYPE" = "iso9660" ] || grep -q 'drive name:.*'$(echo $DEV|sed 's,/dev/,,') /proc/sys/dev/cdrom/info; then
+  if [ "$TYPE" = "iso9660" ]; then
     echoinfo "Ejecting $DEV..."
-    eject $DEV 2>/dev/null
+    eject -s $DEV 2>/dev/null
     echoinfo "CD tray will be closed in 10 seconds or hit enter..."
     for i in $(seq 1 10); do echo -n .; read -t 1 && break; done
     echo
-    eject -t $DEV 2>/dev/null
+    eject -s -t $DEV 2>/dev/null
   fi
 }

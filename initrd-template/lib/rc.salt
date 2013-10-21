@@ -55,20 +55,6 @@ if [ -n "$lang" ]; then
   fi
 fi
 restart_hal=no
-if is_active_cmdline salt_synaptics; then
-  if [ ! -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
-    if [ -e /usr/share/hal/fdi/policy/10osvendor/11-x11-synaptics.fdi ]; then
-      mkdir -p /etc/hal/fdi/policy
-      cp /usr/share/hal/fdi/policy/10osvendor/11-x11-synaptics.fdi /etc/hal/fdi/policy/
-      restart_hal=yes
-    fi
-  fi
-else
-  if [ -e /etc/hal/fdi/policy/11-x11-synaptics.fdi ]; then
-    rm -f /etc/hal/fdi/policy/11-x11-synaptics.fdi
-    restart_hal=yes
-  fi
-fi
 keyb=$(get_value_cmdline salt_keyb)
 numlock=$(is_active_cmdline salt_numlock && echo on)
 scim=$(is_active_cmdline salt_scim && echo on)
@@ -81,7 +67,6 @@ if [ -n "$keyb" ] || [-n "$numlock" ] || [ -n "$scim" ] || [ -n "$ibus" ]; then
   [ -n "$ibus" ] || ibus=off
   if [ -x /usr/sbin/keyboardsetup ]; then # Salix
     /usr/sbin/keyboardsetup -k $keyb -n $numlock -s $scim -i $ibus 2>/dev/null # prevent errors if Xorg packages are not installed.
-    restart_hal=no
   else
     grep "^$keyb|.*|.*|.*" /mnt/salt/lib/keymaps | sed -e "s/^.*|\(.*\)|\(.*\)|\(.*\)/\1|\2|\3/" > /tmp/xkb
     xkblayout="$(sed -e "s/^\(.*\)|.*|.*/\1/" /tmp/xkb)"
@@ -192,7 +177,7 @@ else
     done
   fi
 fi
-if is_active_cmdline asalt_utologin; then
+if is_active_cmdline salt_autologin; then
   [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=true/' /etc/gdm/custom.conf
   [ -e /etc/kde/kdm/kdmrc ] && sed -i 's/AutoLoginEnable=.*/AutoLoginEnable=true/' /etc/kde/kdm/kdmrc
 else
