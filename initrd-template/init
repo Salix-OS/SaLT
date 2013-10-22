@@ -33,6 +33,7 @@ mount -t tmpfs none /tmp
   cd /lib
   # relative path
   ln -s ../tmp/lib/* .
+  chmod +x init.live rc.salt
 )
 
 # load the SaLT library

@@ -53,6 +53,7 @@ mknod -m 0600 $TREE/dev/tty2 c 4 2
 cp config $TREE/etc/salt.cfg
 # copy the patched init
 cp src-init/init $TREE/lib/init.live
+chmod +x $TREE/lib/init.live $TREE/lib/rc.salt
 # compile and install busybox
 if [ ! -e busybox-$BBVER/_install/bin/busybox ]; then
   rm -rf busybox-$BBVER
