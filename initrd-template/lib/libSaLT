@@ -763,7 +763,9 @@ EOF
   clock=$(get_value_cmdline salt_clock)
   if [ "$clock" = "ok" ]; then
     hwclock='localtime'
-    timezone='UTC'
+    timezone='Factory' # means there is no time zone.
+    # disable NTP
+    [ -x $MP/etc/rc.d/rc.ntpd ] && chmod -x $MP/etc/rc.d/rc.ntpd
   elif [ "$clock" = "ko" ]; then
     hwclock='localtime'
     # we need to ask the user about the real timezone

@@ -9,15 +9,16 @@
 
 [ -e /mnt/salt/lib/libSaLT ] || exit 1
 . /mnt/salt/lib/libSaLT
-echoinfo '+-------------------------------------+'
-echoinfo '| Starting SaLT Live configuration... |'
-echoinfo '+-------------------------------------+'
+echoinfo '┌─────────────────────────────────────┐'
+echoinfo '│ Starting SaLT Live configuration... │'
+echoinfo '└─────────────────────────────────────┘'
 LIBSUFFIX=
 [ -d /usr/lib64 ] && LIBSUFFIX=64
 lang=$(get_value_cmdline salt_lang)
 if [ -n "$lang" ]; then
+  echoinfo "* Apply locale $lang"
   if [ -x /usr/sbin/localesetup ]; then
-    /usr/sbin/localesetup $lang # Salix
+    /usr/sbin/localesetup $lang >/dev/null 2>&1 # Salix
   elif [ -e /etc/profile.d ]; then
     if [ -f /etc/profile.d/lang.sh ]; then
       grep -q -i '^ *export LANG=' /etc/profile.d/lang.sh
@@ -65,6 +66,11 @@ if [ -n "$keyb" ] || [-n "$numlock" ] || [ -n "$scim" ] || [ -n "$ibus" ]; then
   [ -n "$numlock" ] || numlock=off
   [ -n "$scim" ] || scim=off
   [ -n "$ibus" ] || ibus=off
+  txtkb="$key"
+  [ "$numlock" = "on" ] && txtkb="$txtkb, with numlock"
+  [ "$scim" = "on" ] && txtkb="$txtkb, with scim"
+  [ "$ibus" = "on" ] && txtkb="$txtkb, with ibus"
+  echoinfo "* Apply keybaord settings: $txtkb"
   if [ -x /usr/sbin/keyboardsetup ]; then # Salix
     /usr/sbin/keyboardsetup -k $keyb -n $numlock -s $scim -i $ibus 2>/dev/null # prevent errors if Xorg packages are not installed.
   else
@@ -149,9 +155,10 @@ EOF
     restart_hal=yes
   fi
 fi
-[ "$restart_hal" = "yes" ] && /etc/rc.d/rc.hald restart
+[ "$restart_hal" = "yes" ] && /etc/rc.d/rc.hald restart >/dev/null 2>&1
 passwd=$(get_value_cmdline salt_passwd)
 if [ -n "$passwd" ]; then
+  echoinfo '* Set a new root password'
   # root password
   if [ "$passwd" = "ask" ]; then
     echo -ne "\nEnter new password for root: "
@@ -163,21 +170,23 @@ if [ -n "$passwd" ]; then
   fi
 fi
 if is_active_cmdline salt_nosound; then
-  echoinfo 'Muting sound volume'
+  echoinfo '* Mute sound volume'
   for SCONTROL in Master PCM Front Surround Center CD Video Wave Music AC97 Headphone; do
     /usr/bin/amixer -q sset $SCONTROL 0 mute 2>/dev/null
   done
 else
   if [ -r /etc/asound.state ]; then
+    echoinfo '* Restore sound volume settings'
     /usr/sbin/alsactl restore
   else
-    echoinfo 'Setting sound volume to 71%'
+    echoinfo '* Set sound volume to 71%'
     for SCONTROL in Master PCM Front Surround Center CD Video Wave Music AC97 Headphone; do
       /usr/bin/amixer -q sset $SCONTROL 71% unmute 2>/dev/null
     done
   fi
 fi
 if is_active_cmdline salt_autologin; then
+  echoinfo '* Set autologin'
   [ -e /etc/gdm/custom.conf ] && sed -i 's/AutomaticLoginEnable=.*/AutomaticLoginEnable=true/' /etc/gdm/custom.conf
   [ -e /etc/kde/kdm/kdmrc ] && sed -i 's/AutoLoginEnable=.*/AutoLoginEnable=true/' /etc/kde/kdm/kdmrc
 else
@@ -186,12 +195,13 @@ else
 fi
 proxy=$(get_value_cmdline salt_proxy)
 if [ -n "$proxy" ]; then
+  echoinfo "* Set proxy to $proxy"
   # set http and ftp proxy (same for both)
   cat <<EOF > /etc/profile.d/proxy.sh
 #!/bin/sh
 export http_proxy=$proxy
-export https_proxy=$http_proxy
-export ftp_proxy=$http_proxy
+export https_proxy=\$http_proxy
+export ftp_proxy=\$http_proxy
 export no_proxy=localhost,127.0.0.1
 EOF
   chmod +x /etc/profile.d/proxy.sh
@@ -232,6 +242,6 @@ else
     sed -i '/proxy/d' $ffpreffile
   fi
 fi
-echoinfo '+---------------------------------+'
-echoinfo '| SaLT Live configuration applied |'
-echoinfo '+---------------------------------+'
+echoinfo '┌─────────────────────────────────┐'
+echoinfo '│ SaLT Live configuration applied │'
+echoinfo '└─────────────────────────────────┘'
