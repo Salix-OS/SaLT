@@ -9,6 +9,8 @@
 
 [ -e /mnt/salt/lib/libSaLT ] || exit 1
 . /mnt/salt/lib/libSaLT
+sleep .1
+echo
 echoinfo '┌─────────────────────────────────────┐'
 echoinfo '│ Starting SaLT Live configuration... │'
 echoinfo '└─────────────────────────────────────┘'
@@ -66,7 +68,7 @@ if [ -n "$keyb" ] || [-n "$numlock" ] || [ -n "$scim" ] || [ -n "$ibus" ]; then
   [ -n "$numlock" ] || numlock=off
   [ -n "$scim" ] || scim=off
   [ -n "$ibus" ] || ibus=off
-  txtkb="$key"
+  txtkb="$keyb"
   [ "$numlock" = "on" ] && txtkb="$txtkb, with numlock"
   [ "$scim" = "on" ] && txtkb="$txtkb, with scim"
   [ "$ibus" = "on" ] && txtkb="$txtkb, with ibus"
