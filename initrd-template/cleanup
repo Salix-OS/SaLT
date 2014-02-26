@@ -1,10 +1,10 @@
 #!/bin/sh
-# vim: set syn=sh ai si et sw=2 st=2 ts=2 tw=0:
+# vim: set syn=sh ft=sh et sw=2 sts=2 ts=2 tw=0:
 #
 # This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
 # Licence: GPLv3+
-# Version: 0.2.1
+# Version: 0.2.2
 # Clean up script launched when coming back to the initrd of SaLT before halting or rebooting.
 
 PATH=:/usr/sbin:/usr/bin:/sbin:/bin
@@ -61,8 +61,8 @@ if [ ! -e /tmp/distro_infos ]; then
 fi
 
 # ensure / and /mnt/union are writable.
-touch /testrw 2>/dev/null
-[ -e /testrw ] && rm /testrw || mount -o remount,rw /
+touch /.testrw 2>/dev/null
+[ -e /.testrw ] && rm /.testrw || mount -o remount,rw /
 debugshell
 debuglog 'Remounting /mnt/union read/write'
 mount -o remount,rw /mnt/union
@@ -95,6 +95,7 @@ if [ -e /mnt/ram ]; then
   if [ -e /sync-persistence ]; then
     dev=$(cut -d: -f1 /sync-persistence)
     relpath=$(cut -d: -f2 /sync-persistence)
+    rm /sync-persistence # ensure the file is deleted for future live sessions
     dir=$(mount_device $dev)
     debugshell
     if [ -e "$dir"/"$relpath" ]; then
@@ -106,6 +107,8 @@ if [ -e /mnt/ram ]; then
         SIZE_RAM=$(du -sm /mnt/ram|cut -f1)
         SIZE_SYNC=$(sh -c 'echo $2' -- $(df -m /mnt/sync|tail -n1))
         if [ $SIZE_RAM -lt $SIZE_SYNC ]; then
+          infolog "Syncing ${SIZE_RAM}M, please be patient and don't shutdown your computer..."
+          sync
           cp -a /mnt/ram/* /mnt/ram/.??* /mnt/sync
           sync
           infolog "  $dir/$relpath synchronized"
