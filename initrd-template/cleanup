@@ -1,5 +1,5 @@
 #!/bin/sh
-# vim: set syn=sh ai si et sw=2 st=2 ts=2 tw=0:
+# vim: set syn=sh ft=sh et sw=2 sts=2 ts=2 tw=0:
 #
 # This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
@@ -108,6 +108,7 @@ mode_shutdown() {
     if [ -e /sync-persistence ]; then
       dev=$(cut -d: -f1 /sync-persistence)
       relpath=$(cut -d: -f2 /sync-persistence)
+      rm /sync-persistence # ensure the file is deleted for future live sessions
       dir=$(mount_device $dev)
       debugshell
       if [ -e "$dir"/"$relpath" ]; then
@@ -119,6 +120,8 @@ mode_shutdown() {
           SIZE_RAM=$(du -sm /mnt/ram|cut -f1)
           SIZE_SYNC=$(sh -c 'echo $2' -- $(df -m /mnt/sync|tail -n1))
           if [ $SIZE_RAM -lt $SIZE_SYNC ]; then
+            infolog "Syncing ${SIZE_RAM}M, please be patient and don't shutdown your computer..."
+            sync
             cp -a /mnt/ram/* /mnt/ram/.??* /mnt/sync
             sync
             infolog "  $dir/$relpath synchronized"

@@ -1,5 +1,5 @@
 #!/bin/sh
-# vim: set syn=sh ai si et sw=2 st=2 ts=2 tw=0:
+# vim: set syn=sh ft=sh et sw=2 sts=2 ts=2 tw=0:
 #
 # This file is part of SaLT.
 # Copyright: Cyrille Pontvieux <jrd@salixos.org>
@@ -677,7 +677,7 @@ install_hooks() {
     echo "#DO NOT REMOVE THIS FILE" > "$MP/hooks.salt"
     for b in halt poweroff reboot; do
       for d in sbin usr/sbin; do
-        if [ -x "$MP/$d/$b" ] || [ -L "$MP/$d/$b" ]; then
+        if [ -x "$MP/$d/$b" ] || [ -L "$MP/$d/$b" ] && [ $(basename $(readlink -f "$MP/$d/$b")) != cleanup ]; then
           debuglog "  - Hook for $b in /$d installed"
           mv "$MP/$d/$b" "$MP/hooks/"
           (cd "$MP/$d"; ln -s /mnt/salt/cleanup "$b")
@@ -734,6 +734,9 @@ EOF
   else
     errorlog "/etc/rc.d/rc.M does not seem to exist in the distro: cheatcodes will not work."
   fi
+  debuglog 'Installing fix-live-post-install in /usr/local/sbin/ (symlink)'
+  mkdir -p $MP/usr/local/sbin
+  (cd $MP/usr/local/sbin && ln -s /mnt/salt/lib/fix-live-post-install .)
   lang=$(get_value_cmdline salt_lang)
   if [ -n "$lang" ] && [ -e $MP/etc/profile.d ]; then
     debuglog "Early configure locale to $lang"

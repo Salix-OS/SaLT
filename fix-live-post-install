@@ -1,0 +1,23 @@
+#!/bin/sh
+# vim: set syn=sh ft=sh et sw=2 sts=2 ts=2 tw=0:
+#
+# This file is part of SaLT.
+# Copyright: Cyrille Pontvieux <jrd@salixos.org>
+# Licence: GPLv3+
+# Version: 0.2.1
+# Script to fix the symlink to cleanup script for halt/poweroff/reboot if those have been upgraded.
+
+[ -e /mnt/salt/lib/libSaLT ] || exit 1
+[ $(id -u) -eq 0 ] || exit 1
+if [ -d /hooks ]; then
+  for b in halt poweroff reboot; do
+    for d in sbin usr/sbin; do
+      if [ -x /$d/$b ] || [ -L /$d/$b ] && [ $(basename $(readlink -f /$d/$b)) != cleanup ]; then
+        [ -e /hooks/$b ] && rm /hooks/$b
+        mv /$d/$b /hooks/
+        (cd /$d; ln -s /mnt/salt/cleanup $b)
+      fi
+    done
+  done
+fi
+echo "Fixed."
